@@ -25,7 +25,11 @@ class _Login extends State<Login> {
                 decoration: InputDecoration(
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(5))),
-              )
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              ElevatedButton(onPressed: () {}, child: Text("Send OTP"))
             ],
           ),
         ),
