@@ -1,10 +1,11 @@
 part of 'sendotp_bloc_bloc.dart';
 
 @immutable
-sealed class SendotpBlocEvent {}
+abstract class SendotpBlocEvent {}
 
-class PhoneNumber extends SendotpBlocEvent{
+class SendPhoneNumber extends SendotpBlocEvent {
   final String phoneNumber;
-  PhoneNumber({required this.phoneNumber});
-  
+  final BuildContext context;
+
+  SendPhoneNumber({required this.context, required this.phoneNumber});
 }

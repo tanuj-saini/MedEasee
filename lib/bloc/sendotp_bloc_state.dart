@@ -1,17 +1,20 @@
 part of 'sendotp_bloc_bloc.dart';
 
 @immutable
-sealed class SendotpBlocState {}
+abstract class SendotpBlocState {}
 
-final class SendotpBlocInitial extends SendotpBlocState {}
-class phoneSuccess extends SendotpBlocState {
-  
+class SendotpBlocInitial extends SendotpBlocState {}
+
+class PhoneLoading extends SendotpBlocState {}
+
+class PhoneSuccess extends SendotpBlocState {
+  final String verificationID;
+
+  PhoneSuccess({required this.verificationID});
 }
 
-class phoneLoding extends SendotpBlocState {}
-
-class phoneFailure extends SendotpBlocState {
+class PhoneFailure extends SendotpBlocState {
   final String error;
 
-  phoneFailure({required this.error});
+  PhoneFailure({required this.error});
 }
