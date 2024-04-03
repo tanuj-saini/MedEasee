@@ -54,11 +54,11 @@ class _OtpScreen extends State<OtpScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Image.asset(
-                  'assets/img1.png',
-                  width: 150,
-                  height: 150,
-                ),
+                // Image.asset(
+                //   'assets/img1.png',
+                //   width: 150,
+                //   height: 150,
+                // ),
                 SizedBox(
                   height: 25,
                 ),

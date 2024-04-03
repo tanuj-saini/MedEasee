@@ -10,7 +10,7 @@ part 'sendotp_bloc_state.dart';
 class SendotpBlocBloc extends Bloc<SendotpBlocEvent, SendotpBlocState> {
   SendotpBlocBloc() : super(SendotpBlocInitial()) {
     on<SendPhoneNumber>((event, emit) async {
-      emit(PhoneLoading());
+      // emit(PhoneLoading());
       try {
         FirebaseAuth firebaseAuth = FirebaseAuth.instance;
         await firebaseAuth.verifyPhoneNumber(
@@ -22,8 +22,10 @@ class SendotpBlocBloc extends Bloc<SendotpBlocEvent, SendotpBlocState> {
             return emit(
                 PhoneFailure(error: e.message ?? "Verification failed"));
           },
-          codeSent: (String verificationId, int? resendToken) async {
-            return emit(PhoneSuccess(verificationID: verificationId));
+          codeSent: (String verificationId, int? resendToken) {
+            Navigator.of(event.context).push(MaterialPageRoute(
+                builder: (ctx) => OtpScreen(verificationId: verificationId)));
+            emit(PhoneSuccess(verificationID: verificationId));
           },
           codeAutoRetrievalTimeout: (String verificationId) {},
         );

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:med_ease/Login_SignIn/Login.dart';
+import 'package:med_ease/Login_SignIn/OtpScreen.dart';
 import 'package:med_ease/Login_SignIn/bloc/otp_bloc_bloc.dart';
 import 'package:med_ease/Utils/Colors.dart';
 import 'package:firebase_core/firebase_core.dart';
