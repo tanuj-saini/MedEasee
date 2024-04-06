@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:med_ease/DoctorScreen/DoctorModifyScreen.dart';
+import 'package:med_ease/DoctorScreen/DoctorScreen.dart';
 import 'package:med_ease/Login_SignIn/bloc/otp_bloc_bloc.dart';
-import 'package:med_ease/Screens/HomeScreen.dart';
+import 'package:med_ease/UserScreens/HomeScreen.dart';
 import 'package:med_ease/Utils/Colors.dart';
 import 'package:med_ease/Utils/LoderScreen.dart';
 import 'package:pinput/pinput.dart';
 
 class OtpScreen extends StatefulWidget {
+  final String typeOfUser;
   final String verificationId;
-  OtpScreen({required this.verificationId, super.key});
+  OtpScreen(
+      {required this.typeOfUser, required this.verificationId, super.key});
   @override
   State<StatefulWidget> createState() {
     return _OtpScreen();
@@ -25,8 +29,12 @@ class _OtpScreen extends State<OtpScreen> {
         showSnackBar(state.error, context);
       }
       if (state is OtpSuccess) {
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (ctx) => HomeScreen()));
+        Navigator.of(context).push(MaterialPageRoute(builder: (ctx) {
+          if (widget.typeOfUser == "doctor") {
+            return DoctorScreen();
+          }
+          return HomeScreen();
+        }));
       }
     }, builder: (context, state) {
       if (state is OtpLoding) {
@@ -54,11 +62,11 @@ class _OtpScreen extends State<OtpScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // Image.asset(
-                //   'assets/img1.png',
-                //   width: 150,
-                //   height: 150,
-                // ),
+                Image.asset(
+                  'assets/img1.png',
+                  width: 150,
+                  height: 150,
+                ),
                 SizedBox(
                   height: 25,
                 ),

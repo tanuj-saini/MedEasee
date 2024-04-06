@@ -7,10 +7,11 @@ class SendotpBlocInitial extends SendotpBlocState {}
 
 class PhoneLoading extends SendotpBlocState {}
 
-class PhoneSuccess extends SendotpBlocState {
-  final String verificationID;
+class PhoneSuccess extends SendotpBlocState {}
 
-  PhoneSuccess({required this.verificationID});
+class PhoneVerificationID extends SendotpBlocState {
+  final String verificationID;
+  PhoneVerificationID({required this.verificationID});
 }
 
 class PhoneFailure extends SendotpBlocState {

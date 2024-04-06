@@ -14,9 +14,9 @@ class OtpBlocBloc extends Bloc<OtpBlocEvent, OtpBlocState> {
         PhoneAuthCredential credential = PhoneAuthProvider.credential(
             verificationId: event.verificationID, smsCode: event.UserOtp);
         await firebaseAuth.signInWithCredential(credential);
-        return emit(OtpSuccess());
+        emit(OtpSuccess());
       } on FirebaseAuthException catch (e) {
-        return emit(OtpFailure(error: e.toString()));
+        emit(OtpFailure(error: e.toString()));
       }
     });
   }

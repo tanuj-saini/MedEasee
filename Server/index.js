@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const UserRouter = require("./routers/UserRouter");
+const doctorRouter = require("./routers/DoctorRouter");
 const mongooseUrl =
   "mongodb+srv://medeaszzz:Av19YTj6Pdy6swkJ@cluster0.qzc4sbo.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 
@@ -10,6 +11,7 @@ const app = express();
 app.use(express.json());
 
 app.use(UserRouter);
+app.use(doctorRouter);
 
 mongoose
   .connect(mongooseUrl)

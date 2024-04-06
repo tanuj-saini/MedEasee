@@ -1,6 +1,7 @@
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:med_ease/Login_SignIn/OtpScreen.dart';
 import 'package:med_ease/Login_SignIn/bloc/otp_bloc_bloc.dart';
 import 'package:med_ease/Utils/Colors.dart';
@@ -8,7 +9,8 @@ import 'package:med_ease/Utils/LoderScreen.dart';
 import 'package:med_ease/bloc/sendotp_bloc_bloc.dart';
 
 class Login extends StatefulWidget {
-  Login({super.key});
+  final String typeOfUser;
+  Login({required this.typeOfUser, super.key});
   @override
   State<StatefulWidget> createState() {
     return _Login();
@@ -38,14 +40,14 @@ class _Login extends State<Login> {
       if (state is PhoneFailure) {
         showSnackBar(state.error, context);
       }
-      if (state is PhoneSuccess) {
+      if (state is PhoneVerificationID) {
+        print("navigatior");
         Navigator.of(context).push(MaterialPageRoute(
-            builder: (ctx) => OtpScreen(verificationId: state.verificationID)));
+            builder: (ctx) => OtpScreen(
+                typeOfUser: widget.typeOfUser,
+                verificationId: state.verificationID)));
       }
     }, builder: (context, state) {
-      if (state is PhoneLoading) {
-        return Loder();
-      }
       return Scaffold(
         body: Container(
           margin: EdgeInsets.only(left: 25, right: 25),
@@ -54,10 +56,10 @@ class _Login extends State<Login> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // SvgPicture.asset(
-                //   'assets/s.svg',
-                //   color: Colors.white,
-                // ),
+                SvgPicture.asset(
+                  'assets/s.svg',
+                  color: Colors.white,
+                ),
                 SizedBox(
                   height: 25,
                 ),
@@ -136,7 +138,7 @@ class _Login extends State<Login> {
                     ),
                     onPressed: () {
                       sendOtp.add(SendPhoneNumber(
-                          context: context, phoneNumber: "+918824567890"));
+                          context: context, phoneNumber: "+918824523456"));
                     },
                     child: Text("Send the code"),
                   ),
@@ -149,3 +151,4 @@ class _Login extends State<Login> {
     });
   }
 }
+//+919307032542

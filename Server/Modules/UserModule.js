@@ -10,7 +10,7 @@ const UserModule = mongoose.Schema({
   },
   age: {
     require: true,
-    type: Number,
+    type: String,
   },
   homeAddress: {
     require: true,
@@ -18,7 +18,7 @@ const UserModule = mongoose.Schema({
   },
   phoneNumber: {
     require: true,
-    type: Number,
+    type: String,
   },
   appointment: [
     {
