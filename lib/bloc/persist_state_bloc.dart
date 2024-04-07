@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
+import 'package:med_ease/Modules/DoctorModify.dart';
 import 'package:med_ease/Modules/DoctorModule.dart';
 import 'package:med_ease/Modules/UserModule.dart';
 import 'package:med_ease/Utils/errorHandiling.dart';
@@ -54,7 +55,7 @@ class PersistStateBloc extends Bloc<PersistStateEvent, PersistStateState> {
           final userData =
               UserModule.fromJson(jsonEncode(jsonDecode(userRes.body)));
           print("welcome again");
-
+          print(userData);
           return emit(PersitSuccess(
               sugesstion: "Welcome Again",
               userModule: userData,
@@ -70,8 +71,20 @@ class PersistStateBloc extends Bloc<PersistStateEvent, PersistStateState> {
       try {
         print("hello");
         SharedPreferences prefs = await SharedPreferences.getInstance();
-        DoctorModule doctorModule = DoctorModule(
-            "", "", "", "", "", "", "", "", "", "", [], [], "", "");
+        DoctorModuleE doctorModule = DoctorModuleE(
+            name: "",
+            bio: "",
+            phoneNumber: "",
+            specialist: "",
+            currentWorkingHospital: "",
+            profilePic: "",
+            registerNumbers: "",
+            experience: "",
+            emailAddress: "",
+            age: "",
+            applicationLeft: [],
+            timeSlot: [],
+            id: "");
         String? token = prefs.getString('x-auth-token-D');
         if (token == null) {
           prefs.setString('x-auth-token-D', '');
@@ -97,9 +110,11 @@ class PersistStateBloc extends Bloc<PersistStateEvent, PersistStateState> {
             'Content-Type': 'application/json; charset=UTF-8',
             'x-auth-token-D': token,
           });
+          print(userRes.body);
 
           final userData =
-              DoctorModule.fromJson(jsonEncode(jsonDecode(userRes.body)));
+              DoctorModuleE.fromJson(jsonEncode(jsonDecode(userRes.body)));
+
           print("welcome again");
           //print(userData);
           return emit(PersitDoctorSuccess(
