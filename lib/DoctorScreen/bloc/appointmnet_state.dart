@@ -6,7 +6,7 @@ sealed class AppointmnetState {}
 final class AppointmnetInitial extends AppointmnetState {}
 
 class AppointmentSuccess extends AppointmnetState {
-  final DoctorModuleE doctorModule;
+  final Doctor doctorModule;
 
   AppointmentSuccess({required this.doctorModule});
 }

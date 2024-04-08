@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:med_ease/Modules/DoctorModify.dart';
+import 'package:med_ease/Modules/testModule.dart';
 import 'package:med_ease/Utils/errorHandiling.dart';
 import 'package:meta/meta.dart';
 import "package:http/http.dart" as http;
@@ -30,23 +31,23 @@ class AllDoctorsBloc extends Bloc<AllDoctorsEvent, AllDoctorsState> {
               'x-auth-token-w': token,
             });
         print(res.body);
-        List<DoctorModuleE> allDoctors = [];
+        List<Doctor> allDoctors = [];
         httpErrorHandle(
-            response: res,
-            context: event.context,
-            onSuccess: () async {
-              List<dynamic> jsonResponse = jsonDecode(res.body);
+          response: res,
+          context: event.context,
+          onSuccess: () async {
+            List<dynamic> jsonResponse =
+                jsonDecode(res.body); // Parse the response here
+            int length = jsonResponse.length;
+            print(length);
 
-              // Calculate the length of the list
-              int length = jsonResponse.length;
-              print(length);
-
-              for (int i = 0; i < length; i++) {
-                // Assuming DoctorModuleE has a factory constructor named fromJson
-                allDoctors
-                    .add(DoctorModuleE.fromJson(jsonEncode(jsonResponse[i])));
-              }
-            });
+            for (int i = 0; i < length; i++) {
+              final jsonData = jsonResponse[i];
+              Doctor doctor = Doctor.fromJson(jsonData);
+              allDoctors.add(doctor);
+            }
+          },
+        );
 
         print(allDoctors);
         return emit(AllDoctorsDataSuccess(allDoctorsData: allDoctors));

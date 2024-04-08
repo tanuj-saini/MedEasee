@@ -4,7 +4,8 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:med_ease/Modules/ApointmentModifyModule.dart';
 import 'package:med_ease/Modules/DoctorModify.dart';
-import 'package:med_ease/Modules/DoctorModule.dart';
+import 'package:med_ease/Modules/testModule.dart';
+import 'package:med_ease/Utils/DoctorModule.dart';
 import 'package:med_ease/Utils/errorHandiling.dart';
 import 'package:med_ease/Utils/timeSlot.dart';
 import 'package:meta/meta.dart';
@@ -37,7 +38,7 @@ class AppointmnetBloc extends Bloc<AppointmnetEvent, AppointmnetState> {
             },
             body: appointmentModule.toJson());
 
-        DoctorModuleE doctorModule = DoctorModuleE(
+        Doctor doctorModule = Doctor(
             name: "",
             bio: "",
             phoneNumber: "",
@@ -55,8 +56,11 @@ class AppointmnetBloc extends Bloc<AppointmnetEvent, AppointmnetState> {
             response: res,
             context: event.context,
             onSuccess: () async {
-              doctorModule =
-                  DoctorModuleE.fromJson(jsonEncode(jsonDecode(res.body)));
+              final jsonData = jsonDecode(res.body);
+
+              final doctorModule = Doctor.fromJson(jsonData);
+              print('yes it works');
+              print(doctorModule);
             });
         print(res.body);
         print("hello");

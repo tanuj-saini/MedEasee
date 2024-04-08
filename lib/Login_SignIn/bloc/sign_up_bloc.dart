@@ -3,7 +3,8 @@ import 'dart:convert';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:med_ease/Modules/DoctorModify.dart';
-import 'package:med_ease/Modules/DoctorModule.dart';
+import 'package:med_ease/Modules/testModule.dart';
+import 'package:med_ease/Utils/DoctorModule.dart';
 import 'package:med_ease/Modules/UserModule.dart';
 import 'package:med_ease/Utils/errorHandiling.dart';
 import 'package:meta/meta.dart';
@@ -55,7 +56,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     on<SignDoctorEvent>((event, emit) async {
       emit(SignUpLoding());
       try {
-        DoctorModuleE doctorModule = DoctorModuleE(
+        Doctor doctorModule = Doctor(
             name: "",
             bio: "",
             phoneNumber: "",
@@ -78,8 +79,9 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
             response: res,
             context: event.context,
             onSuccess: () async {
-              doctorModule =
-                  DoctorModuleE.fromJson(jsonEncode(jsonDecode(res.body)));
+              final jsonData = jsonDecode(res.body);
+
+              final doctorModule = Doctor.fromJson(jsonData);
 
               SharedPreferences prefs = await SharedPreferences.getInstance();
               String token = jsonDecode(res.body)["token"];

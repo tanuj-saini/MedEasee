@@ -11,7 +11,7 @@ class AllDoctorsDataFailure extends AllDoctorsState {
 }
 
 class AllDoctorsDataSuccess extends AllDoctorsState {
-  final List<DoctorModuleE> allDoctorsData;
+  final List<Doctor> allDoctorsData;
   AllDoctorsDataSuccess({required this.allDoctorsData});
 }
 

@@ -18,6 +18,6 @@ class SignUpFailure extends SignUpState {
 class SignUpLoding extends SignUpState {}
 
 class SignUpDoctorSucess extends SignUpState {
-  final DoctorModuleE doctorModuleE;
+  final Doctor doctorModuleE;
   SignUpDoctorSucess({required this.doctorModuleE});
 }

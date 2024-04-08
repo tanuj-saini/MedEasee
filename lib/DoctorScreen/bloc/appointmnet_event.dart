@@ -5,7 +5,7 @@ sealed class AppointmnetEvent {}
 
 class AppointMentDetailsEvent extends AppointmnetEvent {
   final String price;
-  final List<TimeSlot> timeSlots;
+  final List<TimeSlotD> timeSlots;
   final BuildContext context;
   final String title;
 

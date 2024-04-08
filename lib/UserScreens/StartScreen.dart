@@ -28,10 +28,10 @@ class _StartScreen extends State<StartScreen> {
             SizedBox(height: 50.0),
             ElevatedButton(
               onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (ctx) => (Login(typeOfUser: "user"))));
-                // Navigator.of(context)
-                //     .push(MaterialPageRoute(builder: (ctx) => UserInfo()));
+                // Navigator.of(context).push(MaterialPageRoute(
+                //     builder: (ctx) => (Login(typeOfUser: "user"))));
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (ctx) => UserInfo()));
               },
               child: Text('User'),
             ),
@@ -42,8 +42,10 @@ class _StartScreen extends State<StartScreen> {
             SizedBox(height: 20.0),
             ElevatedButton(
               onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (ctx) => Login(typeOfUser: 'doctor')));
+                //   Navigator.of(context).push(MaterialPageRoute(
+                //       builder: (ctx) => Login(typeOfUser: 'doctor')));
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (ctx) => DoctorInfo()));
               },
               child: Text('Doctor'),
             ),

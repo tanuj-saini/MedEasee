@@ -16,7 +16,7 @@ class userModulefaliure extends UserModuelState {
 }
 
 class doctorModuleSuccess extends UserModuelState {
-  final DoctorModuleE doctorModule;
+  final Doctor doctorModule;
   doctorModuleSuccess({required this.doctorModule});
 }
 

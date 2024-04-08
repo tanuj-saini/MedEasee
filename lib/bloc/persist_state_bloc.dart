@@ -2,8 +2,9 @@ import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
 import 'package:med_ease/Modules/DoctorModify.dart';
-import 'package:med_ease/Modules/DoctorModule.dart';
+import 'package:med_ease/Utils/DoctorModule.dart';
 import 'package:med_ease/Modules/UserModule.dart';
+import 'package:med_ease/Modules/testModule.dart';
 import 'package:med_ease/Utils/errorHandiling.dart';
 import 'package:meta/meta.dart';
 import "package:http/http.dart" as http;
@@ -71,7 +72,7 @@ class PersistStateBloc extends Bloc<PersistStateEvent, PersistStateState> {
       try {
         print("hello");
         SharedPreferences prefs = await SharedPreferences.getInstance();
-        DoctorModuleE doctorModule = DoctorModuleE(
+        Doctor doctorModule = Doctor(
             name: "",
             bio: "",
             phoneNumber: "",
@@ -111,15 +112,16 @@ class PersistStateBloc extends Bloc<PersistStateEvent, PersistStateState> {
             'x-auth-token-D': token,
           });
           print(userRes.body);
+          final jsonData = jsonDecode(userRes.body);
 
-          final userData =
-              DoctorModuleE.fromJson(jsonEncode(jsonDecode(userRes.body)));
+          Doctor doctor = Doctor.fromJson(jsonData);
+          print("yes");
 
           print("welcome again");
           //print(userData);
           return emit(PersitDoctorSuccess(
               isPersist: true,
-              doctorModule: userData,
+              doctorModule: doctor,
               suggesstion: "Welcome again"));
         }
       } catch (e) {

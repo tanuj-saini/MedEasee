@@ -4,7 +4,8 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:med_ease/Modules/DoctorModify.dart';
-import 'package:med_ease/Modules/DoctorModule.dart';
+import 'package:med_ease/Modules/testModule.dart';
+import 'package:med_ease/Utils/DoctorModule.dart';
 import 'package:med_ease/Modules/UserModule.dart';
 import 'package:med_ease/Utils/errorHandiling.dart';
 import 'package:meta/meta.dart';
@@ -57,7 +58,7 @@ class UserModuelBloc extends Bloc<UserModuelEvent, UserModuelState> {
     on<doctorModuleEvent>((event, emit) async {
       emit(userModuleLoding());
       try {
-        DoctorModuleE doctorModule = DoctorModuleE(
+        Doctor doctorModule = Doctor(
             name: event.name,
             bio: event.bio,
             phoneNumber: event.phoneNumber,
@@ -71,6 +72,7 @@ class UserModuelBloc extends Bloc<UserModuelEvent, UserModuelState> {
             applicationLeft: [],
             timeSlot: [],
             id: "");
+
         http.Response res = await http.post(Uri.parse("$ip/doctor/signUp"),
             headers: <String, String>{
               'Content-Type': 'application/json; charset=UTF-8'
@@ -81,8 +83,9 @@ class UserModuelBloc extends Bloc<UserModuelEvent, UserModuelState> {
             response: res,
             context: event.context,
             onSuccess: () async {
-              doctorModule =
-                  DoctorModuleE.fromJson(jsonEncode(jsonDecode(res.body)));
+              final jsonData = jsonDecode(res.body);
+
+              doctorModule = Doctor.fromJson(jsonData);
 
               SharedPreferences prefs = await SharedPreferences.getInstance();
               String token = jsonDecode(res.body)["token"];

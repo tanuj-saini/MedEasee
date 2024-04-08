@@ -24,8 +24,8 @@ class DoctorModifyScreen extends StatefulWidget {
 }
 
 class _DoctorScreen extends State<DoctorModifyScreen> {
-  List<TimeSlot> _items = [];
-  List<TimeSlot> _selectedTimeSlots = [];
+  List<TimeSlotD> _items = [];
+  List<TimeSlotD> _selectedTimeSlots = [];
 
   @override
   void initState() {
@@ -35,10 +35,10 @@ class _DoctorScreen extends State<DoctorModifyScreen> {
 
   void _generateTimeSlots() {
     for (var i = 0; i < 24; i++) {
-      _items.add(TimeSlot(hour: i)); // 정시
-      _items.add(TimeSlot(hour: i, minute: 15)); // 15분
-      _items.add(TimeSlot(hour: i, minute: 30)); // 30분
-      _items.add(TimeSlot(hour: i, minute: 45)); // 45분
+      _items.add(TimeSlotD(hour: i)); // 정시
+      _items.add(TimeSlotD(hour: i, minute: 15)); // 15분
+      _items.add(TimeSlotD(hour: i, minute: 30)); // 30분
+      _items.add(TimeSlotD(hour: i, minute: 45)); // 45분
     }
   }
 
@@ -54,9 +54,6 @@ class _DoctorScreen extends State<DoctorModifyScreen> {
         showSnackBar(state.error, context);
       }
       if (state is AppointmentSuccess) {
-        // final doctorBloc = context.read<DoctorBloc>();
-
-        // doctorBloc.updateDoctor(state.doctorModule);
         Navigator.of(context).pop();
       }
     }, builder: (context, state) {
@@ -76,7 +73,7 @@ class _DoctorScreen extends State<DoctorModifyScreen> {
             Center(
               child: MultiSelectDialogField(
                 items: _items
-                    .map((timeSlot) => MultiSelectItem<TimeSlot>(
+                    .map((timeSlot) => MultiSelectItem<TimeSlotD>(
                         timeSlot, timeSlot.toString()))
                     .toList(),
                 title: Text("Time"),

@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:med_ease/Gemini/ChatScreen.dart';
 import 'package:med_ease/Modules/DoctorModify.dart';
+import 'package:med_ease/Modules/testModule.dart';
 import 'package:med_ease/UpdateModels/UpdateUserModel.dart';
 import 'package:med_ease/UserScreens/CardDoctorDetailScreen.dart';
 import 'package:med_ease/UserScreens/StartScreen.dart';
@@ -73,7 +74,7 @@ class _HomeScreen extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final userModel = context.watch<UserBloc>().state;
 
-    List<DoctorModuleE> list = [];
+    List<Doctor> list = [];
     final allDoctorSeach = BlocProvider.of<AllDoctorsBloc>(context);
     return BlocConsumer<AllDoctorsBloc, AllDoctorsState>(
       listener: (context, state) {

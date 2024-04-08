@@ -3,13 +3,33 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 
-import 'package:med_ease/Utils/timeSlot.dart'; // 경로가 프로젝트 구조와 일치하는지 확인하세요.
+import 'package:med_ease/Utils/timeSlot.dart';
+
+class TimeSlotted {
+  List<AppointmentModule> appointmentDetails;
+
+  TimeSlotted({
+    required this.appointmentDetails,
+  });
+
+  factory TimeSlotted.fromJson(Map<String, dynamic> json) {
+    return TimeSlotted(
+      appointmentDetails: List<AppointmentModule>.from(
+          json['appointmentDetails'].map((x) => AppointmentModule.fromJson(x))),
+    );
+  }
+  Map<String, dynamic> toMap() {
+    return {
+      'appointmentDetails': appointmentDetails.map((x) => x.toJson()).toList(),
+    };
+  }
+}
 
 class AppointmentModule {
   final String price;
   final String date;
   final String title;
-  final List<TimeSlot> timeSlots;
+  final List<TimeSlotD> timeSlots;
 
   AppointmentModule({
     required this.price,
@@ -22,7 +42,7 @@ class AppointmentModule {
     String? price,
     String? date,
     String? title,
-    List<TimeSlot>? timeSlots,
+    List<TimeSlotD>? timeSlots,
   }) {
     return AppointmentModule(
       price: price ?? this.price,
@@ -46,9 +66,9 @@ class AppointmentModule {
       price: map['price'] as String,
       date: map['date'] as String,
       title: map['title'] as String,
-      timeSlots: List<TimeSlot>.from(
-        (map['timeSlots'] as List<int>).map<TimeSlot>(
-          (x) => TimeSlot.fromMap(x as Map<String, dynamic>),
+      timeSlots: List<TimeSlotD>.from(
+        (map['timeSlots'] as List<int>).map<TimeSlotD>(
+          (x) => TimeSlotD.fromMap(x as Map<String, dynamic>),
         ),
       ),
     );
@@ -79,70 +99,3 @@ class AppointmentModule {
     return price.hashCode ^ date.hashCode ^ title.hashCode ^ timeSlots.hashCode;
   }
 }
-
-
-
-
-
-// // ignore_for_file: public_member_api_docs, sort_constructors_first
-// import 'dart:convert';
-
-// import 'package:flutter/foundation.dart';
-// import 'package:med_ease/Utils/timeSlot.dart'; // 경로가 프로젝트 구조와 일치하는지 확인하세요.
-
-// class AppointmentModule {
-//   final String price;
-//   final List<TimeSlot> timeSlots;
-
-//   AppointmentModule({
-//     required this.price,
-//     required this.timeSlots,
-//   });
-
-//   AppointmentModule copyWith({
-//     String? price,
-//     List<TimeSlot>? timeSlots,
-//   }) {
-//     return AppointmentModule(
-//       price: price ?? this.price,
-//       timeSlots: timeSlots ?? this.timeSlots,
-//     );
-//   }
-
-//   Map<String, dynamic> toMap() {
-//     return <String, dynamic>{
-//       'price': price,
-//       'timeSlots': timeSlots.map((x) => x.toMap()).toList(),
-//     };
-//   }
-
-//   factory AppointmentModule.fromMap(Map<String, dynamic> map) {
-//     return AppointmentModule(
-//       price: map['price'],
-//       timeSlots: List<TimeSlot>.from(
-//         (map['timeSlots'] as List).map<TimeSlot>(
-//           (x) => TimeSlot.fromMap(x as Map<String, dynamic>),
-//         ),
-//       ),
-//     );
-//   }
-
-//   String toJson() => json.encode(toMap());
-
-//   factory AppointmentModule.fromJson(String source) =>
-//       AppointmentModule.fromMap(json.decode(source));
-
-//   @override
-//   String toString() =>
-//       'AppointmentModule(price: $price, timeSlots: $timeSlots)';
-
-//   @override
-//   bool operator ==(covariant AppointmentModule other) {
-//     if (identical(this, other)) return true;
-
-//     return other.price == price && listEquals(other.timeSlots, timeSlots);
-//   }
-
-//   @override
-//   int get hashCode => price.hashCode ^ timeSlots.hashCode;
-// }

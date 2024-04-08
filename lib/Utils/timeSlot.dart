@@ -1,18 +1,18 @@
-class TimeSlot {
+class TimeSlotD {
   final int hour;
   final int minute;
 
-  TimeSlot({required this.hour, this.minute = 0});
+  TimeSlotD({required this.hour, this.minute = 0});
 
-  // Map에서 TimeSlot 객체를 생성하는 fromMap 메서드 추가
-  factory TimeSlot.fromMap(Map<String, dynamic> map) {
-    return TimeSlot(
+  // Map에서 TimeSlotD 객체를 생성하는 fromMap 메서드 추가
+  factory TimeSlotD.fromMap(Map<String, dynamic> map) {
+    return TimeSlotD(
       hour: map['hour'],
       minute: map['minute'],
     );
   }
 
-  // TimeSlot 객체를 Map으로 변환하는 toMap 메서드 추가
+  // TimeSlotD 객체를 Map으로 변환하는 toMap 메서드 추가
   Map<String, dynamic> toMap() {
     return {
       'hour': hour,
@@ -28,7 +28,7 @@ class TimeSlot {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is TimeSlot &&
+      other is TimeSlotD &&
           runtimeType == other.runtimeType &&
           hour == other.hour &&
           minute == other.minute;

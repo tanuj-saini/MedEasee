@@ -17,7 +17,7 @@ class PersitSuccess extends PersistStateState {
 
 class PersitDoctorSuccess extends PersistStateState {
   final bool isPersist;
-  final DoctorModuleE doctorModule;
+  final Doctor doctorModule;
   final String suggesstion;
 
   PersitDoctorSuccess(
