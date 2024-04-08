@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:med_ease/Modules/ApointmentModifyModule.dart';
+import 'package:med_ease/Modules/DoctorModify.dart';
 import 'package:med_ease/Modules/DoctorModule.dart';
 import 'package:med_ease/Utils/errorHandiling.dart';
 import 'package:med_ease/Utils/timeSlot.dart';
@@ -24,6 +25,7 @@ class AppointmnetBloc extends Bloc<AppointmnetEvent, AppointmnetState> {
           return emit(AppointmentFailure(error: "You are not a doctor"));
         }
         AppointmentModule appointmentModule = AppointmentModule(
+            title: event.title,
             price: event.price,
             timeSlots: event.timeSlots,
             date: DateTime.now().toIso8601String());
@@ -35,16 +37,30 @@ class AppointmnetBloc extends Bloc<AppointmnetEvent, AppointmnetState> {
             },
             body: appointmentModule.toJson());
 
-        DoctorModule doctorModule = DoctorModule(
-            "", "", "", "", "", "", "", "", "", "", [], [], "", "");
+        DoctorModuleE doctorModule = DoctorModuleE(
+            name: "",
+            bio: "",
+            phoneNumber: "",
+            specialist: "",
+            currentWorkingHospital: "",
+            profilePic: "",
+            registerNumbers: "",
+            experience: "",
+            emailAddress: "",
+            age: "",
+            applicationLeft: [],
+            timeSlot: [],
+            id: "");
         httpErrorHandle(
             response: res,
             context: event.context,
             onSuccess: () async {
               doctorModule =
-                  DoctorModule.fromJson(jsonEncode(jsonDecode(res.body)));
+                  DoctorModuleE.fromJson(jsonEncode(jsonDecode(res.body)));
             });
         print(res.body);
+        print("hello");
+        print(doctorModule);
         return emit(AppointmentSuccess(doctorModule: doctorModule));
       } catch (e) {
         return emit(AppointmentFailure(error: e.toString()));

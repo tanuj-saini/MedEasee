@@ -8,9 +8,11 @@ import 'package:med_ease/Login_SignIn/Login.dart';
 import 'package:med_ease/Login_SignIn/OtpScreen.dart';
 import 'package:med_ease/Login_SignIn/bloc/otp_bloc_bloc.dart';
 import 'package:med_ease/DoctorScreen/DoctorModifyScreen.dart';
+import 'package:med_ease/Login_SignIn/bloc/sign_up_bloc.dart';
 import 'package:med_ease/UserScreens/HomeScreen.dart';
 import 'package:med_ease/UserScreens/StartScreen.dart';
 import 'package:med_ease/DoctorScreen/doctorInfo.dart';
+import 'package:med_ease/UserScreens/bloc/all_doctors_bloc.dart';
 import 'package:med_ease/UserScreens/userinfo.dart';
 import 'package:med_ease/UpdateModels/UpdateDoctorModule.dart';
 import 'package:med_ease/Utils/Colors.dart';
@@ -63,6 +65,12 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => AppointmnetBloc(),
+        ),
+        BlocProvider(
+          create: (context) => SignUpBloc(),
+        ),
+        BlocProvider(
+          create: (context) => AllDoctorsBloc(),
         ),
         BlocProvider(create: (context) {
           if (typeOfUser == "doctor") {

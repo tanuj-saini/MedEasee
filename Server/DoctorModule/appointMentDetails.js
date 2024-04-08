@@ -6,12 +6,15 @@ const appointMentDetailsSchema = new mongoose.Schema({
     type: Number,
     require: true,
   },
+  title: {
+    type: String,
+    require: true,
+  },
   timeSlotPicks: [
     {
       timeSlot: [scheduleSchema],
     },
   ],
-  //timeSlotPicks: [scheduleSchema],
 });
 
 const appointMentDetail = mongoose.model(

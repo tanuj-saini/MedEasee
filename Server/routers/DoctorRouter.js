@@ -69,13 +69,13 @@ doctorRouter.post("/tokenIsValid/doctor", async (req, res) => {
 });
 
 doctorRouter.get("/D", authDoctor, async (req, res) => {
-  const doctor = await doctorModule.findById(req.user); //by using auth middleware
+  const doctor = await doctorModule.findById(req.user);
   res.json({ ...doctor._doc, token: req.token });
 });
 
 doctorRouter.post("/AppointmentModify", authDoctor, async (req, res) => {
   try {
-    const { date, timeSlots, price } = req.body;
+    const { date, timeSlots, price, title } = req.body;
 
     // Check if price is provided in the request body
     if (!price) {
@@ -90,6 +90,7 @@ doctorRouter.post("/AppointmentModify", authDoctor, async (req, res) => {
 
     const newAppointMentDetail = new appointMentDetail({
       price,
+      title,
       timeSlotPicks: [
         {
           timeSlot: newTimeSlot,
@@ -107,9 +108,7 @@ doctorRouter.post("/AppointmentModify", authDoctor, async (req, res) => {
     doctor.timeSlot.push({ appointMentDetails: [newAppointMentDetail] });
     await doctor.save();
 
-    res
-      .status(200)
-      .send({ message: "Appointment updated successfully", doctor });
+    res.status(200).send(doctor);
   } catch (error) {
     console.error(error);
     res
@@ -117,4 +116,55 @@ doctorRouter.post("/AppointmentModify", authDoctor, async (req, res) => {
       .send({ message: "An error occurred while modifying the appointment" });
   }
 });
+doctorRouter.put("/updateDoctor/:doctorId", authDoctor, async (req, res) => {
+  const { doctorId } = req.query;
+  const { date, timeSlots, price, title } = req.body;
+
+  try {
+    const doctor = await doctorModule.findById(doctorId);
+    if (!doctor) {
+      return res.status(404).send("No doctor found");
+    }
+
+    let appointment = await appointMentDetail.findOne({ title });
+    if (appointment) {
+      appointment.price = price;
+    } else {
+      appointment = new appointMentDetail({ price, title });
+    }
+    await appointment.save();
+
+    let schedule = await scheduleTIme.findOne({ date });
+    if (schedule) {
+      schedule.timeSlots = timeSlots;
+    } else {
+      schedule = new scheduleTIme({ date, timeSlots });
+    }
+    await schedule.save();
+
+    doctor.timeSlot.push({ appointMentDetails: [appointment] });
+    await doctor.save();
+
+    res.send(doctor);
+  } catch (error) {
+    res.status(500).send("Error Occur on Server");
+  }
+});
+
+doctorRouter.post("/SignUpDoctor", async (req, res) => {
+  try {
+    const { phoneNumber } = req.body;
+    const doctor = await doctorModule.findOne({ phoneNumber });
+    if (!doctor) {
+      return res
+        .status(400)
+        .json({ msg: "No doctor Found with this PhoneNumber" });
+    }
+    const token = jwt.sign({ id: doctor._id }, "passwordKeyD");
+    res.json({ token, ...doctor._doc });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
 module.exports = doctorRouter;

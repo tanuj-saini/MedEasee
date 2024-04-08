@@ -8,22 +8,26 @@ import 'package:med_ease/Utils/timeSlot.dart'; // 경로가 프로젝트 구조�
 class AppointmentModule {
   final String price;
   final String date;
+  final String title;
   final List<TimeSlot> timeSlots;
 
   AppointmentModule({
     required this.price,
     required this.date,
+    required this.title,
     required this.timeSlots,
   });
 
   AppointmentModule copyWith({
     String? price,
     String? date,
+    String? title,
     List<TimeSlot>? timeSlots,
   }) {
     return AppointmentModule(
       price: price ?? this.price,
       date: date ?? this.date,
+      title: title ?? this.title,
       timeSlots: timeSlots ?? this.timeSlots,
     );
   }
@@ -32,6 +36,7 @@ class AppointmentModule {
     return <String, dynamic>{
       'price': price,
       'date': date,
+      'title': title,
       'timeSlots': timeSlots.map((x) => x.toMap()).toList(),
     };
   }
@@ -40,6 +45,7 @@ class AppointmentModule {
     return AppointmentModule(
       price: map['price'] as String,
       date: map['date'] as String,
+      title: map['title'] as String,
       timeSlots: List<TimeSlot>.from(
         (map['timeSlots'] as List<int>).map<TimeSlot>(
           (x) => TimeSlot.fromMap(x as Map<String, dynamic>),
@@ -54,8 +60,9 @@ class AppointmentModule {
       AppointmentModule.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
-  String toString() =>
-      'AppointmentModule(price: $price, date: $date, timeSlots: $timeSlots)';
+  String toString() {
+    return 'AppointmentModule(price: $price, date: $date, title: $title, timeSlots: $timeSlots)';
+  }
 
   @override
   bool operator ==(covariant AppointmentModule other) {
@@ -63,11 +70,14 @@ class AppointmentModule {
 
     return other.price == price &&
         other.date == date &&
+        other.title == title &&
         listEquals(other.timeSlots, timeSlots);
   }
 
   @override
-  int get hashCode => price.hashCode ^ date.hashCode ^ timeSlots.hashCode;
+  int get hashCode {
+    return price.hashCode ^ date.hashCode ^ title.hashCode ^ timeSlots.hashCode;
+  }
 }
 
 

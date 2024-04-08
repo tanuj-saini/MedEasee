@@ -35,15 +35,18 @@ class _Login extends State<Login> {
       );
     }
 
+    String typeOfUser = widget.typeOfUser;
+    String verificationId = "";
     return BlocConsumer<SendotpBlocBloc, SendotpBlocState>(
         listener: (context, state) {
       if (state is PhoneFailure) {
         showSnackBar(state.error, context);
       }
       if (state is PhoneVerificationID) {
-        print("navigatior");
+        verificationId = state.verificationID;
+        print(verificationId);
         Navigator.of(context).push(MaterialPageRoute(
-            builder: (ctx) => OtpScreen(
+            builder: (context) => OtpScreen(
                 typeOfUser: widget.typeOfUser,
                 verificationId: state.verificationID)));
       }
@@ -138,9 +141,37 @@ class _Login extends State<Login> {
                     ),
                     onPressed: () {
                       sendOtp.add(SendPhoneNumber(
-                          context: context, phoneNumber: "+918824523456"));
+                          context: context, phoneNumber: "+918824598603"));
                     },
                     child: Text("Send the code"),
+                  ),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                SizedBox(
+                  width: double.infinity,
+                  height: 45,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.green.shade600,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    onPressed: () {
+                      print(typeOfUser);
+                      print(verificationId);
+                      print(
+                          """tpScreen으로 네비게이션하는 로직을 구현했습니다. 이 방식을 사용하면, 상태에 따라 적절한 화면으로 사용자를 안내할 수 있습니다
+다만, 위의 예시에서 widget.typeOfUser가 사용되고 있는데, 이는 현재 위젯의 프로퍼티로 typeOfUser가 정의되어 있어야 합니다. 만약 이 프로퍼티가 현재 위젯에 없다면, 해당 부분을 제거하거나 적절한 값을 설정해야 합니다.
+이러한 방식으로 BlocConsumer를 정의하고, 위젯 트리 내에 위치시키면, SendotpBlocBloc의 상태 변화에 따라 적절한 UI 변화나 네비게이션 처리를 할 수 있습니다.""");
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (ctx) => OtpScreen(
+                              typeOfUser: typeOfUser,
+                              verificationId: verificationId)));
+                    },
+                    child: Text("Enter Otp"),
                   ),
                 )
               ],

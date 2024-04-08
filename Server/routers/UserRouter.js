@@ -2,6 +2,7 @@ const express = require("express");
 const jwt = require("jsonwebtoken");
 const { userModule, UserModule } = require("../Modules/UserModule");
 const auth = require("../MiddleWare/UserMiddleWare");
+const { doctorModule } = require("../DoctorModule/doctorModule");
 
 const UserRouter = express.Router();
 UserRouter.post("/user/signUp", async (req, res) => {
@@ -56,5 +57,48 @@ UserRouter.get("/", auth, async (req, res) => {
   const user = await userModule.findById(req.user); //by using auth middleware
   res.json({ ...user._doc, token: req.token });
 });
+UserRouter.get("/allDoctors", auth, async (req, res) => {
+  const allDoctors = await doctorModule.find({});
+  if (allDoctors.length === 0) {
+    return res.status(400).json({ msg: "No doctors found" });
+  }
+  res.json(allDoctors);
+});
+UserRouter.post("/SignUpUser", async (req, res) => {
+  try {
+    const { phoneNumber } = req.body;
+    const user = await userModule.findOne({ phoneNumber });
+    if (!user) {
+      return res
+        .status(400)
+        .json({ msg: "No User Found with this PhoneNumber" });
+    }
+    const token = jwt.sign({ id: user._id }, "passwordKey");
+    res.json({ token, ...user._doc });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+UserRouter.post("/User/SearchDoctor/:name", async (req, res) => {
+  try {
+    const doctors = await doctorModule.find({
+      $or: [
+        { name: { $regex: req.params.name, $options: "i" } },
+        { specialist: { $regex: req.params.name, $options: "i" } },
+      ],
+    });
 
+    if (doctors.length === 0) {
+      const allDoctors = await doctorModule.find({});
+      if (allDoctors.length === 0) {
+        return res.status(400).json({ msg: "No doctors found" });
+      }
+      return res.json(allDoctors);
+    }
+
+    res.json(doctors);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 module.exports = UserRouter;

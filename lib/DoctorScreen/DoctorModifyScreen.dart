@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:med_ease/DoctorScreen/bloc/appointmnet_bloc.dart';
-
 import 'package:med_ease/Gemini/ChatScreen.dart';
+import 'package:med_ease/Modules/DoctorModify.dart';
 import 'package:med_ease/UpdateModels/UpdateDoctorModule.dart';
 import 'package:med_ease/UserScreens/StartScreen.dart';
 import 'package:med_ease/Utils/Colors.dart';
@@ -45,6 +45,7 @@ class _DoctorScreen extends State<DoctorModifyScreen> {
   @override
   Widget build(BuildContext context) {
     final TextEditingController priceController = TextEditingController();
+    final TextEditingController titleContoller = TextEditingController();
 
     final sendModifyAppointMent = BlocProvider.of<AppointmnetBloc>(context);
     return BlocConsumer<AppointmnetBloc, AppointmnetState>(
@@ -53,9 +54,9 @@ class _DoctorScreen extends State<DoctorModifyScreen> {
         showSnackBar(state.error, context);
       }
       if (state is AppointmentSuccess) {
-        final doctorBloc = context.read<DoctorBloc>();
+        // final doctorBloc = context.read<DoctorBloc>();
 
-        doctorBloc.updateDoctor(state.doctorModule);
+        // doctorBloc.updateDoctor(state.doctorModule);
         Navigator.of(context).pop();
       }
     }, builder: (context, state) {
@@ -106,18 +107,29 @@ class _DoctorScreen extends State<DoctorModifyScreen> {
                 },
               ),
             ),
+            SizedBox(
+              height: 20,
+            ),
             CustomTextField(
                 controller: priceController,
                 hintText: "Price",
                 iconButton: Icon(Icons.price_change)),
+            SizedBox(
+              height: 20,
+            ),
+            CustomTextField(
+                controller: titleContoller,
+                hintText: "Title",
+                iconButton: Icon(Icons.text_rotation_none_rounded)),
             ElevatedButton(
                 onPressed: () {
                   sendModifyAppointMent.add(AppointMentDetailsEvent(
+                      title: titleContoller.text,
                       context: context,
                       price: priceController.text,
                       timeSlots: _selectedTimeSlots));
                 },
-                child: Text("add"))
+                child: Text("add")),
           ],
         ),
       );

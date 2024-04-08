@@ -21,21 +21,23 @@ class SendotpBlocBloc extends Bloc<SendotpBlocEvent, SendotpBlocState> {
             if (!emit.isDone) {}
           } catch (e) {
             if (!emit.isDone) {
-              return emit(PhoneFailure(error: e.toString()));
+              emit(PhoneFailure(error: e.toString()));
             }
           }
         },
         verificationFailed: (FirebaseAuthException e) {
           if (!emit.isDone) {
-            return emit(
-                PhoneFailure(error: e.message ?? "Verification failed"));
+            emit(PhoneFailure(error: e.message ?? "Verification failed"));
           }
         },
         codeSent: (String verificationId, int? resendToken) {
-          if (!emit.isDone) {
-            print("yes");
-            emit(PhoneVerificationID(verificationID: verificationId));
-          }
+          // if (emit.isDone) {
+          print("yes");
+          print(verificationId);
+          print(resendToken);
+          // await Future.delayed(Duration.zero).then((value) =>
+          emit(PhoneVerificationID(verificationID: verificationId));
+          // }
         },
         codeAutoRetrievalTimeout: (String verificationId) {},
       )

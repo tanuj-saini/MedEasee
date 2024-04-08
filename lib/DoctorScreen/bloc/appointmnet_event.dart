@@ -7,7 +7,11 @@ class AppointMentDetailsEvent extends AppointmnetEvent {
   final String price;
   final List<TimeSlot> timeSlots;
   final BuildContext context;
+  final String title;
 
   AppointMentDetailsEvent(
-      {required this.context, required this.price, required this.timeSlots});
+      {required this.title,
+      required this.context,
+      required this.price,
+      required this.timeSlots});
 }
