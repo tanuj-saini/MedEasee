@@ -3,6 +3,7 @@ const {
   appointMentDetail,
   appointMentDetailsSchema,
 } = require("./appointMentDetails");
+const { userAppointment, UserAppointment } = require("./UserAppointed");
 const DoctorModule = mongoose.Schema({
   name: {
     require: true,
@@ -50,6 +51,7 @@ const DoctorModule = mongoose.Schema({
         require: true,
         type: String,
       },
+      appointMentDetails: [UserAppointment],
     },
   ],
   timeSlot: [

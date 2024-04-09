@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { UserAppointment } = require("../DoctorModule/UserAppointed");
 const UserModule = mongoose.Schema({
   name: {
     require: true,
@@ -26,6 +27,7 @@ const UserModule = mongoose.Schema({
         require: true,
         type: String,
       },
+      apppointLeft: [UserAppointment],
     },
   ],
   medicalShopHistory: [

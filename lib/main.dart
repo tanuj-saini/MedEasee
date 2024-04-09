@@ -13,6 +13,7 @@ import 'package:med_ease/UserScreens/HomeScreen.dart';
 import 'package:med_ease/UserScreens/StartScreen.dart';
 import 'package:med_ease/DoctorScreen/doctorInfo.dart';
 import 'package:med_ease/UserScreens/bloc/all_doctors_bloc.dart';
+import 'package:med_ease/UserScreens/bloc/book_apppointment_bloc.dart';
 import 'package:med_ease/UserScreens/userinfo.dart';
 import 'package:med_ease/UpdateModels/UpdateDoctorModule.dart';
 import 'package:med_ease/Utils/Colors.dart';
@@ -71,6 +72,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => AllDoctorsBloc(),
+        ),
+        BlocProvider(
+          create: (context) => BookApppointmentBloc(),
         ),
         BlocProvider(create: (context) {
           if (typeOfUser == "doctor") {

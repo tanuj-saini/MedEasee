@@ -6,7 +6,7 @@ sealed class SignUpState {}
 final class SignUpInitial extends SignUpState {}
 
 class SignUpSuccess extends SignUpState {
-  final UserModule userModule;
+  final UserModuleE userModule;
   SignUpSuccess({required this.userModule});
 }
 

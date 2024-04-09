@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:med_ease/Modules/DoctorModify.dart';
+
 import 'package:med_ease/Modules/testModule.dart';
 import 'package:med_ease/Utils/errorHandiling.dart';
 import 'package:meta/meta.dart';
@@ -25,7 +25,7 @@ class AllDoctorsBloc extends Bloc<AllDoctorsEvent, AllDoctorsState> {
         final String searchh = event.search;
         print(searchh);
         http.Response res = await http.post(
-            Uri.parse("$ip/User/SearchDoctor/ $searchh"),
+            Uri.parse("$ip/User/SearchDoctor?name=$searchh"),
             headers: <String, String>{
               'Content-Type': 'application/json; charset=UTF-8',
               'x-auth-token-w': token,

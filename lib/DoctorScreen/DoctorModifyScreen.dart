@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:med_ease/DoctorScreen/bloc/appointmnet_bloc.dart';
 import 'package:med_ease/Gemini/ChatScreen.dart';
-import 'package:med_ease/Modules/DoctorModify.dart';
+
 import 'package:med_ease/UpdateModels/UpdateDoctorModule.dart';
 import 'package:med_ease/UserScreens/StartScreen.dart';
 import 'package:med_ease/Utils/Colors.dart';

@@ -1,9 +1,10 @@
 import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
-import 'package:med_ease/Modules/DoctorModify.dart';
+import 'package:med_ease/Modules/testUserModule.dart';
+
 import 'package:med_ease/Utils/DoctorModule.dart';
-import 'package:med_ease/Modules/UserModule.dart';
+
 import 'package:med_ease/Modules/testModule.dart';
 import 'package:med_ease/Utils/errorHandiling.dart';
 import 'package:meta/meta.dart';
@@ -19,14 +20,14 @@ class PersistStateBloc extends Bloc<PersistStateEvent, PersistStateState> {
       emit(PersistLoading());
       try {
         SharedPreferences prefs = await SharedPreferences.getInstance();
-        UserModule userModule = UserModule(
+        UserModuleE userModule = UserModuleE(
             name: "",
             emailAddress: "",
             age: "",
             id: "",
             phoneNumber: "",
             homeAddress: "",
-            appointment: [],
+            appointments: [],
             medicalShopHistory: [],
             emergencyCall: []);
         String? token = prefs.getString('x-auth-token-w');
@@ -53,13 +54,14 @@ class PersistStateBloc extends Bloc<PersistStateEvent, PersistStateState> {
             'x-auth-token-w': token,
           });
 
-          final userData =
-              UserModule.fromJson(jsonEncode(jsonDecode(userRes.body)));
+          Map<String, dynamic> decodedJson = jsonDecode(userRes.body);
+
+          userModule = UserModuleE.fromJson(decodedJson);
           print("welcome again");
-          print(userData);
+
           return emit(PersitSuccess(
               sugesstion: "Welcome Again",
-              userModule: userData,
+              userModule: userModule,
               isPersist: true));
         }
       } catch (e) {

@@ -2,10 +2,12 @@ import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:med_ease/Modules/DoctorModify.dart';
+
 import 'package:med_ease/Modules/testModule.dart';
+import 'package:med_ease/Modules/testUserModule.dart';
+
 import 'package:med_ease/Utils/DoctorModule.dart';
-import 'package:med_ease/Modules/UserModule.dart';
+
 import 'package:med_ease/Utils/errorHandiling.dart';
 import 'package:meta/meta.dart';
 import 'package:http/http.dart' as http;
@@ -19,14 +21,14 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     on<SignUpEventPhone>((event, emit) async {
       emit(SignUpLoding());
       try {
-        UserModule userModule = UserModule(
+        UserModuleE userModule = UserModuleE(
             name: "",
             emailAddress: "",
             age: "",
             id: "",
             phoneNumber: "",
             homeAddress: "",
-            appointment: [],
+            appointments: [],
             medicalShopHistory: [],
             emergencyCall: []);
         http.Response res = await http.post(Uri.parse("$ip/SignUpUser"),
@@ -38,8 +40,9 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
             response: res,
             context: event.context,
             onSuccess: () async {
-              final userModule =
-                  UserModule.fromJson(jsonEncode(jsonDecode(res.body)));
+              Map<String, dynamic> decodedJson = jsonDecode(res.body);
+
+              userModule = UserModuleE.fromJson(decodedJson);
               SharedPreferences prefs = await SharedPreferences.getInstance();
               String token = jsonDecode(res.body)["token"];
               String typeOfUser = "user";

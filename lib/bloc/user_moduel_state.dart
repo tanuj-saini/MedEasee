@@ -6,7 +6,7 @@ sealed class UserModuelState {}
 final class UserModuelInitial extends UserModuelState {}
 
 class userModuleSuccess extends UserModuelState {
-  final UserModule userModule;
+  final UserModuleE userModule;
   userModuleSuccess({required this.userModule});
 }
 

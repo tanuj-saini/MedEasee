@@ -3,10 +3,12 @@ import 'dart:convert';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:med_ease/Modules/DoctorModify.dart';
+
 import 'package:med_ease/Modules/testModule.dart';
+import 'package:med_ease/Modules/testUserModule.dart';
+
 import 'package:med_ease/Utils/DoctorModule.dart';
-import 'package:med_ease/Modules/UserModule.dart';
+
 import 'package:med_ease/Utils/errorHandiling.dart';
 import 'package:meta/meta.dart';
 import "package:http/http.dart" as http;
@@ -20,14 +22,14 @@ class UserModuelBloc extends Bloc<UserModuelEvent, UserModuelState> {
     on<userModuleEvent>((event, emit) async {
       emit(userModuleLoding());
       try {
-        UserModule userModule = UserModule(
+        UserModuleE userModule = UserModuleE(
             name: event.name,
             emailAddress: event.emailAddress,
             age: event.age,
             id: "",
             phoneNumber: event.phoneNumber,
             homeAddress: event.homeAddress,
-            appointment: [],
+            appointments: [],
             medicalShopHistory: [],
             emergencyCall: []);
         http.Response res = await http.post(Uri.parse("$ip/user/signUp"),
@@ -40,8 +42,9 @@ class UserModuelBloc extends Bloc<UserModuelEvent, UserModuelState> {
             response: res,
             context: event.context,
             onSuccess: () async {
-              UserModule userModule =
-                  UserModule.fromJson(jsonEncode(jsonDecode(res.body)));
+              Map<String, dynamic> decodedJson = jsonDecode(res.body);
+
+              userModule = UserModuleE.fromJson(decodedJson);
               SharedPreferences prefs = await SharedPreferences.getInstance();
               String token = jsonDecode(res.body)["token"];
               String typeOfUser = "user";

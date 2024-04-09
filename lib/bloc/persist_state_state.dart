@@ -7,7 +7,7 @@ final class PersistStateInitial extends PersistStateState {}
 
 class PersitSuccess extends PersistStateState {
   final bool isPersist;
-  final UserModule userModule;
+  final UserModuleE userModule;
   final String sugesstion;
   PersitSuccess(
       {required this.sugesstion,

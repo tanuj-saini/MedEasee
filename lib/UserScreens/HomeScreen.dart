@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:med_ease/Gemini/ChatScreen.dart';
-import 'package:med_ease/Modules/DoctorModify.dart';
+
 import 'package:med_ease/Modules/testModule.dart';
 import 'package:med_ease/UpdateModels/UpdateUserModel.dart';
 import 'package:med_ease/UserScreens/CardDoctorDetailScreen.dart';
@@ -94,7 +94,7 @@ class _HomeScreen extends State<HomeScreen> {
             centerTitle: true,
             actions: [
               IconButton(
-                  onPressed: () => logout(), icon: Icon(Icons.logout_rounded))
+                  onPressed: () => logout(), icon: Icon(Icons.logout_rounded)),
             ],
           ),
           drawer: Drawer(

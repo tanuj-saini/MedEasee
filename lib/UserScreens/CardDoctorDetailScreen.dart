@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:med_ease/Modules/DoctorModify.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:med_ease/Modules/testModule.dart';
+import 'package:med_ease/UserScreens/bloc/all_doctors_bloc.dart';
+import 'package:med_ease/UserScreens/bloc/book_apppointment_bloc.dart';
+import 'package:med_ease/Utils/Colors.dart';
 import 'package:med_ease/Utils/DoctorModule.dart';
+import 'package:med_ease/Utils/LoderScreen.dart';
 
 class CardDoctorDetails extends StatefulWidget {
   final Doctor doctorModule;
@@ -15,10 +20,42 @@ class CardDoctorDetails extends StatefulWidget {
 class _CardDetailsScreeen extends State<CardDoctorDetails> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.doctorModule.name),
-      ),
+    final bookAppointment = BlocProvider.of<BookApppointmentBloc>(context);
+    String date = DateTime.now().toString();
+    return BlocConsumer<BookApppointmentBloc, BookApppointmentState>(
+      listener: (context, state) {
+        if (state is BookApppointmentFailure) {
+          showSnackBar(state.error, context);
+        }
+        if (state is BookApppointmentSuccess) {
+          showSnackBar("Done Book", context);
+        }
+      },
+      builder: (context, state) {
+        if (state is BookApppointmentLoding) {
+          return Loder();
+        }
+        return Scaffold(
+          appBar: AppBar(
+            title: Text(widget.doctorModule.name),
+          ),
+          body: Center(
+            child: Column(
+              children: [
+                ElevatedButton(
+                    onPressed: () {
+                      bookAppointment.add(BookAppointmentUserEvent(
+                          context: context,
+                          date: date,
+                          doctorId: widget.doctorModule.id,
+                          isComplete: false));
+                    },
+                    child: Text("book"))
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }

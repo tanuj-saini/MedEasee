@@ -3,6 +3,10 @@ const jwt = require("jsonwebtoken");
 const { userModule, UserModule } = require("../Modules/UserModule");
 const auth = require("../MiddleWare/UserMiddleWare");
 const { doctorModule } = require("../DoctorModule/doctorModule");
+const {
+  userAppointment,
+  UserAppointment,
+} = require("../DoctorModule/UserAppointed");
 
 const UserRouter = express.Router();
 UserRouter.post("/user/signUp", async (req, res) => {
@@ -79,12 +83,12 @@ UserRouter.post("/SignUpUser", async (req, res) => {
     res.status(500).json({ error: e.message });
   }
 });
-UserRouter.post("/User/SearchDoctor/:name", async (req, res) => {
+UserRouter.post("/User/SearchDoctor", async (req, res) => {
   try {
     const doctors = await doctorModule.find({
       $or: [
-        { name: { $regex: req.params.name, $options: "i" } },
-        { specialist: { $regex: req.params.name, $options: "i" } },
+        { name: { $regex: req.query.name, $options: "i" } },
+        { specialist: { $regex: req.query.name, $options: "i" } },
       ],
     });
 
@@ -101,4 +105,41 @@ UserRouter.post("/User/SearchDoctor/:name", async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
+UserRouter.post("/bookAppointment", auth, async (req, res) => {
+  try {
+    const { date, isComplete } = req.body;
+    const doctorId = req.query.doctorId;
+    const doctor = await doctorModule.findById(doctorId);
+    const user = await userModule.findById(req.user);
+
+    if (!doctor) {
+      return res.status(400).json({ msg: "Doctor not found" });
+    }
+
+    const newAppointment = new userAppointment({
+      date: date,
+      doctorId: doctorId,
+      userId: req.user,
+      isComplete: isComplete || false, // set default value if not provided
+    });
+
+    await newAppointment.save();
+
+    user.appointment.push({ doctorId, apppointLeft: [newAppointment] });
+    await user.save();
+
+    doctor.applicationLeft.push({
+      userId: req.user,
+      appointMentDetails: [newAppointment],
+    });
+    await doctor.save();
+
+    res.json({ user, doctor });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 module.exports = UserRouter;
