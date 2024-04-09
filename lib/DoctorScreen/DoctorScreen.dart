@@ -58,27 +58,27 @@ class _DoctorScreen extends State<DoctorScreen> {
     String doctorName = doctorModel!.name;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Hello '$doctorName"),
-        centerTitle: false,
-        actions: [
-          IconButton(
-              onPressed: () {
-                logout();
-              },
-              icon: Icon(Icons.logout))
-        ],
-      ),
-      body: Center(
-        child: SizedBox(
-          width: double.infinity,
-          child: ElevatedButton(
-            onPressed: () => Navigator.of(context).push(
-                MaterialPageRoute(builder: (ctx) => DoctorModifyScreen())),
-            child: Text("Next"),
-          ),
+        appBar: AppBar(
+          title: Text("Hello '$doctorName"),
+          centerTitle: false,
+          actions: [
+            Row(
+              children: [
+                IconButton(
+                    onPressed: () {
+                      logout();
+                    },
+                    icon: Icon(Icons.logout)),
+                IconButton(
+                    onPressed: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (ctx) => DoctorModifyScreen()));
+                    },
+                    icon: Icon(Icons.mode)),
+              ],
+            )
+          ],
         ),
-      ),
-    );
+        body: Center());
   }
 }

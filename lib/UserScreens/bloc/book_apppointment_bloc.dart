@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:med_ease/Modules/testModule.dart';
 
 import 'package:med_ease/Modules/testUserModule.dart';
 import 'package:med_ease/Utils/errorHandiling.dart';
@@ -48,12 +49,12 @@ class BookApppointmentBloc
             context: event.context,
             onSuccess: () async {
               Map<String, dynamic> decodedJson = jsonDecode(res.body);
+              print(decodedJson['doctor']);
+              userModule = UserModuleE.fromJson(decodedJson['user']);
 
-              UserModuleE userModule =
-                  UserModuleE.fromJson(decodedJson['user']);
               print("yes");
             });
-        return emit(BookApppointmentSuccess());
+        return emit(BookApppointmentSuccess(userModule: userModule));
       } catch (e) {
         return emit(BookApppointmentFailure(error: e.toString()));
       }

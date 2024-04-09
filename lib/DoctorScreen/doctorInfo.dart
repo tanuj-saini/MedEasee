@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:med_ease/DoctorScreen/BottomNavigation.dart';
 import 'package:med_ease/DoctorScreen/DoctorModifyScreen.dart';
 import 'package:med_ease/DoctorScreen/DoctorScreen.dart';
 import 'package:med_ease/UserScreens/HomeScreen.dart';
@@ -85,7 +86,7 @@ class _DoctorInfoState extends State<DoctorInfo> {
           final doctorBloc = context.read<DoctorBloc>();
           doctorBloc.updateDoctor(state.doctorModule);
           Navigator.of(context)
-              .push(MaterialPageRoute(builder: (ctx) => DoctorScreen()));
+              .push(MaterialPageRoute(builder: (ctx) => BottomNavigation()));
         }
       },
       builder: (context, state) {

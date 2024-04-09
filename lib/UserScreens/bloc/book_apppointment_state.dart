@@ -11,8 +11,9 @@ class BookApppointmentFailure extends BookApppointmentState {
 }
 
 class BookApppointmentSuccess extends BookApppointmentState {
-  // final UserModule userModule;
-  // BookApppointmentSuccess({required this.userModule});
+  final UserModuleE userModule;
+
+  BookApppointmentSuccess({required this.userModule});
 }
 
 class BookApppointmentLoding extends BookApppointmentState {}

@@ -2,6 +2,7 @@ import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:med_ease/DoctorScreen/BottomNavigation.dart';
 import 'package:med_ease/DoctorScreen/DoctorScreen.dart';
 import 'package:med_ease/Login_SignIn/bloc/sign_up_bloc.dart';
 import 'package:med_ease/UpdateModels/UpdateDoctorModule.dart';
@@ -44,7 +45,7 @@ class _SignUpDoctor extends State<SignUpDoctor> {
           final UserDoctorBloc = context.read<DoctorBloc>();
           UserDoctorBloc.updateDoctor(state.doctorModuleE);
           Navigator.of(context)
-              .push(MaterialPageRoute(builder: (ctx) => DoctorScreen()));
+              .push(MaterialPageRoute(builder: (ctx) => BottomNavigation()));
         }
       },
       builder: (context, state) {

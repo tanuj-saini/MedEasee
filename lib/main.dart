@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:med_ease/DoctorScreen/BottomNavigation.dart';
 import 'package:med_ease/DoctorScreen/DoctorScreen.dart';
 import 'package:med_ease/DoctorScreen/bloc/appointmnet_bloc.dart';
 import 'package:med_ease/Login_SignIn/Login.dart';
@@ -103,7 +104,7 @@ class MyApp extends StatelessWidget {
             if (state is PersitDoctorSuccess) {
               final doctorBloc = context.read<DoctorBloc>();
               doctorBloc.updateDoctor(state.doctorModule);
-              return DoctorScreen(); // add doctorInfo
+              return BottomNavigation(); // add doctorInfo
             } else {
               return StartScreen();
             }

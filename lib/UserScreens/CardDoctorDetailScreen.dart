@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:med_ease/Modules/testModule.dart';
+import 'package:med_ease/UpdateModels/UpdateUserModel.dart';
 import 'package:med_ease/UserScreens/bloc/all_doctors_bloc.dart';
 import 'package:med_ease/UserScreens/bloc/book_apppointment_bloc.dart';
 import 'package:med_ease/Utils/Colors.dart';
@@ -28,7 +29,9 @@ class _CardDetailsScreeen extends State<CardDoctorDetails> {
           showSnackBar(state.error, context);
         }
         if (state is BookApppointmentSuccess) {
-          showSnackBar("Done Book", context);
+          final UserBlocUpdate = context.read<UserBloc>();
+          UserBlocUpdate.updateUser(state.userModule);
+          showSnackBar("Book Complete", context);
         }
       },
       builder: (context, state) {
