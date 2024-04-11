@@ -5,6 +5,7 @@ import 'package:med_ease/Modules/testModule.dart';
 import 'package:med_ease/UpdateModels/UpdateUserModel.dart';
 import 'package:med_ease/UserScreens/bloc/all_doctors_bloc.dart';
 import 'package:med_ease/UserScreens/bloc/book_apppointment_bloc.dart';
+import 'package:med_ease/UserScreens/utils/PaymentScreen.dart';
 import 'package:med_ease/Utils/Colors.dart';
 import 'package:med_ease/Utils/DoctorModule.dart';
 import 'package:med_ease/Utils/LoderScreen.dart';
@@ -47,11 +48,11 @@ class _CardDetailsScreeen extends State<CardDoctorDetails> {
               children: [
                 ElevatedButton(
                     onPressed: () {
-                      bookAppointment.add(BookAppointmentUserEvent(
-                          context: context,
-                          date: date,
-                          doctorId: widget.doctorModule.id,
-                          isComplete: false));
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (ctx) => PaymentScreen(
+                              date: date,
+                              doctorId: widget.doctorModule.id,
+                              isComplete: false)));
                     },
                     child: Text("book"))
               ],

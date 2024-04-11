@@ -74,7 +74,7 @@ class PersistStateBloc extends Bloc<PersistStateEvent, PersistStateState> {
       try {
         print("hello");
         SharedPreferences prefs = await SharedPreferences.getInstance();
-        Doctor doctorModule = Doctor(
+        Doctor doctor = Doctor(
             name: "",
             bio: "",
             phoneNumber: "",
@@ -104,7 +104,7 @@ class PersistStateBloc extends Bloc<PersistStateEvent, PersistStateState> {
           print("false  noooo");
           return emit(PersitDoctorSuccess(
               isPersist: false,
-              doctorModule: doctorModule,
+              doctorModule: doctor,
               suggesstion: "No Auth Token"));
         }
         if (response == true) {
@@ -113,14 +113,11 @@ class PersistStateBloc extends Bloc<PersistStateEvent, PersistStateState> {
             'Content-Type': 'application/json; charset=UTF-8',
             'x-auth-token-D': token,
           });
-          print(userRes.body);
+
           final jsonData = jsonDecode(userRes.body);
 
-          Doctor doctor = Doctor.fromJson(jsonData);
-          print("yes");
-          print(doctor.applicationLeft.length);
-          print("welcome again");
-          //print(userData);
+          doctor = Doctor.fromJson(jsonData);
+
           return emit(PersitDoctorSuccess(
               isPersist: true,
               doctorModule: doctor,

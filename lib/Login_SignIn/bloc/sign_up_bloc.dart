@@ -84,7 +84,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
             onSuccess: () async {
               final jsonData = jsonDecode(res.body);
 
-              final doctorModule = Doctor.fromJson(jsonData);
+              doctorModule = Doctor.fromJson(jsonData);
 
               SharedPreferences prefs = await SharedPreferences.getInstance();
               String token = jsonDecode(res.body)["token"];

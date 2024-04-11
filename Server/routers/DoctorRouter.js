@@ -167,4 +167,23 @@ doctorRouter.post("/SignUpDoctor", async (req, res) => {
   }
 });
 
+doctorRouter.get("/getDoctorData", authDoctor, async (req, res) => {
+  try {
+    const doctorId = req.query.doctorId;
+
+    if (!doctorId) {
+      return res.status(400).json({ error: "Doctor ID is required" });
+    }
+
+    const doctor = await doctorModule.findById(doctorId);
+    if (!doctor) {
+      return res.status(404).json({ error: "Doctor not found" });
+    }
+
+    res.json(doctor);
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
 module.exports = doctorRouter;

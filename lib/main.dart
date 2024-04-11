@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:med_ease/DoctorScreen/BottomNavigation.dart';
 import 'package:med_ease/DoctorScreen/DoctorScreen.dart';
 import 'package:med_ease/DoctorScreen/bloc/appointmnet_bloc.dart';
+import 'package:med_ease/DoctorScreen/bloc/refresh_doctor_bloc.dart';
 import 'package:med_ease/Login_SignIn/Login.dart';
 import 'package:med_ease/Login_SignIn/OtpScreen.dart';
 import 'package:med_ease/Login_SignIn/bloc/otp_bloc_bloc.dart';
@@ -77,6 +78,9 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => BookApppointmentBloc(),
         ),
+        BlocProvider(
+          create: (context) => RefreshDoctorBloc(),
+        ),
         BlocProvider(create: (context) {
           if (typeOfUser == "doctor") {
             return PersistStateBloc()..add(persistDoctorEvent());
@@ -104,8 +108,8 @@ class MyApp extends StatelessWidget {
             if (state is PersitDoctorSuccess) {
               final doctorBloc = context.read<DoctorBloc>();
               doctorBloc.updateDoctor(state.doctorModule);
-              print("updatedDoctorModuler");
-              return BottomNavigation(); // add doctorInfo
+              print("foctorBlocUpdate");
+              return BottomNavigation();
             } else {
               return StartScreen();
             }

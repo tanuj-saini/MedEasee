@@ -7,6 +7,7 @@ import 'package:med_ease/Gemini/ChatScreen.dart';
 
 import 'package:med_ease/Modules/testModule.dart';
 import 'package:med_ease/UpdateModels/UpdateUserModel.dart';
+import 'package:med_ease/UserScreens/CardDeatilsDoctor.dart';
 import 'package:med_ease/UserScreens/CardDoctorDetailScreen.dart';
 import 'package:med_ease/UserScreens/StartScreen.dart';
 import 'package:med_ease/UserScreens/bloc/all_doctors_bloc.dart';
@@ -76,7 +77,7 @@ class _HomeScreen extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final userModel = context.watch<UserBloc>().state;
-
+    String name = userModel!.name;
     List<Doctor> list = [];
     final allDoctorSeach = BlocProvider.of<AllDoctorsBloc>(context);
     return BlocConsumer<AllDoctorsBloc, AllDoctorsState>(
@@ -93,11 +94,29 @@ class _HomeScreen extends State<HomeScreen> {
         return Scaffold(
           backgroundColor: Colors.white,
           appBar: AppBar(
-            title: Text('Appointments'),
+            title: Text('Appointments $name'),
             centerTitle: true,
             actions: [
               IconButton(
-                  onPressed: () => logout(), icon: Icon(Icons.logout_rounded)),
+                icon: ClipOval(
+                  clipBehavior: Clip.antiAliasWithSaveLayer,
+                  child: Container(
+                    width: 55, // Increase width to stretch horizontally
+                    height: 40, // Increase height to stretch vertically
+                    child: CircleAvatar(
+                      backgroundColor: Colors.black,
+                      backgroundImage: AssetImage('assets/gemini.png'),
+                      // Adjust radius as needed
+                      radius: 20,
+                    ),
+                  ),
+                ),
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(builder: (ctx) => ChatScreen()),
+                  );
+                },
+              )
             ],
           ),
           drawer: Drawer(
@@ -112,7 +131,7 @@ class _HomeScreen extends State<HomeScreen> {
                     icon: Icon(Icons.list),
                     label: Text("Booked Appointment")),
                 ElevatedButton.icon(
-                    onPressed: () => logout,
+                    onPressed: () => logout(),
                     icon: Icon(Icons.logout),
                     label: Text("LogOut")),
               ],
@@ -155,10 +174,11 @@ class _HomeScreen extends State<HomeScreen> {
                     child: Row(
                       children: list.map((doctor) {
                         return buildDoctorCard(
-                            OnTap: () => Navigator.of(context).push(
-                                MaterialPageRoute(
-                                    builder: (ctx) => CardDoctorDetails(
-                                        doctorModule: doctor))),
+                            OnTap: () =>
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (ctx) => BookAppointment(
+                                          doctorModuleE: doctor,
+                                        ))),
                             imageUrl: doctor.profilePic,
                             doctorName: doctor.name,
                             experience: doctor.experience,
