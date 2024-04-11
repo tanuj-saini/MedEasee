@@ -15,3 +15,9 @@ class AppointMentDetailsEvent extends AppointmnetEvent {
       required this.price,
       required this.timeSlots});
 }
+
+class AppointMentRefresh extends AppointmnetEvent {
+  final String doctorId;
+  final BuildContext context;
+  AppointMentRefresh({required this.context, required this.doctorId});
+}

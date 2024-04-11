@@ -54,7 +54,19 @@ class _CardDetailsScreeen extends State<CardDoctorDetails> {
                               doctorId: widget.doctorModule.id,
                               isComplete: false)));
                     },
-                    child: Text("book"))
+                    child: Text("book")),
+                SizedBox(
+                  height: 20,
+                ),
+                ElevatedButton(
+                    onPressed: () {
+                      bookAppointment.add(BookAppointmentUserEvent(
+                          date: date,
+                          context: context,
+                          doctorId: widget.doctorModule.id,
+                          isComplete: false));
+                    },
+                    child: Text("Without Payment"))
               ],
             ),
           ),

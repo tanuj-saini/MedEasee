@@ -30,9 +30,6 @@ class _ListAppointmentScreenState extends State<ListAppointmentScreen> {
         }
       },
       builder: (context, state) {
-        // if (state is RefreshDoctorLoding) {
-        //   return Loder();
-        // }
         return Scaffold(
             appBar: AppBar(
               title: Text("List of Appointments"),
@@ -44,41 +41,57 @@ class _ListAppointmentScreenState extends State<ListAppointmentScreen> {
                     icon: Icon(Icons.refresh_rounded))
               ],
             ),
-            body: ListView.builder(
-              itemCount: doctorModel.applicationLeft.length,
-              itemBuilder: (BuildContext context, int index) {
-                final appointment = doctorModel.applicationLeft[index];
-                if (state is RefreshDoctorLoding) {
-                  return Loder();
-                }
-                return Card(
-                  child: ListTile(
-                    title: Text('Appointment ID: ${appointment.id}'),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+            body: doctorModel.applicationLeft.length == 0
+                ? Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text('User ID: ${appointment.userId}'),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children:
-                              appointment.appointMentDetails!.map((detail) {
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text('Date: ${detail.date}'),
-                                Text('User ID: ${detail.userId}'),
-                                Text('Is Complete: ${detail.isComplete}'),
-                                Divider(),
-                              ],
-                            );
-                          }).toList(),
+                        Text(
+                          "No Appointments Found",
+                          style: TextStyle(fontSize: 20),
+                        ),
+                        SizedBox(
+                          height: 50,
                         ),
                       ],
                     ),
-                  ),
-                );
-              },
-            ));
+                  )
+                : ListView.builder(
+                    itemCount: doctorModel.applicationLeft.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      final appointment = doctorModel.applicationLeft[index];
+                      if (state is RefreshDoctorLoding) {
+                        return Loder();
+                      }
+                      return Card(
+                        child: ListTile(
+                          title: Text('Appointment ID: ${appointment.id}'),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('User ID: ${appointment.userId}'),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: appointment.appointMentDetails!
+                                    .map((detail) {
+                                  return Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text('Date: ${detail.date}'),
+                                      Text('User ID: ${detail.userId}'),
+                                      Text('Is Complete: ${detail.isComplete}'),
+                                      Divider(),
+                                    ],
+                                  );
+                                }).toList(),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  ));
       },
     );
   }

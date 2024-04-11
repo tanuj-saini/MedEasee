@@ -115,9 +115,9 @@ class PersistStateBloc extends Bloc<PersistStateEvent, PersistStateState> {
           });
 
           final jsonData = jsonDecode(userRes.body);
-
+          print(userRes.body);
           doctor = Doctor.fromJson(jsonData);
-
+          print("welcome again");
           return emit(PersitDoctorSuccess(
               isPersist: true,
               doctorModule: doctor,

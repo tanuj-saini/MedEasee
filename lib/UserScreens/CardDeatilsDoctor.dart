@@ -19,9 +19,9 @@ class BookAppointment extends StatefulWidget {
 }
 
 class _BookAppointmentState extends State<BookAppointment> {
-  List<TimeSlotDataHour> _items = [];
-  List<TimeSlotDataHour> _selectedTimeSlots = [];
-  TimeSlotDataHour? selectedTimeSlot;
+  List<TimeSlots> _items = [];
+  List<TimeSlots> _selectedTimeSlots = [];
+  TimeSlots? selectedTimeSlot;
   @override
   void initState() {
     super.initState();
@@ -30,10 +30,10 @@ class _BookAppointmentState extends State<BookAppointment> {
 
   void _generateTimeSlots() {
     for (var i = 0; i < 24; i++) {
-      _items.add(TimeSlotDataHour(hour: i, minute: 0));
-      _items.add(TimeSlotDataHour(hour: i, minute: 15));
-      _items.add(TimeSlotDataHour(hour: i, minute: 30));
-      _items.add(TimeSlotDataHour(hour: i, minute: 45));
+      _items.add(TimeSlots(hour: i, minute: 0));
+      _items.add(TimeSlots(hour: i, minute: 15));
+      _items.add(TimeSlots(hour: i, minute: 30));
+      _items.add(TimeSlots(hour: i, minute: 45));
     }
   }
 
@@ -174,7 +174,7 @@ class _BookAppointmentState extends State<BookAppointment> {
                   child: Container(
                     child: MultiSelectDialogField(
                       items: _items
-                          .map((timeSlot) => MultiSelectItem<TimeSlotDataHour>(
+                          .map((timeSlot) => MultiSelectItem<TimeSlots>(
                               timeSlot, timeSlot.toString()))
                           .toList(),
                       title: Text("Time"),

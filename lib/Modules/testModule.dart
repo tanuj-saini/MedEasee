@@ -158,162 +158,156 @@ class AppointMentDetails {
 }
 
 class TimeSlot {
-  List<AppointmentDetails> appointmentDetails;
+  List<AppointMentDetailsD>? appointMentDetails;
+  String? Id;
 
-  TimeSlot({
-    required this.appointmentDetails,
-  });
-  Map<String, dynamic> toJson() {
-    return {
-      'appointmentDetails':
-          appointmentDetails.map((detail) => detail.toJson()).toList(),
-    };
-  }
+  TimeSlot({this.appointMentDetails, this.Id});
 
-  Map<String, dynamic> toMap() {
-    return {
-      'appointmentDetails':
-          appointmentDetails.map((detail) => detail.toMap()).toList(),
-    };
-  }
-
-  factory TimeSlot.fromJson(Map<String, dynamic> json) {
-    List<AppointmentDetails> appointments = [];
-
-    if (json['appointmentDetails'] != null) {
-      appointments = List<AppointmentDetails>.from(json['appointmentDetails']
-          .map((x) => AppointmentDetails.fromJson(x)));
+  TimeSlot.fromJson(Map<String, dynamic> json) {
+    if (json['appointMentDetails'] != null) {
+      appointMentDetails = <AppointMentDetailsD>[];
+      json['appointMentDetails'].forEach((v) {
+        appointMentDetails!.add(new AppointMentDetailsD.fromJson(v));
+      });
     }
-
-    return TimeSlot(
-      appointmentDetails: appointments,
-    );
+    Id = json['_id'];
   }
-}
 
-class AppointmentDetails {
-  String price;
-  String title;
-  final String date;
-  List<TimeSlotPick> timeSlotPicks;
-
-  AppointmentDetails({
-    required this.date,
-    required this.price,
-    required this.title,
-    required this.timeSlotPicks,
-  });
   Map<String, dynamic> toJson() {
-    return {
-      'date': date,
-      'price': price,
-      'title': title,
-      'timeSlotPicks': timeSlotPicks.map((pick) => pick.toJson()).toList(),
-    };
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.appointMentDetails != null) {
+      data['appointMentDetails'] =
+          this.appointMentDetails!.map((v) => v.toJson()).toList();
+    }
+    data['_id'] = this.Id;
+    return data;
   }
 
   Map<String, dynamic> toMap() {
     return {
-      'date': date,
-      'price': price,
-      'title': title,
-      'timeSlotPicks': timeSlotPicks.map((pick) => pick.toMap()).toList(),
+      'appointMentDetails': appointMentDetails != null
+          ? appointMentDetails!
+              .map((appointment) => appointment.toJson())
+              .toList()
+          : [],
+      '_id': Id,
     };
-  }
-
-  factory AppointmentDetails.fromJson(Map<String, dynamic> json) {
-    return AppointmentDetails(
-      date: json['date'],
-      price: json['price'],
-      title: json['title'],
-      timeSlotPicks: List<TimeSlotPick>.from(
-          json['timeSlotPicks'].map((x) => TimeSlotPick.fromJson(x))),
-    );
   }
 }
 
-class TimeSlotPick {
-  List<TimeSlotData> timeSlot;
+class AppointMentDetailsD {
+  int? price;
+  String? title;
+  List<TimeSlotPicks>? timeSlotPicks;
+  String? Id;
 
-  TimeSlotPick({
-    required this.timeSlot,
+  AppointMentDetailsD({
+    this.price,
+    this.title,
+    this.timeSlotPicks,
+    this.Id,
   });
+
+  AppointMentDetailsD.fromJson(Map<String, dynamic> json) {
+    price = json['price'];
+    title = json['title'];
+    if (json['timeSlotPicks'] != null) {
+      timeSlotPicks = <TimeSlotPicks>[];
+      json['timeSlotPicks'].forEach((v) {
+        timeSlotPicks!.add(new TimeSlotPicks.fromJson(v));
+      });
+    }
+    Id = json['_id'];
+  }
+
   Map<String, dynamic> toJson() {
-    return {
-      'timeSlot': timeSlot.map((data) => data.toJson()).toList(),
-    };
-  }
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['price'] = this.price;
+    data['title'] = this.title;
+    if (this.timeSlotPicks != null) {
+      data['timeSlotPicks'] =
+          this.timeSlotPicks!.map((v) => v.toJson()).toList();
+    }
+    data['_id'] = this.Id;
 
-  Map<String, dynamic> toMap() {
-    return {
-      'timeSlot': timeSlot.map((data) => data.toMap()).toList(),
-    };
-  }
-
-  factory TimeSlotPick.fromJson(Map<String, dynamic> json) {
-    return TimeSlotPick(
-      timeSlot: List<TimeSlotData>.from(
-          json['timeSlot'].map((x) => TimeSlotData.fromJson(x))),
-    );
+    return data;
   }
 }
 
-class TimeSlotData {
-  String date;
-  List<TimeSlotDataHour> timeSlots;
+class TimeSlotPicks {
+  List<TimeSloted>? timeSlot;
+  String? Id;
+
+  TimeSlotPicks({this.timeSlot, this.Id});
+
+  TimeSlotPicks.fromJson(Map<String, dynamic> json) {
+    if (json['timeSlot'] != null) {
+      timeSlot = <TimeSloted>[];
+      json['timeSlot'].forEach((v) {
+        timeSlot!.add(new TimeSloted.fromJson(v));
+      });
+    }
+    Id = json['_id'];
+  }
+
   Map<String, dynamic> toJson() {
-    return {
-      'date': date,
-      'timeSlots': timeSlots.map((hour) => hour.toJson()).toList(),
-    };
-  }
-
-  TimeSlotData({
-    required this.date,
-    required this.timeSlots,
-  });
-  Map<String, dynamic> toMap() {
-    return {
-      'date': date,
-      'timeSlots': timeSlots.map((hour) => hour.toMap()).toList(),
-    };
-  }
-
-  factory TimeSlotData.fromJson(Map<String, dynamic> json) {
-    return TimeSlotData(
-      date: json['date'],
-      timeSlots: List<TimeSlotDataHour>.from(
-          json['timeSlots'].map((x) => TimeSlotDataHour.fromJson(x))),
-    );
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.timeSlot != null) {
+      data['timeSlot'] = this.timeSlot!.map((v) => v.toJson()).toList();
+    }
+    data['_id'] = this.Id;
+    return data;
   }
 }
 
-class TimeSlotDataHour {
-  int hour;
-  int minute;
+class TimeSloted {
+  String? date;
+  List<TimeSlots>? timeSlots;
+  String? Id;
 
-  TimeSlotDataHour({
-    required this.hour,
-    required this.minute,
-  });
+  TimeSloted({this.date, this.timeSlots, this.Id});
+
+  TimeSloted.fromJson(Map<String, dynamic> json) {
+    date = json['date'];
+    if (json['timeSlots'] != null) {
+      timeSlots = <TimeSlots>[];
+      json['timeSlots'].forEach((v) {
+        timeSlots!.add(new TimeSlots.fromJson(v));
+      });
+    }
+    Id = json['_id'];
+  }
+
   Map<String, dynamic> toJson() {
-    return {
-      'hour': hour,
-      'minute': minute,
-    };
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['date'] = this.date;
+    if (this.timeSlots != null) {
+      data['timeSlots'] = this.timeSlots!.map((v) => v.toJson()).toList();
+    }
+    data['_id'] = this.Id;
+
+    return data;
+  }
+}
+
+class TimeSlots {
+  int? hour;
+  int? minute;
+  String? Id;
+
+  TimeSlots({this.hour, this.minute, this.Id});
+
+  TimeSlots.fromJson(Map<String, dynamic> json) {
+    hour = json['hour'];
+    minute = json['minute'];
+    Id = json['_id'];
   }
 
-  Map<String, dynamic> toMap() {
-    return {
-      'hour': hour,
-      'minute': minute,
-    };
-  }
-
-  factory TimeSlotDataHour.fromJson(Map<String, dynamic> json) {
-    return TimeSlotDataHour(
-      hour: json['hour'],
-      minute: json['minute'],
-    );
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['hour'] = this.hour;
+    data['minute'] = this.minute;
+    data['_id'] = this.Id;
+    return data;
   }
 }
