@@ -12,7 +12,7 @@ class _bottomNavigation extends State<BottomNavigation> {
 
   static List<Widget> _widgetOptions = <Widget>[
     DoctorScreen(),
-    ListAppoinmentScreen()
+    ListAppointmentScreen()
   ];
 
   void _onItemTapped(int index) {

@@ -1,38 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:med_ease/UpdateModels/UpdateDoctorModule.dart';
+import 'package:med_ease/Modules/testUserModule.dart'; // Import your user module
+import 'package:med_ease/UpdateModels/UpdateUserModel.dart'; // Import any necessary models
 
-class ListAppointmentScreen extends StatefulWidget {
-  ListAppointmentScreen({Key? key}) : super(key: key);
-
+class BookedAppointmentList extends StatefulWidget {
+  BookedAppointmentList({Key? key}) : super(key: key); // Corrected super call
   @override
-  _ListAppointmentScreenState createState() => _ListAppointmentScreenState();
+  _BookedAppointmentListState createState() => _BookedAppointmentListState();
 }
 
-class _ListAppointmentScreenState extends State<ListAppointmentScreen> {
+class _BookedAppointmentListState extends State<BookedAppointmentList> {
   @override
   Widget build(BuildContext context) {
-    final doctorModel = context.watch<DoctorBloc>().state;
-    print(doctorModel!.applicationLeft.length);
-    print("heoolo");
+    final user = context.watch<UserBloc>().state as UserModuleE;
+    print(user.age);
+    print(user.appointment.length);
     return Scaffold(
         appBar: AppBar(
-          title: Text("List of Appointments"),
+          title: Text("Booked Appointment"),
         ),
         body: ListView.builder(
-          itemCount: doctorModel.applicationLeft.length,
+          itemCount: user.appointment.length,
           itemBuilder: (BuildContext context, int index) {
-            final appointment = doctorModel.applicationLeft[index];
+            final appointment = user.appointment[index];
             return Card(
               child: ListTile(
                 title: Text('Appointment ID: ${appointment.id}'),
                 subtitle: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('User ID: ${appointment.userId}'),
+                    Text('Doctor ID: ${appointment.doctorId}'),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: appointment.appointMentDetails!.map((detail) {
+                      children: appointment.apppointLeft!.map((detail) {
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [

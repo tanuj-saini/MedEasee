@@ -104,6 +104,7 @@ class MyApp extends StatelessWidget {
             if (state is PersitDoctorSuccess) {
               final doctorBloc = context.read<DoctorBloc>();
               doctorBloc.updateDoctor(state.doctorModule);
+              print("updatedDoctorModuler");
               return BottomNavigation(); // add doctorInfo
             } else {
               return StartScreen();

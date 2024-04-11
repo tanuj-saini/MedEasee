@@ -28,7 +28,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
             id: "",
             phoneNumber: "",
             homeAddress: "",
-            appointments: [],
+            appointment: [],
             medicalShopHistory: [],
             emergencyCall: []);
         http.Response res = await http.post(Uri.parse("$ip/SignUpUser"),

@@ -31,7 +31,7 @@ class BookApppointmentBloc
             id: "",
             phoneNumber: "",
             homeAddress: "",
-            appointments: [],
+            appointment: [],
             medicalShopHistory: [],
             emergencyCall: []);
         String doctorId = event.doctorId;
@@ -49,7 +49,7 @@ class BookApppointmentBloc
             context: event.context,
             onSuccess: () async {
               Map<String, dynamic> decodedJson = jsonDecode(res.body);
-              print(decodedJson['doctor']);
+              print(decodedJson['user']);
               userModule = UserModuleE.fromJson(decodedJson['user']);
 
               print("yes");

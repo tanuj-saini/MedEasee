@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,6 +10,7 @@ import 'package:med_ease/UpdateModels/UpdateUserModel.dart';
 import 'package:med_ease/UserScreens/CardDoctorDetailScreen.dart';
 import 'package:med_ease/UserScreens/StartScreen.dart';
 import 'package:med_ease/UserScreens/bloc/all_doctors_bloc.dart';
+import 'package:med_ease/UserScreens/bookedAppointmentList.dart';
 import 'package:med_ease/UserScreens/utils/CardScreenDoctor.dart';
 import 'package:med_ease/Utils/Colors.dart';
 import 'package:med_ease/Utils/CustomTextfield.dart';
@@ -99,6 +102,21 @@ class _HomeScreen extends State<HomeScreen> {
           ),
           drawer: Drawer(
             backgroundColor: Colors.black,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton.icon(
+                    onPressed: () => Navigator.of(context).push(
+                        MaterialPageRoute(
+                            builder: (ctx) => BookedAppointmentList())),
+                    icon: Icon(Icons.list),
+                    label: Text("Booked Appointment")),
+                ElevatedButton.icon(
+                    onPressed: () => logout,
+                    icon: Icon(Icons.logout),
+                    label: Text("LogOut")),
+              ],
+            ),
           ),
           body: Center(
             child: Padding(

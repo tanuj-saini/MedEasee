@@ -7,7 +7,7 @@ class UserModuleE {
   String age;
   String phoneNumber;
   String homeAddress;
-  List<Appointment> appointments;
+  List<Appointment> appointment;
   List<dynamic> medicalShopHistory;
   List<dynamic> emergencyCall;
 
@@ -18,7 +18,7 @@ class UserModuleE {
     required this.age,
     required this.phoneNumber,
     required this.homeAddress,
-    required this.appointments,
+    required this.appointment,
     required this.medicalShopHistory,
     required this.emergencyCall,
   });
@@ -31,8 +31,8 @@ class UserModuleE {
       age: json['age'],
       phoneNumber: json['phoneNumber'],
       homeAddress: json['homeAddress'],
-      appointments: json['appointments'] != null && json['appointments'] is List
-          ? (json['appointments'] as List)
+      appointment: json['appointment'] != null && json['appointment'] is List
+          ? (json['appointment'] as List)
               .map((a) => Appointment.fromJson(a))
               .toList()
           : [],
@@ -49,8 +49,8 @@ class UserModuleE {
       'age': age,
       'phoneNumber': phoneNumber,
       'homeAddress': homeAddress,
-      'appointments':
-          appointments.map((appointment) => appointment.toJson()).toList(),
+      'appointment':
+          appointment.map((appointment) => appointment.toJson()).toList(),
       'medicalShopHistory': medicalShopHistory,
       'emergencyCall': emergencyCall,
     };
@@ -64,71 +64,65 @@ class UserModuleE {
 }
 
 class Appointment {
-  String id;
-  String doctorId;
-  List<AppointmentDetails> appointLeft;
+  String? doctorId;
+  List<AppointmentLeft>? apppointLeft;
+  String? id;
 
-  Appointment({
-    required this.id,
-    required this.doctorId,
-    required this.appointLeft,
-  });
+  Appointment({this.doctorId, this.apppointLeft, this.id});
 
-  factory Appointment.fromJson(Map<String, dynamic> json) {
-    return Appointment(
-      id: json['_id'],
-      doctorId: json['doctorId'],
-      appointLeft: (json['appointLeft'] as List)
-          .map((al) => AppointmentDetails.fromJson(al))
-          .toList(),
-    );
+  Appointment.fromJson(Map<String, dynamic> json) {
+    doctorId = json['doctorId'];
+    if (json['apppointLeft'] != null) {
+      apppointLeft = <AppointmentLeft>[];
+      json['apppointLeft'].forEach((v) {
+        apppointLeft!.add(new AppointmentLeft.fromJson(v));
+      });
+    }
+    id = json['_id'];
   }
 
-  Map<String, dynamic> toMap() {
-    return {
-      '_id': id,
-      'doctorId': doctorId,
-      'appointLeft': appointLeft.map((al) => al.toMap()).toList(),
-    };
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['doctorId'] = this.doctorId;
+    if (this.apppointLeft != null) {
+      data['apppointLeft'] = this.apppointLeft!.map((v) => v.toJson()).toList();
+    }
+    data['_id'] = this.id;
+    return data;
   }
-
-  String toJson() => json.encode(toMap());
 }
 
-class AppointmentDetails {
-  String date;
-  String doctorId;
-  String userId;
-  bool isComplete;
-  String id;
+class AppointmentLeft {
+  String? date;
+  String? doctorId;
+  String? userId;
+  bool? isComplete;
+  String? id;
 
-  AppointmentDetails({
-    required this.date,
-    required this.doctorId,
-    required this.userId,
-    required this.isComplete,
-    required this.id,
+  AppointmentLeft({
+    this.date,
+    this.doctorId,
+    this.userId,
+    this.isComplete,
+    this.id,
   });
 
-  factory AppointmentDetails.fromJson(Map<String, dynamic> json) {
-    return AppointmentDetails(
-      date: json['date'],
-      doctorId: json['doctorId'],
-      userId: json['userId'],
-      isComplete: json['isComplete'],
-      id: json['_id'],
-    );
+  AppointmentLeft.fromJson(Map<String, dynamic> json) {
+    date = json['date'];
+    doctorId = json['doctorId'];
+    userId = json['userId'];
+    isComplete = json['isComplete'];
+    id = json['_id'];
   }
 
-  Map<String, dynamic> toMap() {
-    return {
-      'date': date,
-      'doctorId': doctorId,
-      'userId': userId,
-      'isComplete': isComplete,
-      '_id': id,
-    };
-  }
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['date'] = this.date;
+    data['doctorId'] = this.doctorId;
+    data['userId'] = this.userId;
+    data['isComplete'] = this.isComplete;
+    data['_id'] = this.id;
 
-  String toJson() => json.encode(toMap());
+    return data;
+  }
 }

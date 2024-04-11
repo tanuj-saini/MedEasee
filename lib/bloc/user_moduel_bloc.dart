@@ -29,7 +29,7 @@ class UserModuelBloc extends Bloc<UserModuelEvent, UserModuelState> {
             id: "",
             phoneNumber: event.phoneNumber,
             homeAddress: event.homeAddress,
-            appointments: [],
+            appointment: [],
             medicalShopHistory: [],
             emergencyCall: []);
         http.Response res = await http.post(Uri.parse("$ip/user/signUp"),

@@ -27,7 +27,7 @@ class PersistStateBloc extends Bloc<PersistStateEvent, PersistStateState> {
             id: "",
             phoneNumber: "",
             homeAddress: "",
-            appointments: [],
+            appointment: [],
             medicalShopHistory: [],
             emergencyCall: []);
         String? token = prefs.getString('x-auth-token-w');
@@ -118,7 +118,7 @@ class PersistStateBloc extends Bloc<PersistStateEvent, PersistStateState> {
 
           Doctor doctor = Doctor.fromJson(jsonData);
           print("yes");
-
+          print(doctor.applicationLeft.length);
           print("welcome again");
           //print(userData);
           return emit(PersitDoctorSuccess(
