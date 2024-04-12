@@ -1,6 +1,11 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
+import 'package:med_ease/Utils/timeSlot.dart';
+
 class Doctor {
+  SelectedTimeSlot? selectedTimeSlot;
   String id;
   String name;
   String bio;
@@ -16,22 +21,22 @@ class Doctor {
   List<TimeSlot> timeSlot;
   final String? token;
 
-  Doctor({
-    required this.id,
-    required this.name,
-    required this.bio,
-    required this.phoneNumber,
-    required this.specialist,
-    required this.currentWorkingHospital,
-    required this.profilePic,
-    required this.registerNumbers,
-    required this.experience,
-    required this.emailAddress,
-    required this.age,
-    required this.applicationLeft,
-    required this.timeSlot,
-    this.token,
-  });
+  Doctor(
+      {required this.id,
+      required this.name,
+      required this.bio,
+      required this.phoneNumber,
+      required this.specialist,
+      required this.currentWorkingHospital,
+      required this.profilePic,
+      required this.registerNumbers,
+      required this.experience,
+      required this.emailAddress,
+      required this.age,
+      required this.applicationLeft,
+      required this.timeSlot,
+      this.token,
+      this.selectedTimeSlot});
 
   factory Doctor.fromJson(Map<String, dynamic> json) {
     List<TimeSlot> timeSlots = [];
@@ -41,7 +46,10 @@ class Doctor {
         json['timeSlot'].map((x) => TimeSlot.fromJson(x)),
       );
     }
-
+    SelectedTimeSlot? selectedTimeSlot;
+    if (json['selectedTimeSlot'] != null) {
+      selectedTimeSlot = SelectedTimeSlot.fromJson(json['selectedTimeSlot']);
+    }
     return Doctor(
       id: json['_id'],
       name: json['name'],
@@ -54,6 +62,7 @@ class Doctor {
       experience: json['experience'],
       emailAddress: json['emailAddress'],
       age: json['age'],
+      selectedTimeSlot: selectedTimeSlot,
       applicationLeft:
           json['applicationLeft'] != null && json['applicationLeft'] is List
               ? (json['applicationLeft'] as List)
@@ -66,7 +75,7 @@ class Doctor {
   }
 
   Map<String, dynamic> toMap() {
-    return {
+    var data = {
       'id': id,
       'name': name,
       'bio': bio,
@@ -83,6 +92,12 @@ class Doctor {
       'timeSlot': timeSlot.map((slot) => slot.toMap()).toList(),
       'token': token,
     };
+
+    if (this.selectedTimeSlot != null) {
+      data['selectedTimeSlot'] = this.selectedTimeSlot!.toJson();
+    }
+
+    return data;
   }
 
   String toJson() => json.encode(toMap());
@@ -308,6 +323,81 @@ class TimeSlots {
     data['hour'] = this.hour;
     data['minute'] = this.minute;
     data['_id'] = this.Id;
+    return data;
+  }
+
+  factory TimeSlots.fromMap(Map<String, dynamic> map) {
+    return TimeSlots(
+      hour: map['hour'],
+      minute: map['minute'],
+      Id: map['_id'],
+    );
+  }
+
+  // 인스턴스를 Map 객체로 변환하는 메소드
+  Map<String, dynamic> toMap() {
+    return {
+      'hour': hour,
+      'minute': minute,
+      '_id': Id,
+    };
+  }
+}
+
+class SelectedTimeSlot {
+  String? price;
+  String? title;
+  TimeSlotPicks? timeSlotPicks;
+
+  SelectedTimeSlot({this.price, this.title, this.timeSlotPicks});
+
+  SelectedTimeSlot.fromJson(Map<String, dynamic> json) {
+    price = json['price'];
+    title = json['title'];
+    timeSlotPicks = json['timeSlotPicks'] != null
+        ? new TimeSlotPicks.fromJson(json['timeSlotPicks'])
+        : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['price'] = this.price;
+    data['title'] = this.title;
+    if (this.timeSlotPicks != null) {
+      data['timeSlotPicks'] = this.timeSlotPicks!.toJson();
+    }
+    return data;
+  }
+}
+
+class TimeSlotPicksU {
+  String? date;
+  List<TimeSlots>? timeSlots;
+  String? sId;
+  int? iV;
+
+  TimeSlotPicksU({this.date, this.timeSlots, this.sId, this.iV});
+
+  TimeSlotPicksU.fromJson(Map<String, dynamic> json) {
+    date = json['date'];
+    if (json['timeSlots'] != null) {
+      timeSlots = <TimeSlots>[];
+      json['timeSlots'].forEach((v) {
+        timeSlots!.add(new TimeSlots.fromJson(v));
+      });
+    }
+    sId = json['_id'];
+    iV = json['__v'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['date'] = this.date;
+    if (this.timeSlots != null) {
+      data['timeSlots'] = this.timeSlots!.map((v) => v.toJson()).toList();
+    }
+    data['_id'] = this.sId;
+    data['__v'] = this.iV;
     return data;
   }
 }

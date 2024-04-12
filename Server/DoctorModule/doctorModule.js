@@ -4,6 +4,7 @@ const {
   appointMentDetailsSchema,
 } = require("./appointMentDetails");
 const { userAppointment, UserAppointment } = require("./UserAppointed");
+const { scheduleSchema } = require("./ScheduleTime");
 const DoctorModule = mongoose.Schema({
   name: {
     require: true,
@@ -45,6 +46,7 @@ const DoctorModule = mongoose.Schema({
     require: true,
     type: String,
   },
+
   applicationLeft: [
     {
       userId: {
@@ -54,6 +56,17 @@ const DoctorModule = mongoose.Schema({
       appointMentDetails: [UserAppointment],
     },
   ],
+  selectedTimeSlot: {
+    price: {
+      type: String,
+      require: true,
+    },
+    title: {
+      type: String,
+      require: true,
+    },
+    timeSlotPicks: scheduleSchema,
+  },
   timeSlot: [
     {
       appointMentDetails: [appointMentDetailsSchema],

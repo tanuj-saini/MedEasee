@@ -56,7 +56,19 @@ class _DoctorModifyScreenState extends State<DoctorModifyScreen> {
                   context: context, doctorId: doctorModel!.id));
             },
             icon: const Icon(Icons.refresh),
-          )
+          ),
+          IconButton(
+              onPressed: () {
+                sendModifyAppointMent.add(AppointMentSelectedTimeSlot(
+                    context: context,
+                    doctorId: doctorModel!.id,
+                    price: _priceController.text,
+                    title: _titleContoller.text,
+                    timeSlots: _selectedTimeSlots,
+                    date: DateTime.now().toString()));
+                setState(() {});
+              },
+              icon: Icon(Icons.save))
         ],
       ),
       body: BlocConsumer<AppointmnetBloc, AppointmnetState>(
@@ -114,24 +126,10 @@ class _DoctorModifyScreenState extends State<DoctorModifyScreen> {
                               margin: const EdgeInsets.symmetric(
                                   vertical: 8.0, horizontal: 16.0),
                               child: ListTile(
-                                trailing: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    IconButton(
-                                        onPressed: () {},
-                                        icon: Icon(Icons.mode)),
-                                    IconButton(
-                                        onPressed: () {},
-                                        icon: Icon(Icons.delete))
-                                  ],
-                                ),
                                 title: Text('Time Slot ${index + 1}'),
                                 subtitle: Text(
                                     'Number of Appointments: ${timeSlot.appointMentDetails}'),
-                                onTap: () {
-                                  // Handle onTap event if needed
-                                },
+                                onTap: () {},
                               ),
                             );
                           },

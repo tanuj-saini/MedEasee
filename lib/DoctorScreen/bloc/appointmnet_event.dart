@@ -21,3 +21,20 @@ class AppointMentRefresh extends AppointmnetEvent {
   final BuildContext context;
   AppointMentRefresh({required this.context, required this.doctorId});
 }
+
+class AppointMentSelectedTimeSlot extends AppointmnetEvent {
+  final String price;
+  final String title;
+  final List<TimeSlotD> timeSlots;
+  final String date;
+  final String doctorId;
+  final BuildContext context;
+
+  AppointMentSelectedTimeSlot(
+      {required this.context,
+      required this.doctorId,
+      required this.price,
+      required this.title,
+      required this.timeSlots,
+      required this.date});
+}

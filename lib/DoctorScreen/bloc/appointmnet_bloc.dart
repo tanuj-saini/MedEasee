@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:med_ease/Modules/ApointmentModifyModule.dart';
 
 import 'package:med_ease/Modules/testModule.dart';
+import 'package:med_ease/UserScreens/utils/SelectedTimeSlot.dart';
 import 'package:med_ease/Utils/DoctorModule.dart';
 import 'package:med_ease/Utils/errorHandiling.dart';
 import 'package:med_ease/Utils/timeSlot.dart';
@@ -110,6 +111,58 @@ class AppointmnetBloc extends Bloc<AppointmnetEvent, AppointmnetState> {
 
         print(doctorModule);
         return emit(AppointmentSuccess(doctorModule: doctorModule));
+      } catch (e) {
+        return emit(AppointmentFailure(error: e.toString()));
+      }
+    });
+
+    on<AppointMentSelectedTimeSlot>((event, emit) async {
+      emit(AppointmentLoding());
+      try {
+        String doctorId = event.doctorId;
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        String? token = prefs.getString('x-auth-token-D');
+        if (token == null) {
+          return emit(AppointmentFailure(error: "You are not a doctor"));
+        }
+        SelectedTimeSlotU selectedTimeSlot = SelectedTimeSlotU(
+            price: event.price,
+            title: event.title,
+            date: DateTime.now().toString(),
+            timeSlots: event.timeSlots);
+
+        print('length');
+        print(event.timeSlots.length);
+        Doctor doctorModule = Doctor(
+            name: "",
+            bio: "",
+            phoneNumber: "",
+            specialist: "",
+            currentWorkingHospital: "",
+            profilePic: "",
+            registerNumbers: "",
+            experience: "",
+            emailAddress: "",
+            age: "",
+            applicationLeft: [],
+            timeSlot: [],
+            id: "");
+
+        http.Response res = await http.post(
+            Uri.parse('$ip/selectedTimeSlot?doctorId=$doctorId'),
+            headers: <String, String>{
+              'Content-Type': 'application/json; charset=UTF-8',
+              'x-auth-token-D': token,
+            },
+            body: selectedTimeSlot.toJson());
+
+        print(res.body);
+        final jsonData = jsonDecode(res.body);
+
+        doctorModule = Doctor.fromJson(jsonData);
+        print('yes it works');
+
+        // return emit(AppointmentSuccess(doctorModule: doctorModule));
       } catch (e) {
         return emit(AppointmentFailure(error: e.toString()));
       }
