@@ -66,7 +66,6 @@ class _DoctorModifyScreenState extends State<DoctorModifyScreen> {
                     title: _titleContoller.text,
                     timeSlots: _selectedTimeSlots,
                     date: DateTime.now().toString()));
-                setState(() {});
               },
               icon: Icon(Icons.save))
         ],
@@ -121,7 +120,7 @@ class _DoctorModifyScreenState extends State<DoctorModifyScreen> {
                                 .watch<DoctorBloc>()
                                 .state!
                                 .timeSlot[index];
-                            //  print(timeSlot.appointMentDetails.length);
+
                             return Card(
                               margin: const EdgeInsets.symmetric(
                                   vertical: 8.0, horizontal: 16.0),

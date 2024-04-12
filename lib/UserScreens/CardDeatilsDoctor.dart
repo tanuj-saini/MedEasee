@@ -1,18 +1,17 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:med_ease/Modules/DoctorModify.dart';
 import 'package:med_ease/Modules/testModule.dart';
 import 'package:med_ease/UserScreens/CardDoctorDetailScreen.dart';
-
 import 'package:multi_select_flutter/dialog/multi_select_dialog_field.dart';
 import 'package:multi_select_flutter/util/multi_select_item.dart';
 
 class BookAppointment extends StatefulWidget {
   final Doctor doctorModuleE;
+
   BookAppointment({
     required this.doctorModuleE,
-    super.key,
-  });
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<BookAppointment> createState() => _BookAppointmentState();
@@ -21,11 +20,12 @@ class BookAppointment extends StatefulWidget {
 class _BookAppointmentState extends State<BookAppointment> {
   List<TimeSlots> _items = [];
   List<TimeSlots> _selectedTimeSlots = [];
-  TimeSlots? selectedTimeSlot;
+
   @override
   void initState() {
     super.initState();
     _generateTimeSlots();
+    _loadSelectedTimeSlots();
   }
 
   void _generateTimeSlots() {
@@ -37,16 +37,33 @@ class _BookAppointmentState extends State<BookAppointment> {
     }
   }
 
+  void _loadSelectedTimeSlots() {
+    List<TimeSloted> time =
+        widget.doctorModuleE.selectedTimeSlot!.timeSlotPicks!.timeSlot ?? [];
+
+    _selectedTimeSlots.addAll(
+      time
+          .map((timeSloted) => timeSloted.timeSlots ?? [])
+          .expand((slots) => slots)
+          .map((dateTime) =>
+              TimeSlots(hour: dateTime.hour, minute: dateTime.minute))
+          .toList(),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    print(_selectedTimeSlots.length);
+    print('hello');
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         leading: InkWell(
-            onTap: () {
-              Navigator.pop(context);
-            },
-            child: Icon(Icons.arrow_back)),
+          onTap: () {
+            Navigator.pop(context);
+          },
+          child: Icon(Icons.arrow_back),
+        ),
         title: Text('Book Appointment'),
         centerTitle: true,
       ),
@@ -117,65 +134,15 @@ class _BookAppointmentState extends State<BookAppointment> {
                     ],
                   ),
                 ),
-                Container(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(color: Colors.green),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              child: Row(
-                                children: [Icon(Icons.thumb_up), Text('98%')],
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        width: 2,
-                      ),
-                      Text(
-                        'Recommend...',
-                      ),
-                      SizedBox(
-                        width: 50,
-                      ),
-                      Container(
-                        decoration: BoxDecoration(color: Colors.purple),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              child: Row(
-                                children: [
-                                  Icon(Icons.star_border),
-                                  Text('4.5%'),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        width: 2,
-                      ),
-                      Text('Rating'),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Container(
                     child: MultiSelectDialogField(
                       items: _items
                           .map((timeSlot) => MultiSelectItem<TimeSlots>(
-                              timeSlot, timeSlot.toString()))
+                                timeSlot,
+                                timeSlot.toString(),
+                              ))
                           .toList(),
                       title: Text("Time"),
                       selectedColor: Colors.blue,
@@ -198,9 +165,10 @@ class _BookAppointmentState extends State<BookAppointment> {
                           fontSize: 16,
                         ),
                       ),
+                      initialValue: _selectedTimeSlots,
                       onConfirm: (results) {
                         setState(() {
-                          _selectedTimeSlots = List.from(results);
+                          _selectedTimeSlots = results ?? [];
                         });
                       },
                     ),

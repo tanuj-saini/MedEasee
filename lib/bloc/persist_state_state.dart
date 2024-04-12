@@ -32,3 +32,9 @@ class PersistError extends PersistStateState {
   final String error;
   PersistError({required this.error});
 }
+
+class PersistHttpError extends PersistStateState {
+  final String errorMessage;
+
+  PersistHttpError({required this.errorMessage});
+}

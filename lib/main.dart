@@ -83,10 +83,11 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(create: (context) {
           if (typeOfUser == "doctor") {
-            return PersistStateBloc()..add(persistDoctorEvent());
+            return PersistStateBloc()
+              ..add(persistDoctorEvent(context: context));
           }
 
-          return PersistStateBloc()..add(persistEvent());
+          return PersistStateBloc()..add(persistEvent(context: context));
         })
       ],
       child: MaterialApp(

@@ -6,6 +6,7 @@ import 'package:med_ease/Modules/ApointmentModifyModule.dart';
 
 import 'package:med_ease/Modules/testModule.dart';
 import 'package:med_ease/UserScreens/utils/SelectedTimeSlot.dart';
+import 'package:med_ease/Utils/Colors.dart';
 import 'package:med_ease/Utils/DoctorModule.dart';
 import 'package:med_ease/Utils/errorHandiling.dart';
 import 'package:med_ease/Utils/timeSlot.dart';
@@ -38,7 +39,7 @@ class AppointmnetBloc extends Bloc<AppointmnetEvent, AppointmnetState> {
               'x-auth-token-D': token,
             },
             body: appointmentModule.toJson());
-
+        _httpErrorHandle(res, emit, event.context);
         Doctor doctorModule = Doctor(
             name: "",
             bio: "",
@@ -53,16 +54,13 @@ class AppointmnetBloc extends Bloc<AppointmnetEvent, AppointmnetState> {
             applicationLeft: [],
             timeSlot: [],
             id: "");
-        httpErrorHandle(
-            response: res,
-            context: event.context,
-            onSuccess: () async {
-              final jsonData = jsonDecode(res.body);
 
-              doctorModule = Doctor.fromJson(jsonData);
-              print('yes it works');
-              print(doctorModule);
-            });
+        final jsonData = jsonDecode(res.body);
+
+        doctorModule = Doctor.fromJson(jsonData);
+        print('yes it works');
+        print(doctorModule);
+
         print(res.body);
         print("hello");
         print(doctorModule);
@@ -104,6 +102,7 @@ class AppointmnetBloc extends Bloc<AppointmnetEvent, AppointmnetState> {
             'x-auth-token-D': token,
           },
         );
+        _httpErrorHandle(res, emit, event.context);
 
         final jsonData = jsonDecode(res.body);
 
@@ -155,14 +154,61 @@ class AppointmnetBloc extends Bloc<AppointmnetEvent, AppointmnetState> {
               'x-auth-token-D': token,
             },
             body: selectedTimeSlot.toJson());
-
+        _httpErrorHandle(res, emit, event.context);
         print(res.body);
         final jsonData = jsonDecode(res.body);
 
         doctorModule = Doctor.fromJson(jsonData);
         print('yes it works');
 
-        // return emit(AppointmentSuccess(doctorModule: doctorModule));
+        return emit(AppointmentSuccess(doctorModule: doctorModule));
+      } catch (e) {
+        return emit(AppointmentFailure(error: e.toString()));
+      }
+    });
+
+    on<AppointmentUpdateEvent>((event, emit) async {
+      emit(AppointmentLoding());
+      try {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        String? token = prefs.getString('x-auth-token-D');
+        if (token == null) {
+          return emit(AppointmentFailure(error: "You are not a doctor"));
+        }
+        Doctor doctorModule = Doctor(
+            name: "",
+            bio: "",
+            phoneNumber: "",
+            specialist: "",
+            currentWorkingHospital: "",
+            profilePic: "",
+            registerNumbers: "",
+            experience: "",
+            emailAddress: "",
+            age: "",
+            applicationLeft: [],
+            timeSlot: [],
+            id: "");
+        SelectedTimeSlotU selectedTimeSlotU = SelectedTimeSlotU(
+            price: event.price,
+            title: event.price,
+            date: event.date,
+            timeSlots: event.timeSlots);
+        http.Response res =
+            await http.post(Uri.parse('$ip/AppointmentModifyUpdate'),
+                headers: <String, String>{
+                  'Content-Type': 'application/json; charset=UTF-8',
+                  'x-auth-token-D': token,
+                },
+                body: selectedTimeSlotU.toJson());
+        _httpErrorHandle(res, emit, event.context);
+        final jsonData = jsonDecode(res.body);
+
+        doctorModule = Doctor.fromJson(jsonData);
+        print('yes it works');
+        print(doctorModule);
+
+        return emit(AppointmentSuccess(doctorModule: doctorModule));
       } catch (e) {
         return emit(AppointmentFailure(error: e.toString()));
       }

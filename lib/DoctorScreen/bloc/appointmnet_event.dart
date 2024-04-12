@@ -38,3 +38,18 @@ class AppointMentSelectedTimeSlot extends AppointmnetEvent {
       required this.timeSlots,
       required this.date});
 }
+
+class AppointmentUpdateEvent extends AppointmnetEvent {
+  final String price;
+  final String title;
+  final String date;
+  final List<TimeSlotD> timeSlots;
+  final BuildContext context;
+
+  AppointmentUpdateEvent(
+      {required this.context,
+      required this.date,
+      required this.price,
+      required this.timeSlots,
+      required this.title});
+}

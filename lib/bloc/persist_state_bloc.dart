@@ -1,7 +1,9 @@
 import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
 import 'package:med_ease/Modules/testUserModule.dart';
+import 'package:med_ease/Utils/Colors.dart';
 
 import 'package:med_ease/Utils/DoctorModule.dart';
 
@@ -39,7 +41,7 @@ class PersistStateBloc extends Bloc<PersistStateEvent, PersistStateState> {
           'Content-Type': 'application/json; charset=UTF-8',
           'x-auth-token-w': token!,
         });
-
+        _httpErrorHandle(tokenRes, emit, event.context);
         var response = jsonDecode(tokenRes.body);
         if (response == false) {
           return emit(PersitSuccess(
@@ -53,7 +55,7 @@ class PersistStateBloc extends Bloc<PersistStateEvent, PersistStateState> {
             'Content-Type': 'application/json; charset=UTF-8',
             'x-auth-token-w': token,
           });
-
+          _httpErrorHandle(userRes, emit, event.context);
           Map<String, dynamic> decodedJson = jsonDecode(userRes.body);
 
           userModule = UserModuleE.fromJson(decodedJson);

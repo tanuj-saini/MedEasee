@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:med_ease/Modules/testModule.dart';
+import 'package:med_ease/Utils/Colors.dart';
 import 'package:med_ease/Utils/errorHandiling.dart';
 import 'package:meta/meta.dart';
 import 'package:http/http.dart' as http;
@@ -44,7 +45,7 @@ class RefreshDoctorBloc extends Bloc<RefreshDoctorEvent, RefreshDoctorState> {
             'x-auth-token-D': token,
           },
         );
-
+        _httpErrorHandle(res, emit, event.context);
         final jsonData = jsonDecode(res.body);
         print('yes it works');
         doctorModule = Doctor.fromJson(jsonData);

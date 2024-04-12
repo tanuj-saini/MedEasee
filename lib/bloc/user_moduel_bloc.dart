@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +7,7 @@ import 'package:flutter/widgets.dart';
 
 import 'package:med_ease/Modules/testModule.dart';
 import 'package:med_ease/Modules/testUserModule.dart';
+import 'package:med_ease/Utils/Colors.dart';
 
 import 'package:med_ease/Utils/DoctorModule.dart';
 
@@ -37,21 +39,19 @@ class UserModuelBloc extends Bloc<UserModuelEvent, UserModuelState> {
               'Content-Type': 'application/json; charset=UTF-8'
             },
             body: userModule.toJson());
+        _httpErrorHandle(res, emit, event.context);
         print(res.body);
-        httpErrorHandle(
-            response: res,
-            context: event.context,
-            onSuccess: () async {
-              Map<String, dynamic> decodedJson = jsonDecode(res.body);
 
-              userModule = UserModuleE.fromJson(decodedJson);
-              SharedPreferences prefs = await SharedPreferences.getInstance();
-              String token = jsonDecode(res.body)["token"];
-              String typeOfUser = "user";
-              print(token);
-              await prefs.setString("x-auth-token-w", token);
-              await prefs.setString("typeOfUser", typeOfUser);
-            });
+        Map<String, dynamic> decodedJson = jsonDecode(res.body);
+
+        userModule = UserModuleE.fromJson(decodedJson);
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        String token = jsonDecode(res.body)["token"];
+        String typeOfUser = "user";
+        print(token);
+        await prefs.setString("x-auth-token-w", token);
+        await prefs.setString("typeOfUser", typeOfUser);
+
         return emit(userModuleSuccess(userModule: userModule));
       } catch (e) {
         return emit(userModulefaliure(error: e.toString()));
@@ -81,22 +81,20 @@ class UserModuelBloc extends Bloc<UserModuelEvent, UserModuelState> {
               'Content-Type': 'application/json; charset=UTF-8'
             },
             body: doctorModule.toJson());
+        _httpErrorHandle(res, emit, event.context);
         print(res.body);
-        httpErrorHandle(
-            response: res,
-            context: event.context,
-            onSuccess: () async {
-              final jsonData = jsonDecode(res.body);
 
-              doctorModule = Doctor.fromJson(jsonData);
+        final jsonData = jsonDecode(res.body);
 
-              SharedPreferences prefs = await SharedPreferences.getInstance();
-              String token = jsonDecode(res.body)["token"];
-              String typeOfUser = "doctor";
-              print(token);
-              await prefs.setString("x-auth-token-D", token);
-              await prefs.setString("typeOfUser", typeOfUser);
-            });
+        doctorModule = Doctor.fromJson(jsonData);
+
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        String token = jsonDecode(res.body)["token"];
+        String typeOfUser = "doctor";
+        print(token);
+        await prefs.setString("x-auth-token-D", token);
+        await prefs.setString("typeOfUser", typeOfUser);
+
         return emit(doctorModuleSuccess(doctorModule: doctorModule));
       } catch (e) {
         return emit(userModulefaliure(error: e.toString()));

@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 
 import 'package:med_ease/Modules/testModule.dart';
+import 'package:med_ease/Utils/Colors.dart';
 import 'package:med_ease/Utils/errorHandiling.dart';
 import 'package:meta/meta.dart';
 import "package:http/http.dart" as http;
@@ -30,24 +31,20 @@ class AllDoctorsBloc extends Bloc<AllDoctorsEvent, AllDoctorsState> {
               'Content-Type': 'application/json; charset=UTF-8',
               'x-auth-token-w': token,
             });
+        _httpErrorHandle(res, emit, event.context);
         print(res.body);
         List<Doctor> allDoctors = [];
-        httpErrorHandle(
-          response: res,
-          context: event.context,
-          onSuccess: () async {
-            List<dynamic> jsonResponse =
-                jsonDecode(res.body); // Parse the response here
-            int length = jsonResponse.length;
-            print(length);
 
-            for (int i = 0; i < length; i++) {
-              final jsonData = jsonResponse[i];
-              Doctor doctor = Doctor.fromJson(jsonData);
-              allDoctors.add(doctor);
-            }
-          },
-        );
+        List<dynamic> jsonResponse =
+            jsonDecode(res.body); // Parse the response here
+        int length = jsonResponse.length;
+        print(length);
+
+        for (int i = 0; i < length; i++) {
+          final jsonData = jsonResponse[i];
+          Doctor doctor = Doctor.fromJson(jsonData);
+          allDoctors.add(doctor);
+        }
 
         print(allDoctors);
         return emit(AllDoctorsDataSuccess(allDoctorsData: allDoctors));

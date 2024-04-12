@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 import 'package:med_ease/Modules/testModule.dart';
 import 'package:med_ease/Modules/testUserModule.dart';
+import 'package:med_ease/Utils/Colors.dart';
 
 import 'package:med_ease/Utils/DoctorModule.dart';
 
@@ -36,20 +37,17 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
               'Content-Type': 'application/json; charset=UTF-8',
             },
             body: jsonEncode({"phoneNumber": event.phoneNumber}));
-        httpErrorHandle(
-            response: res,
-            context: event.context,
-            onSuccess: () async {
-              Map<String, dynamic> decodedJson = jsonDecode(res.body);
+        _httpErrorHandle(res, emit, event.context);
+        Map<String, dynamic> decodedJson = jsonDecode(res.body);
 
-              userModule = UserModuleE.fromJson(decodedJson);
-              SharedPreferences prefs = await SharedPreferences.getInstance();
-              String token = jsonDecode(res.body)["token"];
-              String typeOfUser = "user";
-              print(token);
-              await prefs.setString("x-auth-token-w", token);
-              await prefs.setString("typeOfUser", typeOfUser);
-            });
+        userModule = UserModuleE.fromJson(decodedJson);
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        String token = jsonDecode(res.body)["token"];
+        String typeOfUser = "user";
+        print(token);
+        await prefs.setString("x-auth-token-w", token);
+        await prefs.setString("typeOfUser", typeOfUser);
+
         return emit(SignUpSuccess(userModule: userModule));
       } catch (e) {
         return emit(SignUpFailure(error: e.toString()));
@@ -78,21 +76,18 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
               'Content-Type': 'application/json; charset=UTF-8',
             },
             body: jsonEncode({"phoneNumber": event.phoneNumber}));
-        httpErrorHandle(
-            response: res,
-            context: event.context,
-            onSuccess: () async {
-              final jsonData = jsonDecode(res.body);
+        _httpErrorHandle(res, emit, event.context);
+        final jsonData = jsonDecode(res.body);
 
-              doctorModule = Doctor.fromJson(jsonData);
+        doctorModule = Doctor.fromJson(jsonData);
 
-              SharedPreferences prefs = await SharedPreferences.getInstance();
-              String token = jsonDecode(res.body)["token"];
-              String typeOfUser = "doctor";
-              print(token);
-              await prefs.setString("x-auth-token-D", token);
-              await prefs.setString("typeOfUser", typeOfUser);
-            });
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        String token = jsonDecode(res.body)["token"];
+        String typeOfUser = "doctor";
+        print(token);
+        await prefs.setString("x-auth-token-D", token);
+        await prefs.setString("typeOfUser", typeOfUser);
+
         return emit(SignUpDoctorSucess(doctorModuleE: doctorModule));
       } catch (e) {
         return emit(SignUpFailure(error: e.toString()));

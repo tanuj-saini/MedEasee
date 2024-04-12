@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:med_ease/Modules/testModule.dart';
 
 import 'package:med_ease/Modules/testUserModule.dart';
+import 'package:med_ease/Utils/Colors.dart';
 import 'package:med_ease/Utils/errorHandiling.dart';
 import 'package:meta/meta.dart';
 import 'package:http/http.dart' as http;
@@ -43,17 +44,15 @@ class BookApppointmentBloc
             },
             body: jsonEncode(
                 {'date': event.date, 'isComplete': event.isComplete}));
+        _httpErrorHandle(res, emit, event.context);
         print(res.body);
-        httpErrorHandle(
-            response: res,
-            context: event.context,
-            onSuccess: () async {
-              Map<String, dynamic> decodedJson = jsonDecode(res.body);
-              print(decodedJson['user']);
-              userModule = UserModuleE.fromJson(decodedJson['user']);
 
-              print("yes");
-            });
+        Map<String, dynamic> decodedJson = jsonDecode(res.body);
+        print(decodedJson['user']);
+        userModule = UserModuleE.fromJson(decodedJson['user']);
+
+        print("yes");
+
         return emit(BookApppointmentSuccess(userModule: userModule));
       } catch (e) {
         return emit(BookApppointmentFailure(error: e.toString()));

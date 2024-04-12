@@ -116,38 +116,59 @@ doctorRouter.post("/AppointmentModify", authDoctor, async (req, res) => {
       .send({ message: "An error occurred while modifying the appointment" });
   }
 });
-// doctorRouter.put("/updateDoctor/:doctorId", authDoctor, async (req, res) => {
-//   const { doctorId } = req.query;
-//   const { date, timeSlots, price, title } = req.body;
 
+// doctorRouter.post("/AppointmentModifyUpdate", authDoctor, async (req, res) => {
 //   try {
-//     const doctor = await doctorModule.findById(doctorId);
+//     const { date, timeSlots, price, title } = req.body;
+//     let timeSlotId = req.query.timeSlotId;
+//     let appointmentDetailsId = req.query.appointmentDetailsId;
+//     if (
+//       !date ||
+//       !timeSlots ||
+//       !price ||
+//       !title ||
+//       !timeSlotId ||
+//       !appointmentDetailsId
+//     ) {
+//       return res.status(400).send({
+//         message:
+//           "Date, timeSlots, price, title, timeSlotId, and appointmentDetailsId are required",
+//       });
+//     }
+
+//     const doctor = await doctorModule.findById(req.user);
 //     if (!doctor) {
-//       return res.status(404).send("No doctor found");
+//       return res.status(404).send({ message: "Doctor not found" });
 //     }
 
-//     let appointment = await appointMentDetail.findOne({ title });
-//     if (appointment) {
-//       appointment.price = price;
-//     } else {
-//       appointment = new appointMentDetail({ price, title });
+//     const appointmentDetail = await appointMentDetail.findById(
+//       appointmentDetailsId
+//     );
+//     const timeSlot = await scheduleTIme.findById(timeSlotId);
+
+//     if (!appointmentDetail || !timeSlot) {
+//       return res
+//         .status(404)
+//         .send({ message: "Appointment detail or time slot not found" });
 //     }
-//     await appointment.save();
 
-//     let schedule = await scheduleTIme.findOne({ date });
-//     if (schedule) {
-//       schedule.timeSlots = timeSlots;
-//     } else {
-//       schedule = new scheduleTIme({ date, timeSlots });
-//     }
-//     await schedule.save();
+//     appointmentDetail.date = date;
+//     appointmentDetail.timeSlots = timeSlots;
+//     appointmentDetail.price = price;
+//     appointmentDetail.title = title;
 
-//     doctor.timeSlot.push({ appointMentDetails: [appointment] });
-//     await doctor.save();
+//     timeSlot.date = date;
+//     timeSlot.timeSlots = timeSlots;
 
-//     res.send(doctor);
+//     await appointmentDetail.save();
+//     await timeSlot.save();
+
+//     res.status(200).send(doctor);
 //   } catch (error) {
-//     res.status(500).send("Error Occur on Server");
+//     console.error(error);
+//     res
+//       .status(500)
+//       .send({ message: "An error occurred while modifying the appointment" });
 //   }
 // });
 
@@ -203,7 +224,6 @@ doctorRouter.post("/selectedTimeSlot", authDoctor, async (req, res) => {
       return res.status(400).send({ message: "Price is required" });
     }
 
-    // Create a new time slot and populate it with the received timeSlots data
     const newTimeSlot = new scheduleTIme({
       date,
       timeSlots,
