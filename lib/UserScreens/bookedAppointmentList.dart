@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:med_ease/Modules/testUserModule.dart'; // Import your user module
-import 'package:med_ease/UpdateModels/UpdateUserModel.dart'; // Import any necessary models
+import 'package:med_ease/UpdateModels/UpdateUserModel.dart';
+import 'package:med_ease/UserScreens/utils/MessageScreen.dart'; // Import any necessary models
 
 class BookedAppointmentList extends StatefulWidget {
   BookedAppointmentList({Key? key}) : super(key: key); // Corrected super call
@@ -25,6 +26,15 @@ class _BookedAppointmentListState extends State<BookedAppointmentList> {
             final appointment = user.appointment[index];
             return Card(
               child: ListTile(
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => MessageScreen(
+                      userId: user.id,
+                      appointMentId: appointment.id ?? '',
+                      doctorID: appointment.doctorId ?? "",
+                    ),
+                  ));
+                },
                 title: Text('Appointment ID: ${appointment.id}'),
                 subtitle: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

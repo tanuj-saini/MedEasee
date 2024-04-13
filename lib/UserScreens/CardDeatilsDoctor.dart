@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:med_ease/Modules/DoctorModify.dart';
 import 'package:med_ease/Modules/testModule.dart';
+import 'package:med_ease/UpdateModels/UpdateUserModel.dart';
 import 'package:med_ease/UserScreens/CardDoctorDetailScreen.dart';
+import 'package:med_ease/UserScreens/utils/MessageScreen.dart';
 import 'package:multi_select_flutter/dialog/multi_select_dialog_field.dart';
 import 'package:multi_select_flutter/util/multi_select_item.dart';
 
@@ -24,35 +27,31 @@ class _BookAppointmentState extends State<BookAppointment> {
   @override
   void initState() {
     super.initState();
-    _generateTimeSlots();
     _loadSelectedTimeSlots();
-  }
-
-  void _generateTimeSlots() {
-    for (var i = 0; i < 24; i++) {
-      _items.add(TimeSlots(hour: i, minute: 0));
-      _items.add(TimeSlots(hour: i, minute: 15));
-      _items.add(TimeSlots(hour: i, minute: 30));
-      _items.add(TimeSlots(hour: i, minute: 45));
-    }
+    print(widget.doctorModuleE);
   }
 
   void _loadSelectedTimeSlots() {
     List<TimeSloted> time =
         widget.doctorModuleE.selectedTimeSlot!.timeSlotPicks!.timeSlot ?? [];
 
-    _selectedTimeSlots.addAll(
-      time
-          .map((timeSloted) => timeSloted.timeSlots ?? [])
-          .expand((slots) => slots)
-          .map((dateTime) =>
-              TimeSlots(hour: dateTime.hour, minute: dateTime.minute))
-          .toList(),
-    );
+    List<TimeSlots> selectedSlots = time
+        .map((timeSloted) => timeSloted.timeSlots ?? [])
+        .expand((slots) => slots)
+        .map((dateTime) =>
+            TimeSlots(hour: dateTime.hour, minute: dateTime.minute))
+        .toList();
+
+    setState(() {
+      _selectedTimeSlots = selectedSlots;
+    });
+
+    print(_selectedTimeSlots.length);
   }
 
   @override
   Widget build(BuildContext context) {
+    final userModel = context.watch<UserBloc>().state;
     print(_selectedTimeSlots.length);
     print('hello');
     return Scaffold(
@@ -192,7 +191,7 @@ class _BookAppointmentState extends State<BookAppointment> {
                               ),
                             ),
                           ),
-                          child: Text('video Appointment'),
+                          child: Text('Video Appointment'),
                         ),
                         ElevatedButton(
                           onPressed: () {
@@ -217,6 +216,27 @@ class _BookAppointmentState extends State<BookAppointment> {
                     ),
                   ),
                 ),
+                // SizedBox(
+                //   height: 20,
+                // ),
+                // ElevatedButton(
+                //   onPressed: () {
+                //     Navigator.of(context).push(MaterialPageRoute(
+                //         builder: (ctx) => MessageScreen(userID: userModel!.id,
+                //               doctor: widget.doctorModuleE,
+                //             )));
+                //   },
+                //   style: ButtonStyle(
+                //     backgroundColor:
+                //         MaterialStateProperty.all<Color>(Colors.blue),
+                //     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                //       RoundedRectangleBorder(
+                //         borderRadius: BorderRadius.circular(20.0),
+                //       ),
+                //     ),
+                //   ),
+                //   child: Text('Message Screen'),
+                // ),
               ],
             ),
           ),
@@ -225,3 +245,14 @@ class _BookAppointmentState extends State<BookAppointment> {
     );
   }
 }
+
+
+// _generateTimeSlots();
+ // void _generateTimeSlots() {
+  //   for (var i = 0; i < 24; i++) {
+  //     _items.add(TimeSlots(hour: i, minute: 0));
+  //     _items.add(TimeSlots(hour: i, minute: 15));
+  //     _items.add(TimeSlots(hour: i, minute: 30));
+  //     _items.add(TimeSlots(hour: i, minute: 45));
+  //   }
+  // }
