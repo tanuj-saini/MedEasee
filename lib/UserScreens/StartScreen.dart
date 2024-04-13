@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:med_ease/DoctorScreen/DoctorScreen.dart';
 import 'package:med_ease/DoctorScreen/DoctorSignUpScreen.dart';
 import 'package:med_ease/DoctorScreen/doctorInfo.dart';
 import 'package:med_ease/Login_SignIn/Login.dart';
@@ -65,7 +66,7 @@ class _StartScreen extends State<StartScreen> {
                             InkWell(
                               onTap: () {
                                 Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (ctx) => SignUpScreen()));
+                                    builder: (ctx) => DoctorInfo()));
                               },
                               child: Container(
                                 height: 35,
@@ -92,7 +93,7 @@ class _StartScreen extends State<StartScreen> {
                             InkWell(
                               onTap: () {
                                 Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (ctx) => SignUpScreen()));
+                                    builder: (ctx) => SignUpDoctor()));
                               },
                               child: Container(
                                 height: 35,
@@ -163,7 +164,7 @@ class _StartScreen extends State<StartScreen> {
                             InkWell(
                               onTap: () {
                                 Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (ctx) => DoctorInfo()));
+                                    builder: (ctx) => UserInfo()));
                               },
                               child: Container(
                                 height: 35,
@@ -190,7 +191,7 @@ class _StartScreen extends State<StartScreen> {
                             InkWell(
                               onTap: () {
                                 Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (ctx) => SignUpDoctor()));
+                                    builder: (ctx) => SignUpScreen()));
                               },
                               child: Container(
                                 height: 35,
