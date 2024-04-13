@@ -32,8 +32,7 @@ class _BookAppointmentState extends State<BookAppointment> {
   }
 
   void _loadSelectedTimeSlots() {
-    List<TimeSloted> time =
-        widget.doctorModuleE.selectedTimeSlot!.timeSlotPicks!.timeSlot ?? [];
+    List<TimeSloted> time = [];
 
     List<TimeSlots> selectedSlots = time
         .map((timeSloted) => timeSloted.timeSlots ?? [])

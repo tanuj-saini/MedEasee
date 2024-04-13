@@ -1,11 +1,14 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
-import 'package:med_ease/Modules/testModule.dart'; // Import necessary modules
-import 'package:med_ease/UpdateModels/UpdateUserModel.dart';
-import 'package:med_ease/UserScreens/utils/messageModule.dart'; // Import necessary modules
-import 'package:med_ease/Utils/Colors.dart'; // Import necessary modules
 import 'package:socket_io_client/socket_io_client.dart' as IO;
+
+import 'package:med_ease/Modules/testModule.dart';
+import 'package:med_ease/UpdateModels/UpdateUserModel.dart';
+import 'package:med_ease/UserScreens/utils/messageModule.dart';
+import 'package:med_ease/Utils/Colors.dart';
 
 class MessageScreen extends StatefulWidget {
   final String userId;
@@ -21,16 +24,16 @@ class MessageScreen extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    return _MessageScreen();
+    return _MessageScreenState();
   }
 }
 
-class _MessageScreen extends State<MessageScreen> {
+class _MessageScreenState extends State<MessageScreen> {
   late IO.Socket socket;
   final TextEditingController _textController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
   bool _loading = false;
-  late List<messageList> listMessage = [];
+  late List<MessageModule> listMessage = [];
 
   @override
   void initState() {
@@ -43,31 +46,36 @@ class _MessageScreen extends State<MessageScreen> {
       "transports": ['websocket'],
       "autoConnect": false,
     });
-    socket.emit('Id', widget.userId);
     socket.connect();
+    socket.emit('Id', widget.doctorID);
+
     socket.onConnect((data) {
       print("Connected");
-      socket.on('messageEvent', (msg) {
+      socket.on("messageEvent", (msg) {
         print(msg);
         setState(() {
-          // Assuming your message format is a String
-          listMessage.add(messageList(text: msg["message"], isFromUser: true));
+          listMessage.add(MessageModule(
+              isMe: false,
+              message: msg['message'],
+              doctorId: msg['doctorId'],
+              userId: msg['userId']));
         });
       });
     });
   }
 
   void sendMessage(String messages, String sourceId, String targetId) {
-    messageList message = messageList(text: messages, isFromUser: true);
-    listMessage.add(message);
-
+    setState(() {
+      listMessage.add(MessageModule(
+          isMe: true, message: messages, doctorId: targetId, userId: sourceId));
+    });
     socket.emit("messageEvent",
-        {"message": message, "sourceId": sourceId, "targetId": targetId});
+        {"message": messages, "sourceId": sourceId, "targetId": targetId});
   }
 
   @override
   void dispose() {
-    socket.dispose(); // Dispose socket when not needed
+    socket.dispose();
     super.dispose();
   }
 
@@ -90,7 +98,9 @@ class _MessageScreen extends State<MessageScreen> {
                   ? ListView.builder(
                       controller: _scrollController,
                       itemBuilder: (context, idx) {
-                        return listMessage[idx];
+                        return MessageListItem(
+                            text: listMessage[idx].message,
+                            isFromUser: listMessage[idx].isMe);
                       },
                       itemCount: listMessage.length,
                     )
@@ -133,6 +143,7 @@ class _MessageScreen extends State<MessageScreen> {
                       ),
                       onFieldSubmitted: (String value) {
                         sendMessage(value, widget.userId, widget.doctorID);
+                        _textController.clear();
                       },
                     ),
                   ),
@@ -163,14 +174,14 @@ class _MessageScreen extends State<MessageScreen> {
   }
 }
 
-class MessageWidget extends StatelessWidget {
-  final String messaage;
+class MessageListItem extends StatelessWidget {
+  final String text;
   final bool isFromUser;
 
-  const MessageWidget({
-    required this.messaage,
-    required this.isFromUser,
+  const MessageListItem({
     Key? key,
+    required this.text,
+    required this.isFromUser,
   }) : super(key: key);
 
   @override
@@ -195,7 +206,7 @@ class MessageWidget extends StatelessWidget {
             margin: const EdgeInsets.only(bottom: 8),
             child: MarkdownBody(
               selectable: true,
-              data: messaage,
+              data: text,
             ),
           ),
         ),

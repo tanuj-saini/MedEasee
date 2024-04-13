@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:med_ease/DoctorScreen/bloc/refresh_doctor_bloc.dart';
 import 'package:med_ease/UpdateModels/UpdateDoctorModule.dart';
+import 'package:med_ease/UserScreens/utils/MessageScreen.dart';
 import 'package:med_ease/Utils/Colors.dart';
 import 'package:med_ease/Utils/LoderScreen.dart';
 
@@ -65,6 +66,12 @@ class _ListAppointmentScreenState extends State<ListAppointmentScreen> {
                       }
                       return Card(
                         child: ListTile(
+                          onTap: () => Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (ctx) => MessageScreen(
+                                      userId: appointment.userId ?? '',
+                                      appointMentId: appointment.id ?? '',
+                                      doctorID: doctorModel.id))),
                           title: Text('Appointment ID: ${appointment.id}'),
                           subtitle: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
