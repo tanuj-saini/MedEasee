@@ -87,6 +87,8 @@ class _DoctorInfoState extends State<DoctorInfo> {
           doctorBloc.updateDoctor(state.doctorModule);
           Navigator.of(context)
               .push(MaterialPageRoute(builder: (ctx) => BottomNavigation()));
+          // Navigator.pushReplacement(context,
+          //     MaterialPageRoute(builder: (context) => BottomNavigation()));
         }
       },
       builder: (context, state) {

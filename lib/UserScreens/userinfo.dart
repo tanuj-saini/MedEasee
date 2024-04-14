@@ -32,6 +32,8 @@ class UserInfo extends StatelessWidget {
           userBloc.updateUser(state.userModule);
           Navigator.of(context)
               .push(MaterialPageRoute(builder: (ctx) => HomeScreen()));
+          // Navigator.pushReplacement(
+          //     context, MaterialPageRoute(builder: (context) => HomeScreen()));
         }
       },
       builder: (context, state) {

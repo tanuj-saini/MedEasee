@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:med_ease/DoctorScreen/bloc/appointmnet_bloc.dart';
+import 'package:med_ease/Modules/testModule.dart';
 import 'package:med_ease/UpdateModels/UpdateDoctorModule.dart';
 import 'package:med_ease/Utils/CustomTextfield.dart';
 import 'package:med_ease/Utils/timeSlot.dart';
@@ -124,11 +125,60 @@ class _DoctorModifyScreenState extends State<DoctorModifyScreen> {
                             return Card(
                               margin: const EdgeInsets.symmetric(
                                   vertical: 8.0, horizontal: 16.0),
-                              child: ListTile(
-                                title: Text('Time Slot ${index + 1}'),
-                                subtitle: Text(
-                                    'Number of Appointments: ${timeSlot.appointMentDetails}'),
-                                onTap: () {},
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    border:
+                                        doctorModel!.selectedTimeSlot!.title ==
+                                                timeSlot.appointMentDetails![0]
+                                                    .title
+                                            ? Border.all(
+                                                color: Colors
+                                                    .greenAccent, // Change this to your desired bright green color
+                                                width:
+                                                    2.0, // Adjust the border width as needed
+                                              )
+                                            : null),
+                                child: ListTile(
+                                  title: Text(
+                                      'Title: ${timeSlot.appointMentDetails![0].title}'),
+                                  subtitle: Text(
+                                      'Price: ${timeSlot.appointMentDetails![0].price}'),
+                                  onTap: () {
+                                    int length = doctorModel.selectedTimeSlot!
+                                        .timeSlotPicks!.timeSlots!.length;
+                                    List<TimeSlotD> selectedTimeSlots = [];
+                                    for (int i = 0; i < length; i++) {
+                                      int hour = doctorModel
+                                              .selectedTimeSlot!
+                                              .timeSlotPicks!
+                                              .timeSlots![i]
+                                              .hour ??
+                                          0;
+                                      int minute = doctorModel
+                                              .selectedTimeSlot!
+                                              .timeSlotPicks!
+                                              .timeSlots![i]
+                                              .minute ??
+                                          0;
+                                      TimeSlotD timeSlotsed =
+                                          TimeSlotD(hour: hour, minute: minute);
+                                      selectedTimeSlots.add(timeSlotsed);
+                                    }
+                                    sendModifyAppointMent.add(
+                                        AppointMentSelectedTimeSlot(
+                                            context: context,
+                                            doctorId: doctorModel.id,
+                                            price: timeSlot
+                                                .appointMentDetails![0].price
+                                                .toString(),
+                                            title: timeSlot
+                                                    .appointMentDetails![0]
+                                                    .title ??
+                                                "",
+                                            timeSlots: selectedTimeSlots,
+                                            date: DateTime.now().toString()));
+                                  },
+                                ),
                               ),
                             );
                           },

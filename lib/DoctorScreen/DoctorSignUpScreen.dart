@@ -46,6 +46,8 @@ class _SignUpDoctor extends State<SignUpDoctor> {
           UserDoctorBloc.updateDoctor(state.doctorModuleE);
           Navigator.of(context)
               .push(MaterialPageRoute(builder: (ctx) => BottomNavigation()));
+          // Navigator.pushReplacement(context,
+          //     MaterialPageRoute(builder: (context) => BottomNavigation()));
         }
       },
       builder: (context, state) {

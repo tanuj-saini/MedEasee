@@ -6,6 +6,7 @@ import 'package:med_ease/Modules/testModule.dart';
 import 'package:med_ease/UpdateModels/UpdateUserModel.dart';
 import 'package:med_ease/UserScreens/CardDoctorDetailScreen.dart';
 import 'package:med_ease/UserScreens/utils/MessageScreen.dart';
+import 'package:med_ease/Utils/Colors.dart';
 import 'package:multi_select_flutter/dialog/multi_select_dialog_field.dart';
 import 'package:multi_select_flutter/util/multi_select_item.dart';
 
@@ -202,11 +203,16 @@ class _BookAppointmentState extends State<BookAppointment> {
                         ),
                         ElevatedButton(
                           onPressed: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (ctx) => CardDoctorDetails(
-                                      timeSlotPicks: _selectedTimeSlots,
-                                      doctorModule: widget.doctorModuleE,
-                                    )));
+                            if (_selectedTimeSlots.length == 1) {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (ctx) => CardDoctorDetails(
+                                        timeSlotPicks: _selectedTimeSlots,
+                                        doctorModule: widget.doctorModuleE,
+                                      )));
+                            } else {
+                              showSnackBar(
+                                  "Select only One time slot", context);
+                            }
                           },
                           style: ButtonStyle(
                             backgroundColor:
