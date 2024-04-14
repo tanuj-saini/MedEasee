@@ -49,6 +49,8 @@ class _BookedAppointmentListState extends State<BookedAppointmentList> {
                             Text('Date: ${detail.date}'),
                             Text('User ID: ${detail.userId}'),
                             Text('Is Complete: ${detail.isComplete}'),
+                            Text(
+                                'TimeSlotSelected:${detail.timeSlotPicks!.timeSlots![0].hour}:${detail.timeSlotPicks!.timeSlots![0].minute}'),
                             Divider(),
                           ],
                         );

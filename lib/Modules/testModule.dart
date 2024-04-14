@@ -142,6 +142,7 @@ class AppointMentDetails {
   String? doctorId;
   String? userId;
   bool? isComplete;
+  TimeSloted? timeSlotPicks;
   String? id;
 
   AppointMentDetails({
@@ -149,6 +150,7 @@ class AppointMentDetails {
     this.doctorId,
     this.userId,
     this.isComplete,
+    this.timeSlotPicks,
     this.id,
   });
 
@@ -157,6 +159,9 @@ class AppointMentDetails {
     doctorId = json['doctorId'];
     userId = json['userId'];
     isComplete = json['isComplete'];
+    timeSlotPicks = json['timeSlotPicks'] != null
+        ? new TimeSloted.fromJson(json['timeSlotPicks'])
+        : null;
     id = json['_id'];
   }
 
@@ -166,6 +171,9 @@ class AppointMentDetails {
     data['doctorId'] = this.doctorId;
     data['userId'] = this.userId;
     data['isComplete'] = this.isComplete;
+    if (this.timeSlotPicks != null) {
+      data['timeSlotPicks'] = this.timeSlotPicks!.toJson();
+    }
     data['_id'] = this.id;
 
     return data;

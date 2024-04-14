@@ -11,10 +11,12 @@ import 'package:upi_india/upi_response.dart';
 
 class PaymentScreen extends StatefulWidget {
   final bool isComplete;
+  final List<TimeSlots> timeSlotPicks;
   final String date;
   final String doctorId;
   PaymentScreen(
-      {required this.date,
+      {required this.timeSlotPicks,
+      required this.date,
       required this.doctorId,
       required this.isComplete,
       super.key});
@@ -148,6 +150,7 @@ class _PaymentScreen extends State<PaymentScreen> {
         print('Transaction Failed');
 
         bookAppointment.add(BookAppointmentUserEvent(
+            timeSlotPicks: widget.timeSlotPicks,
             date: widget.date,
             context: context,
             doctorId: widget.doctorId,

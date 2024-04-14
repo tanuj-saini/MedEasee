@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { scheduleSchema } = require("./ScheduleTime");
 const UserAppointment = new mongoose.Schema({
   date: {
     require: true,
@@ -16,6 +17,7 @@ const UserAppointment = new mongoose.Schema({
     default: false,
     type: Boolean,
   },
+  timeSlotPicks: scheduleSchema,
 });
 const userAppointment = mongoose.model("userAppointment", UserAppointment);
 module.exports = { userAppointment, UserAppointment };

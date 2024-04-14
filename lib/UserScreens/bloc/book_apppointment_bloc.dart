@@ -36,14 +36,17 @@ class BookApppointmentBloc
             medicalShopHistory: [],
             emergencyCall: []);
         String doctorId = event.doctorId;
-        http.Response res = await http.post(
-            Uri.parse('$ip/bookAppointment?doctorId=$doctorId'),
-            headers: <String, String>{
-              'Content-Type': 'application/json; charset=UTF-8',
-              'x-auth-token-w': token,
-            },
-            body: jsonEncode(
-                {'date': event.date, 'isComplete': event.isComplete}));
+        http.Response res =
+            await http.post(Uri.parse('$ip/bookAppointment?doctorId=$doctorId'),
+                headers: <String, String>{
+                  'Content-Type': 'application/json; charset=UTF-8',
+                  'x-auth-token-w': token,
+                },
+                body: jsonEncode({
+                  'date': event.date,
+                  'isComplete': event.isComplete,
+                  'timeSlots': event.timeSlotPicks
+                }));
         _httpErrorHandle(res, emit, event.context);
         print(res.body);
 

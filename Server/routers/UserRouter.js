@@ -7,6 +7,7 @@ const {
   userAppointment,
   UserAppointment,
 } = require("../DoctorModule/UserAppointed");
+const { scheduleTIme } = require("../DoctorModule/ScheduleTime");
 
 const UserRouter = express.Router();
 UserRouter.post("/user/signUp", async (req, res) => {
@@ -108,7 +109,7 @@ UserRouter.post("/User/SearchDoctor", async (req, res) => {
 
 UserRouter.post("/bookAppointment", auth, async (req, res) => {
   try {
-    const { date, isComplete } = req.body;
+    const { date, isComplete, timeSlots } = req.body;
     const doctorId = req.query.doctorId;
     const doctor = await doctorModule.findById(doctorId);
     const user = await userModule.findById(req.user);
@@ -116,12 +117,19 @@ UserRouter.post("/bookAppointment", auth, async (req, res) => {
     if (!doctor) {
       return res.status(400).json({ msg: "Doctor not found" });
     }
+    const newTimeSlot = new scheduleTIme({
+      date,
+      timeSlots,
+    });
+    await newTimeSlot.save();
 
     const newAppointment = new userAppointment({
       date: date,
       doctorId: doctorId,
       userId: req.user,
-      isComplete: isComplete || false, // set default value if not provided
+      isComplete: isComplete || false,
+      timeSlotPicks: newTimeSlot,
+      // set default value if not provided
     });
 
     await newAppointment.save();

@@ -57,7 +57,7 @@ class PersistStateBloc extends Bloc<PersistStateEvent, PersistStateState> {
           });
           _httpErrorHandle(userRes, emit, event.context);
           Map<String, dynamic> decodedJson = jsonDecode(userRes.body);
-
+          print(userRes.body);
           userModule = UserModuleE.fromJson(decodedJson);
           print("welcome again");
 

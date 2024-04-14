@@ -204,6 +204,7 @@ class _BookAppointmentState extends State<BookAppointment> {
                           onPressed: () {
                             Navigator.of(context).push(MaterialPageRoute(
                                 builder: (ctx) => CardDoctorDetails(
+                                      timeSlotPicks: _selectedTimeSlots,
                                       doctorModule: widget.doctorModuleE,
                                     )));
                           },

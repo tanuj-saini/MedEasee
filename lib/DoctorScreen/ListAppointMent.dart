@@ -86,6 +86,8 @@ class _ListAppointmentScreenState extends State<ListAppointmentScreen> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text('Date: ${detail.date}'),
+                                      Text(
+                                          'TimeSlotSelected:${detail.timeSlotPicks!.timeSlots![0].hour}:${detail.timeSlotPicks!.timeSlots![0].minute}'),
                                       Text('User ID: ${detail.userId}'),
                                       Text('Is Complete: ${detail.isComplete}'),
                                       Divider(),

@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:med_ease/Modules/testModule.dart';
+
 class UserModuleE {
   String id;
   String name;
@@ -97,9 +99,11 @@ class AppointmentLeft {
   String? doctorId;
   String? userId;
   bool? isComplete;
+  TimeSloted? timeSlotPicks;
   String? id;
 
   AppointmentLeft({
+    this.timeSlotPicks,
     this.date,
     this.doctorId,
     this.userId,
@@ -112,6 +116,9 @@ class AppointmentLeft {
     doctorId = json['doctorId'];
     userId = json['userId'];
     isComplete = json['isComplete'];
+    timeSlotPicks = json['timeSlotPicks'] != null
+        ? new TimeSloted.fromJson(json['timeSlotPicks'])
+        : null;
     id = json['_id'];
   }
 
@@ -121,6 +128,9 @@ class AppointmentLeft {
     data['doctorId'] = this.doctorId;
     data['userId'] = this.userId;
     data['isComplete'] = this.isComplete;
+    if (this.timeSlotPicks != null) {
+      data['timeSlotPicks'] = this.timeSlotPicks!.toJson();
+    }
     data['_id'] = this.id;
 
     return data;
