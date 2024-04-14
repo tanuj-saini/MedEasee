@@ -15,12 +15,47 @@ class ListAppointmentScreen extends StatefulWidget {
 }
 
 class _ListAppointmentScreenState extends State<ListAppointmentScreen> {
+  void delete({required String doctorId, required String userID}) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Confirmation"),
+          content: SizedBox(
+            width: 300, // Adjust width as needed
+            child: Text("Are you sure to Cancel?"),
+          ),
+          actions: <Widget>[
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Dismiss the dialog
+              },
+              child: Text("Cancel"),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                deleteAppointment(doctorId: doctorId, userID: userID);
+              },
+              child: Text("OK"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void deleteAppointment({required String doctorId, required String userID}) {
+    final refreshDoctorModule = BlocProvider.of<RefreshDoctorBloc>(context);
+    refreshDoctorModule.add(deleteAppointEvent(
+        context: context, doctorId: doctorId, userId: userID));
+    Navigator.of(context).pop();
+  }
+
   @override
   Widget build(BuildContext context) {
     final doctorModel = context.watch<DoctorBloc>().state;
-    print(doctorModel!.applicationLeft.length);
-    print("heoolo");
     final refreshDoctorModule = BlocProvider.of<RefreshDoctorBloc>(context);
+
     return BlocConsumer<RefreshDoctorBloc, RefreshDoctorState>(
       listener: (context, state) {
         if (state is RefreshDoctorFailure) {
@@ -33,97 +68,98 @@ class _ListAppointmentScreenState extends State<ListAppointmentScreen> {
       },
       builder: (context, state) {
         return Scaffold(
-            appBar: AppBar(
-              title: Text("List of Appointments"),
-              actions: [
-                IconButton(
-                    onPressed: () => refreshDoctorModule.add(
-                        RefreshDoctorListEvent(
-                            context: context, doctorId: doctorModel.id)),
-                    icon: Icon(Icons.refresh_rounded))
-              ],
-            ),
-            body: doctorModel.applicationLeft.length == 0
-                ? Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          "No Appointments Found",
-                          style: TextStyle(fontSize: 20),
-                        ),
-                        SizedBox(
-                          height: 50,
-                        ),
-                      ],
-                    ),
-                  )
-                : ListView.builder(
-                    itemCount: doctorModel.applicationLeft.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      final appointment = doctorModel.applicationLeft[index];
-                      if (state is RefreshDoctorLoding) {
-                        return Loder();
-                      }
-                      return Card(
-                        child: ListTile(
-                          onTap: () => Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (ctx) => MessageScreen(
-                                      userId: appointment.userId ?? '',
-                                      appointMentId: appointment.id ?? '',
-                                      doctorID: doctorModel.id))),
-                          title: Text('Appointment ID: ${appointment.id}'),
-                          subtitle: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text('User ID: ${appointment.userId}'),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: appointment.appointMentDetails!
-                                    .map((detail) {
-                                  return Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text('Date: ${detail.date}'),
-                                      Text(
-                                          'TimeSlotSelected:${detail.timeSlotPicks!.timeSlots![0].hour}:${detail.timeSlotPicks!.timeSlots![0].minute}'),
-                                      Text('User ID: ${detail.userId}'),
-                                      Text('Is Complete: ${detail.isComplete}'),
-                                      Divider(),
-                                      Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            ElevatedButton.icon(
-                                                onPressed: () {},
-                                                icon: Icon(Icons.done),
-                                                label: Text("Done")),
-                                            ElevatedButton.icon(
-                                                onPressed: () {
-                                                  refreshDoctorModule.add(
-                                                      deleteAppointEvent(
-                                                          context: context,
-                                                          doctorId:
-                                                              doctorModel.id,
-                                                          userId:
-                                                              detail.userId ??
-                                                                  ''));
-                                                },
-                                                icon: Icon(Icons.cancel),
-                                                label: Text("Cancel")),
-                                          ])
-                                    ],
-                                  );
-                                }).toList(),
-                              ),
-                            ],
+          appBar: AppBar(
+            title: Text("List of Appointments"),
+            actions: [
+              IconButton(
+                onPressed: () => refreshDoctorModule.add(RefreshDoctorListEvent(
+                    context: context, doctorId: doctorModel!.id)),
+                icon: Icon(Icons.refresh_rounded),
+              )
+            ],
+          ),
+          body: doctorModel!.applicationLeft.isEmpty
+              ? Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "No Appointments Found",
+                        style: TextStyle(fontSize: 20),
+                      ),
+                      SizedBox(height: 50),
+                    ],
+                  ),
+                )
+              : ListView.builder(
+                  itemCount: doctorModel.applicationLeft.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    final appointment = doctorModel.applicationLeft[index];
+                    if (state is RefreshDoctorLoding) {
+                      return Loder(); // Assuming Loder is a custom loading widget
+                    }
+                    return Card(
+                      child: ListTile(
+                        onTap: () => Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (ctx) => MessageScreen(
+                              userId: appointment.userId ?? '',
+                              appointMentId: appointment.id ?? '',
+                              doctorID: doctorModel.id,
+                            ),
                           ),
                         ),
-                      );
-                    },
-                  ));
+                        title: Text('Appointment ID: ${appointment.id}'),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('User ID: ${appointment.userId}'),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children:
+                                  appointment.appointMentDetails!.map((detail) {
+                                return Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text('Date: ${detail.date}'),
+                                    Text(
+                                      'TimeSlotSelected: ${detail.timeSlotPicks!.timeSlots![0].hour}:${detail.timeSlotPicks!.timeSlots![0].minute}',
+                                    ),
+                                    Text('User ID: ${detail.userId}'),
+                                    Text('Is Complete: ${detail.isComplete}'),
+                                    Divider(),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        ElevatedButton.icon(
+                                          onPressed: () {},
+                                          icon: Icon(Icons.done),
+                                          label: Text("Done"),
+                                        ),
+                                        ElevatedButton.icon(
+                                          onPressed: () {
+                                            delete(
+                                              doctorId: detail.doctorId ?? '',
+                                              userID: detail.userId ?? '',
+                                            );
+                                          },
+                                          icon: Icon(Icons.cancel),
+                                          label: Text("Cancel"),
+                                        ),
+                                      ],
+                                    )
+                                  ],
+                                );
+                              }).toList(),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
+        );
       },
     );
   }

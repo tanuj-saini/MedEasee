@@ -47,7 +47,7 @@ class _BookAppointmentState extends State<BookAppointment> {
       selectedTimeSlots.add(timeSlotsed);
     }
     setState(() {
-      _selectedTimeSlots = selectedTimeSlots;
+      // _selectedTimeSlots = selectedTimeSlots;
       _items = selectedTimeSlots.toList(); // Assign values to _items here
     });
   }
