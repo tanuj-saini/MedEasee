@@ -298,7 +298,7 @@ doctorRouter.delete("/delete/AppointMents", async (req, res) => {
     // Save the updated UserModule document
     await user.save();
 
-    return res.json(user);
+    return res.json({ user: user, doctor: doctor });
   } catch (error) {
     console.error("Error deleting user appointment:", error);
     return res.status(500).json({ message: "Internal Server Error" });

@@ -77,9 +77,14 @@ class RefreshDoctorBloc extends Bloc<RefreshDoctorEvent, RefreshDoctorState> {
         _httpErrorHandle(res, emit, event.context);
         Map<String, dynamic> decodedJson = jsonDecode(res.body);
 
-        UserModuleE userModule = UserModuleE.fromJson(decodedJson);
+        UserModuleE userModule = UserModuleE.fromJson(decodedJson['user']);
+        final jsonData = jsonDecode(res.body);
+
+        Doctor doctorModule = Doctor.fromJson(jsonData['doctor']);
+
         emit(DeleteAppointSuccess(
             user: userModule, successText: "AppointMents Delted"));
+        return emit(RefreshDoctorSuccess(doctor: doctorModule));
       } catch (e) {
         return emit(RefreshDoctorFailure(error: e.toString()));
       }
