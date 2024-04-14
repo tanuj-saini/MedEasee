@@ -52,6 +52,19 @@ class _BookedAppointmentListState extends State<BookedAppointmentList> {
                             Text(
                                 'TimeSlotSelected:${detail.timeSlotPicks!.timeSlots![0].hour}:${detail.timeSlotPicks!.timeSlots![0].minute}'),
                             Divider(),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "Cancel Fee may Charge:",
+                                  style: TextStyle(color: Colors.red),
+                                ),
+                                ElevatedButton.icon(
+                                    onPressed: () {},
+                                    icon: Icon(Icons.cancel),
+                                    label: Text("Cancel")),
+                              ],
+                            ),
                           ],
                         );
                       }).toList(),

@@ -91,6 +91,19 @@ class _ListAppointmentScreenState extends State<ListAppointmentScreen> {
                                       Text('User ID: ${detail.userId}'),
                                       Text('Is Complete: ${detail.isComplete}'),
                                       Divider(),
+                                      Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            ElevatedButton.icon(
+                                                onPressed: () {},
+                                                icon: Icon(Icons.done),
+                                                label: Text("Done")),
+                                            ElevatedButton.icon(
+                                                onPressed: () {},
+                                                icon: Icon(Icons.cancel),
+                                                label: Text("Cancel")),
+                                          ])
                                     ],
                                   );
                                 }).toList(),
