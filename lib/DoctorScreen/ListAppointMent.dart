@@ -5,6 +5,7 @@ import 'package:med_ease/UpdateModels/UpdateDoctorModule.dart';
 import 'package:med_ease/UserScreens/utils/MessageScreen.dart';
 import 'package:med_ease/Utils/Colors.dart';
 import 'package:med_ease/Utils/LoderScreen.dart';
+import 'package:med_ease/bloc/user_moduel_bloc.dart';
 
 class ListAppointmentScreen extends StatefulWidget {
   ListAppointmentScreen({Key? key}) : super(key: key);
@@ -100,7 +101,16 @@ class _ListAppointmentScreenState extends State<ListAppointmentScreen> {
                                                 icon: Icon(Icons.done),
                                                 label: Text("Done")),
                                             ElevatedButton.icon(
-                                                onPressed: () {},
+                                                onPressed: () {
+                                                  refreshDoctorModule.add(
+                                                      deleteAppointEvent(
+                                                          context: context,
+                                                          doctorId:
+                                                              doctorModel.id,
+                                                          userId:
+                                                              detail.userId ??
+                                                                  ''));
+                                                },
                                                 icon: Icon(Icons.cancel),
                                                 label: Text("Cancel")),
                                           ])

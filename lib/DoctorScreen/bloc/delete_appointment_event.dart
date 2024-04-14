@@ -5,5 +5,10 @@ sealed class DeleteAppointmentEvent {}
 
 class deleteAppoint extends DeleteAppointmentEvent {
   final String appointMentId;
-  deleteAppoint({required this.appointMentId});
+  final String doctorId;
+  final String userId;
+  deleteAppoint(
+      {required this.doctorId,
+      required this.userId,
+      required this.appointMentId});
 }

@@ -25,6 +25,12 @@ class PersistHttpError extends RefreshDoctorState {
   PersistHttpError({required this.errorMessage});
 }
 
+class DeleteAppointSuccess extends RefreshDoctorState {
+  final String successText;
+  final UserModuleE user;
+  DeleteAppointSuccess({required this.user, required this.successText});
+}
+
 void _httpErrorHandle(http.Response response, Emitter<RefreshDoctorState> emit,
     BuildContext context) {
   switch (response.statusCode) {

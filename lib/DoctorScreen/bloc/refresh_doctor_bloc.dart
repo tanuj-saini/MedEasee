@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:med_ease/Modules/testModule.dart';
+import 'package:med_ease/Modules/testUserModule.dart';
 import 'package:med_ease/Utils/Colors.dart';
 import 'package:med_ease/Utils/errorHandiling.dart';
 import 'package:meta/meta.dart';
@@ -52,6 +53,33 @@ class RefreshDoctorBloc extends Bloc<RefreshDoctorEvent, RefreshDoctorState> {
 
         print(doctorModule);
         return emit(RefreshDoctorSuccess(doctor: doctorModule));
+      } catch (e) {
+        return emit(RefreshDoctorFailure(error: e.toString()));
+      }
+    });
+    on<deleteAppointEvent>((event, emit) async {
+      emit(RefreshDoctorLoding());
+      try {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        String? token = prefs.getString('x-auth-token-D');
+        if (token == null) {
+          return emit(RefreshDoctorFailure(error: "You are not a doctor"));
+        }
+
+        http.Response res = await http.delete(
+            Uri.parse("$ip/delete/AppointMents"),
+            headers: <String, String>{
+              'Content-Type': 'application/json; charset=UTF-8',
+              'x-auth-token-D': token,
+            },
+            body: jsonEncode(
+                {"doctorId": event.doctorId, "userId": event.userId}));
+        _httpErrorHandle(res, emit, event.context);
+        Map<String, dynamic> decodedJson = jsonDecode(res.body);
+
+        UserModuleE userModule = UserModuleE.fromJson(decodedJson);
+        emit(DeleteAppointSuccess(
+            user: userModule, successText: "AppointMents Delted"));
       } catch (e) {
         return emit(RefreshDoctorFailure(error: e.toString()));
       }

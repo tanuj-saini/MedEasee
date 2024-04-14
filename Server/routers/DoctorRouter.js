@@ -5,6 +5,7 @@ const authDoctor = require("../MiddleWare/doctorMiddleware");
 const { doctorModule } = require("../DoctorModule/doctorModule");
 const { appointMentDetail } = require("../DoctorModule/appointMentDetails");
 const { scheduleTIme } = require("../DoctorModule/ScheduleTime");
+const { userModule } = require("../Modules/UserModule");
 const doctorRouter = express.Router();
 doctorRouter.post("/doctor/signUp", async (req, res) => {
   try {
@@ -242,6 +243,65 @@ doctorRouter.post("/selectedTimeSlot", authDoctor, async (req, res) => {
     res.status(201).json(doctor);
   } catch (e) {
     res.status(500).json({ error: e.message });
+  }
+});
+
+doctorRouter.delete("/delete/AppointMents", async (req, res) => {
+  const { doctorId, userId } = req.body;
+
+  try {
+    // Find the DoctorModule document by its ID
+    const doctor = await doctorModule.findById(doctorId);
+
+    if (!doctor) {
+      return res.status(404).json({ message: "Doctor not found" });
+    }
+
+    // Find the index of the UserAppointment to remove from the doctor's records
+    const appointmentIndex = doctor.applicationLeft.findIndex(
+      (appointment) => appointment.userId === userId
+    );
+
+    if (appointmentIndex === -1) {
+      return res
+        .status(404)
+        .json({ message: "User appointment not found for this doctor" });
+    }
+
+    // Remove the UserAppointment from the doctor's records
+    doctor.applicationLeft.splice(appointmentIndex, 1);
+
+    // Save the updated DoctorModule document
+    await doctor.save();
+
+    // Find the UserModule document by its ID
+    const user = await userModule.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Find the index of the appointment to remove from the user's records
+    const userAppointmentIndex = user.appointment.findIndex(
+      (appointment) => appointment.doctorId === doctorId
+    );
+
+    if (userAppointmentIndex === -1) {
+      return res
+        .status(404)
+        .json({ message: "Appointment not found for this user" });
+    }
+
+    // Remove the appointment from the user's records
+    user.appointment.splice(userAppointmentIndex, 1);
+
+    // Save the updated UserModule document
+    await user.save();
+
+    return res.json(user);
+  } catch (error) {
+    console.error("Error deleting user appointment:", error);
+    return res.status(500).json({ message: "Internal Server Error" });
   }
 });
 

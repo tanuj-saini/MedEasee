@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:med_ease/DoctorScreen/BottomNavigation.dart';
 import 'package:med_ease/DoctorScreen/DoctorScreen.dart';
 import 'package:med_ease/DoctorScreen/bloc/appointmnet_bloc.dart';
+import 'package:med_ease/DoctorScreen/bloc/delete_appointment_bloc.dart';
 import 'package:med_ease/DoctorScreen/bloc/refresh_doctor_bloc.dart';
 import 'package:med_ease/Login_SignIn/Login.dart';
 import 'package:med_ease/Login_SignIn/OtpScreen.dart';
@@ -81,6 +82,9 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => RefreshDoctorBloc(),
         ),
+        // BlocProvider(
+        //   create: (context) => DeleteAppointmentBloc(),
+        // ),
         BlocProvider(create: (context) {
           if (typeOfUser == "doctor") {
             return PersistStateBloc()
