@@ -347,7 +347,7 @@ class TimeSlots {
 class SelectedTimeSlot {
   String? price;
   String? title;
-  TimeSlotPicks? timeSlotPicks;
+  TimeSlotPicksU? timeSlotPicks;
 
   SelectedTimeSlot({this.price, this.title, this.timeSlotPicks});
 
@@ -355,7 +355,7 @@ class SelectedTimeSlot {
     price = json['price'];
     title = json['title'];
     timeSlotPicks = json['timeSlotPicks'] != null
-        ? new TimeSlotPicks.fromJson(json['timeSlotPicks'])
+        ? new TimeSlotPicksU.fromJson(json['timeSlotPicks'])
         : null;
   }
 
@@ -373,10 +373,13 @@ class SelectedTimeSlot {
 class TimeSlotPicksU {
   String? date;
   List<TimeSlots>? timeSlots;
-  String? sId;
-  int? iV;
+  String? Id;
 
-  TimeSlotPicksU({this.date, this.timeSlots, this.sId, this.iV});
+  TimeSlotPicksU({
+    this.date,
+    this.timeSlots,
+    this.Id,
+  });
 
   TimeSlotPicksU.fromJson(Map<String, dynamic> json) {
     date = json['date'];
@@ -386,8 +389,7 @@ class TimeSlotPicksU {
         timeSlots!.add(new TimeSlots.fromJson(v));
       });
     }
-    sId = json['_id'];
-    iV = json['__v'];
+    Id = json['_id'];
   }
 
   Map<String, dynamic> toJson() {
@@ -396,8 +398,8 @@ class TimeSlotPicksU {
     if (this.timeSlots != null) {
       data['timeSlots'] = this.timeSlots!.map((v) => v.toJson()).toList();
     }
-    data['_id'] = this.sId;
-    data['__v'] = this.iV;
+    data['_id'] = this.Id;
+
     return data;
   }
 }

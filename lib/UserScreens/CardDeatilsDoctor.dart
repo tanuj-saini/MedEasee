@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:med_ease/Modules/DoctorModify.dart';
 import 'package:med_ease/Modules/testModule.dart';
 import 'package:med_ease/UpdateModels/UpdateUserModel.dart';
@@ -32,25 +33,31 @@ class _BookAppointmentState extends State<BookAppointment> {
   }
 
   void _loadSelectedTimeSlots() {
-    List<TimeSloted> time = [];
-
-    List<TimeSlots> selectedSlots = time
-        .map((timeSloted) => timeSloted.timeSlots ?? [])
-        .expand((slots) => slots)
-        .map((dateTime) =>
-            TimeSlots(hour: dateTime.hour, minute: dateTime.minute))
-        .toList();
-
+    int length =
+        widget.doctorModuleE.selectedTimeSlot!.timeSlotPicks!.timeSlots!.length;
+    List<TimeSlots> selectedTimeSlots = [];
+    for (int i = 0; i < length; i++) {
+      int hour = widget.doctorModuleE.selectedTimeSlot!.timeSlotPicks!
+              .timeSlots![i].hour ??
+          0;
+      int minute = widget.doctorModuleE.selectedTimeSlot!.timeSlotPicks!
+              .timeSlots![i].minute ??
+          0;
+      TimeSlots timeSlotsed = TimeSlots(hour: hour, minute: minute);
+      selectedTimeSlots.add(timeSlotsed);
+    }
     setState(() {
-      _selectedTimeSlots = selectedSlots;
+      _selectedTimeSlots = selectedTimeSlots;
+      _items = selectedTimeSlots.toList(); // Assign values to _items here
     });
-
-    print(_selectedTimeSlots.length);
   }
 
   @override
   Widget build(BuildContext context) {
     final userModel = context.watch<UserBloc>().state;
+    // print(widget
+    //     .doctorModuleE.selectedTimeSlot!.timeSlotPicks!.timeSlots![0].minute);
+    // print(_selectedTimeSlots.length);
     print(_selectedTimeSlots.length);
     print('hello');
     return Scaffold(
@@ -69,7 +76,7 @@ class _BookAppointmentState extends State<BookAppointment> {
         children: [
           Container(
             height: 250,
-            child: Image.asset('assets/img1.png'),
+            child: SvgPicture.asset('assets/s.svg'),
           ),
           Card(
             color: Colors.black87,
@@ -139,7 +146,8 @@ class _BookAppointmentState extends State<BookAppointment> {
                       items: _items
                           .map((timeSlot) => MultiSelectItem<TimeSlots>(
                                 timeSlot,
-                                timeSlot.toString(),
+                                "${timeSlot.hour}:${timeSlot.minute}",
+                                //timeSlot.minute.toString(),
                               ))
                           .toList(),
                       title: Text("Time"),

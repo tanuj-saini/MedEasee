@@ -18,7 +18,7 @@ io.on("connection", (socket) => {
   socket.on("messageEvent", (msg) => {
     console.log("Received message:", msg);
     let targetId = msg.targetId;
-    console.log("Target ID:", targetId);
+    console.log("Target ID", targetId);
     // console.log("Client:", clients[targetId]);
     if (clients[targetId]) {
       clients[targetId].emit("messageEvent", msg);

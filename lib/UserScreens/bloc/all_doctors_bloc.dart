@@ -42,7 +42,9 @@ class AllDoctorsBloc extends Bloc<AllDoctorsEvent, AllDoctorsState> {
 
         for (int i = 0; i < length; i++) {
           final jsonData = jsonResponse[i];
+          print(jsonData);
           Doctor doctor = Doctor.fromJson(jsonData);
+
           allDoctors.add(doctor);
         }
 

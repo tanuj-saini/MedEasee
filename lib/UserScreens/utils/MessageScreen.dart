@@ -47,7 +47,7 @@ class _MessageScreenState extends State<MessageScreen> {
       "autoConnect": false,
     });
     socket.connect();
-    socket.emit('Id', widget.doctorID);
+    socket.emit('Id', widget.userId);
 
     socket.onConnect((data) {
       print("Connected");
@@ -71,12 +71,6 @@ class _MessageScreenState extends State<MessageScreen> {
     });
     socket.emit("messageEvent",
         {"message": messages, "sourceId": sourceId, "targetId": targetId});
-  }
-
-  @override
-  void dispose() {
-    socket.dispose();
-    super.dispose();
   }
 
   @override

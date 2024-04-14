@@ -60,10 +60,6 @@ class AppointmnetBloc extends Bloc<AppointmnetEvent, AppointmnetState> {
         doctorModule = Doctor.fromJson(jsonData);
         print('yes it works');
         print(doctorModule);
-
-        print(res.body);
-        print("hello");
-        print(doctorModule);
         return emit(AppointmentSuccess(doctorModule: doctorModule));
       } catch (e) {
         return emit(AppointmentFailure(error: e.toString()));
