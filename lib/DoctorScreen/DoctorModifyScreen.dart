@@ -180,15 +180,19 @@ class _DoctorModifyScreenState extends State<DoctorModifyScreen> {
                                     ),
                                   ),
                                   onTap: () {
-                                    int length = doctorModel.selectedTimeSlot!
-                                        .timeSlotPicks!.timeSlots!.length;
+                                    int length = timeSlot
+                                        .appointMentDetails![0]
+                                        .timeSlotPicks![0]
+                                        .timeSlot![0]
+                                        .timeSlots!
+                                        .length;
                                     List<TimeSlotD> selectedTimeSlots = [];
                                     for (int i = 0; i < length; i++) {
                                       int hour = timeSlot
                                               .appointMentDetails![0]
                                               .timeSlotPicks![0]
                                               .timeSlot![0]
-                                              .timeSlots![0]
+                                              .timeSlots![i]
                                               .hour ??
                                           0;
                                       0;
@@ -196,7 +200,7 @@ class _DoctorModifyScreenState extends State<DoctorModifyScreen> {
                                               .appointMentDetails![0]
                                               .timeSlotPicks![0]
                                               .timeSlot![0]
-                                              .timeSlots![0]
+                                              .timeSlots![i]
                                               .minute ??
                                           0;
                                       0;

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:med_ease/Modules/testModule.dart';
 import 'package:med_ease/UpdateModels/UpdateUserModel.dart';
+import 'package:med_ease/UserScreens/HomeScreen.dart';
 import 'package:med_ease/UserScreens/bloc/all_doctors_bloc.dart';
 import 'package:med_ease/UserScreens/bloc/book_apppointment_bloc.dart';
 import 'package:med_ease/UserScreens/utils/PaymentScreen.dart';
@@ -34,7 +35,10 @@ class _CardDetailsScreeen extends State<CardDoctorDetails> {
         if (state is BookApppointmentSuccess) {
           final UserBlocUpdate = context.read<UserBloc>();
           UserBlocUpdate.updateUser(state.userModule);
+
           showSnackBar("Book Complete", context);
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (ctx) => HomeScreen()));
         }
       },
       builder: (context, state) {

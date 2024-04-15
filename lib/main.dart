@@ -23,6 +23,7 @@ import 'package:med_ease/Utils/Colors.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:med_ease/UpdateModels/UpdateUserModel.dart';
 import 'package:med_ease/Utils/LoderScreen.dart';
+import 'package:med_ease/Utils/SplashScreen.dart';
 import 'package:med_ease/bloc/persist_state_bloc.dart';
 import 'package:med_ease/bloc/sendotp_bloc_bloc.dart';
 import 'package:med_ease/bloc/user_moduel_bloc.dart';
@@ -103,7 +104,6 @@ class MyApp extends StatelessWidget {
             color: appBarColor,
           ),
         ),
-        // home: Login(),
         home: BlocBuilder<PersistStateBloc, PersistStateState>(
             builder: (context, state) {
           if (typeOfUser == "doctor") {
@@ -113,10 +113,10 @@ class MyApp extends StatelessWidget {
             if (state is PersitDoctorSuccess) {
               final doctorBloc = context.read<DoctorBloc>();
               doctorBloc.updateDoctor(state.doctorModule);
-              print("foctorBlocUpdate");
+              print("DoctorBlocUpdate");
               return BottomNavigation();
             } else {
-              return StartScreen();
+              return SplashScreen();
             }
           }
           if (typeOfUser == "user") {
@@ -129,10 +129,10 @@ class MyApp extends StatelessWidget {
 
               return HomeScreen();
             } else {
-              return StartScreen();
+              return SplashScreen();
             }
           }
-          return StartScreen();
+          return SplashScreen();
         }),
       ),
     );
