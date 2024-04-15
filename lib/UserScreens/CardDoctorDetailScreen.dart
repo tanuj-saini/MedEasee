@@ -10,9 +10,12 @@ import 'package:med_ease/UserScreens/utils/PaymentScreen.dart';
 import 'package:med_ease/Utils/Colors.dart';
 import 'package:med_ease/Utils/DoctorModule.dart';
 import 'package:med_ease/Utils/LoderScreen.dart';
+import 'package:med_ease/Utils/OrderSplashScreen.dart';
+import 'package:med_ease/Utils/SplashScreen.dart';
 
 class CardDoctorDetails extends StatefulWidget {
   final List<TimeSlots> timeSlotPicks;
+
   final Doctor doctorModule;
   CardDoctorDetails(
       {required this.timeSlotPicks, required this.doctorModule, super.key});
@@ -37,8 +40,12 @@ class _CardDetailsScreeen extends State<CardDoctorDetails> {
           UserBlocUpdate.updateUser(state.userModule);
 
           showSnackBar("Book Complete", context);
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (ctx) => HomeScreen()));
+
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (ctx) => OrderSplash(
+                  timeSlot: widget.timeSlotPicks[0],
+                  AppointMentId: state.userModule.appointment.last.id ?? "",
+                  dateTimeOrder: DateTime.now().toString())));
         }
       },
       builder: (context, state) {

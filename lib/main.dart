@@ -23,6 +23,7 @@ import 'package:med_ease/Utils/Colors.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:med_ease/UpdateModels/UpdateUserModel.dart';
 import 'package:med_ease/Utils/LoderScreen.dart';
+import 'package:med_ease/Utils/OrderSplashScreen.dart';
 import 'package:med_ease/Utils/SplashScreen.dart';
 import 'package:med_ease/bloc/persist_state_bloc.dart';
 import 'package:med_ease/bloc/sendotp_bloc_bloc.dart';
@@ -104,6 +105,10 @@ class MyApp extends StatelessWidget {
             color: appBarColor,
           ),
         ),
+        // home: OrderSplash(
+        //   AppointMentId: "533242345rfrew423432",
+        //   dateTime: "12:43",
+        // )
         home: BlocBuilder<PersistStateBloc, PersistStateState>(
             builder: (context, state) {
           if (typeOfUser == "doctor") {

@@ -206,7 +206,7 @@ class _StartScreen extends State<StartScreen> {
                                 ),
                                 child: Center(
                                   child: Text(
-                                    'To Logged ip',
+                                    'To Logged in',
                                     style: TextStyle(color: Colors.white),
                                   ),
                                 ),
