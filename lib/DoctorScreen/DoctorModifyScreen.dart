@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:med_ease/DoctorScreen/bloc/appointmnet_bloc.dart';
 import 'package:med_ease/Modules/testModule.dart';
 import 'package:med_ease/UpdateModels/UpdateDoctorModule.dart';
+import 'package:med_ease/Utils/Colors.dart';
 import 'package:med_ease/Utils/CustomTextfield.dart';
 import 'package:med_ease/Utils/timeSlot.dart';
 import 'package:multi_select_flutter/dialog/multi_select_dialog_field.dart';
@@ -67,6 +68,7 @@ class _DoctorModifyScreenState extends State<DoctorModifyScreen> {
                     title: _titleContoller.text,
                     timeSlots: _selectedTimeSlots,
                     date: DateTime.now().toString()));
+                showSnackBar("Successfully Updated Time Slot", context);
               },
               icon: Icon(Icons.save))
         ],
@@ -139,44 +141,86 @@ class _DoctorModifyScreenState extends State<DoctorModifyScreen> {
                                               )
                                             : null),
                                 child: ListTile(
-                                  title: Text(
-                                      'Title: ${timeSlot.appointMentDetails![0].title}'),
-                                  subtitle: Text(
-                                      'Price: ${timeSlot.appointMentDetails![0].price}'),
+                                  title: Align(
+                                    alignment: Alignment.topLeft,
+                                    child: Column(
+                                      children: [
+                                        Text(
+                                          '${timeSlot.appointMentDetails![0].title}',
+                                          style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        Text(
+                                            'Price: ${timeSlot.appointMentDetails![0].price}'),
+                                      ],
+                                    ),
+                                  ),
+                                  subtitle: SingleChildScrollView(
+                                    scrollDirection: Axis
+                                        .horizontal, // Set the scroll direction to horizontal
+                                    child: Row(
+                                      children: [
+                                        for (int i = 0;
+                                            i <
+                                                timeSlot
+                                                    .appointMentDetails![0]
+                                                    .timeSlotPicks![0]
+                                                    .timeSlot![0]
+                                                    .timeSlots!
+                                                    .length;
+                                            i++)
+                                          ElevatedButton(
+                                            onPressed: () {},
+                                            child: Text(
+                                              '${timeSlot.appointMentDetails![0].timeSlotPicks![0].timeSlot![0].timeSlots![i].hour.toString().padLeft(2, '0')}:${timeSlot.appointMentDetails![0].timeSlotPicks![0].timeSlot![0].timeSlots![i].minute.toString().padLeft(2, '0')}',
+                                            ),
+                                          ),
+                                      ],
+                                    ),
+                                  ),
                                   onTap: () {
                                     int length = doctorModel.selectedTimeSlot!
                                         .timeSlotPicks!.timeSlots!.length;
                                     List<TimeSlotD> selectedTimeSlots = [];
                                     for (int i = 0; i < length; i++) {
-                                      int hour = doctorModel
-                                              .selectedTimeSlot!
-                                              .timeSlotPicks!
-                                              .timeSlots![i]
+                                      int hour = timeSlot
+                                              .appointMentDetails![0]
+                                              .timeSlotPicks![0]
+                                              .timeSlot![0]
+                                              .timeSlots![0]
                                               .hour ??
                                           0;
-                                      int minute = doctorModel
-                                              .selectedTimeSlot!
-                                              .timeSlotPicks!
-                                              .timeSlots![i]
+                                      0;
+                                      int minute = timeSlot
+                                              .appointMentDetails![0]
+                                              .timeSlotPicks![0]
+                                              .timeSlot![0]
+                                              .timeSlots![0]
                                               .minute ??
                                           0;
+                                      0;
+                                      ;
                                       TimeSlotD timeSlotsed =
                                           TimeSlotD(hour: hour, minute: minute);
                                       selectedTimeSlots.add(timeSlotsed);
                                     }
                                     sendModifyAppointMent.add(
-                                        AppointMentSelectedTimeSlot(
-                                            context: context,
-                                            doctorId: doctorModel.id,
-                                            price: timeSlot
-                                                .appointMentDetails![0].price
-                                                .toString(),
-                                            title: timeSlot
-                                                    .appointMentDetails![0]
-                                                    .title ??
-                                                "",
-                                            timeSlots: selectedTimeSlots,
-                                            date: DateTime.now().toString()));
+                                      AppointMentSelectedTimeSlot(
+                                          context: context,
+                                          doctorId: doctorModel.id,
+                                          price: timeSlot
+                                              .appointMentDetails![0].price
+                                              .toString(),
+                                          title: timeSlot.appointMentDetails![0]
+                                                  .title ??
+                                              "",
+                                          timeSlots: selectedTimeSlots,
+                                          date: DateTime.now().toString()),
+                                    );
+                                    showSnackBar(
+                                        "Successfully Updated Time Slot",
+                                        context);
                                   },
                                 ),
                               ),

@@ -239,7 +239,7 @@ doctorRouter.post("/selectedTimeSlot", authDoctor, async (req, res) => {
 
     await doctor.save();
 
-    res.status(201).json(doctor);
+    res.json(doctor);
   } catch (e) {
     res.status(500).json({ error: e.message });
   }
