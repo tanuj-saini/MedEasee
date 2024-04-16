@@ -15,10 +15,14 @@ import 'package:med_ease/Utils/SplashScreen.dart';
 
 class CardDoctorDetails extends StatefulWidget {
   final List<TimeSlots> timeSlotPicks;
+  final bool isVedio;
 
   final Doctor doctorModule;
   CardDoctorDetails(
-      {required this.timeSlotPicks, required this.doctorModule, super.key});
+      {required this.isVedio,
+      required this.timeSlotPicks,
+      required this.doctorModule,
+      super.key});
   @override
   State<StatefulWidget> createState() {
     return _CardDetailsScreeen();
@@ -63,6 +67,7 @@ class _CardDetailsScreeen extends State<CardDoctorDetails> {
                     onPressed: () {
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (ctx) => PaymentScreen(
+                              isVedio: widget.isVedio,
                               timeSlotPicks: [],
                               date: date,
                               doctorId: widget.doctorModule.id,
@@ -75,6 +80,7 @@ class _CardDetailsScreeen extends State<CardDoctorDetails> {
                 ElevatedButton(
                     onPressed: () {
                       bookAppointment.add(BookAppointmentUserEvent(
+                          isVedio: widget.isVedio,
                           timeSlotPicks: widget.timeSlotPicks,
                           date: date,
                           context: context,

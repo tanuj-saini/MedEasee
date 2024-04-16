@@ -45,7 +45,8 @@ class BookApppointmentBloc
                 body: jsonEncode({
                   'date': event.date,
                   'isComplete': event.isComplete,
-                  'timeSlots': event.timeSlotPicks
+                  'timeSlots': event.timeSlotPicks,
+                  'isVedio': event.isVedio
                 }));
         _httpErrorHandle(res, emit, event.context);
         print(res.body);

@@ -10,6 +10,10 @@ const appointMentDetailsSchema = new mongoose.Schema({
     type: String,
     require: true,
   },
+  isVedio: {
+    type: Boolean,
+    require: true,
+  },
   timeSlotPicks: [
     {
       timeSlot: [scheduleSchema],

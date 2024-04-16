@@ -65,6 +65,10 @@ const DoctorModule = mongoose.Schema({
       type: String,
       require: true,
     },
+    isVedio: {
+      type: Boolean,
+      require: true,
+    },
     timeSlotPicks: scheduleSchema,
   },
   timeSlot: [

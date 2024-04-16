@@ -109,7 +109,7 @@ UserRouter.post("/User/SearchDoctor", async (req, res) => {
 
 UserRouter.post("/bookAppointment", auth, async (req, res) => {
   try {
-    const { date, isComplete, timeSlots } = req.body;
+    const { date, isComplete, timeSlots, isVedio } = req.body;
     const doctorId = req.query.doctorId;
     const doctor = await doctorModule.findById(doctorId);
     const user = await userModule.findById(req.user);
@@ -128,6 +128,7 @@ UserRouter.post("/bookAppointment", auth, async (req, res) => {
       doctorId: doctorId,
       userId: req.user,
       isComplete: isComplete || false,
+      isVedio: isVedio,
       timeSlotPicks: newTimeSlot,
       // set default value if not provided
     });

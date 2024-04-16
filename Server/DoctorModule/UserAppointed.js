@@ -18,6 +18,10 @@ const UserAppointment = new mongoose.Schema({
     type: Boolean,
   },
   timeSlotPicks: scheduleSchema,
+  isVedio: {
+    default: false,
+    type: Boolean,
+  },
 });
 const userAppointment = mongoose.model("userAppointment", UserAppointment);
 module.exports = { userAppointment, UserAppointment };

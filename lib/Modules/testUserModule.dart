@@ -99,12 +99,14 @@ class AppointmentLeft {
   String? doctorId;
   String? userId;
   bool? isComplete;
+  bool? isVedio;
   TimeSloted? timeSlotPicks;
   String? id;
 
   AppointmentLeft({
     this.timeSlotPicks,
     this.date,
+    this.isVedio,
     this.doctorId,
     this.userId,
     this.isComplete,
@@ -115,6 +117,7 @@ class AppointmentLeft {
     date = json['date'];
     doctorId = json['doctorId'];
     userId = json['userId'];
+    isVedio = json['isVedio'];
     isComplete = json['isComplete'];
     timeSlotPicks = json['timeSlotPicks'] != null
         ? new TimeSloted.fromJson(json['timeSlotPicks'])
@@ -127,6 +130,7 @@ class AppointmentLeft {
     data['date'] = this.date;
     data['doctorId'] = this.doctorId;
     data['userId'] = this.userId;
+    data['isVedio'] = this.isVedio;
     data['isComplete'] = this.isComplete;
     if (this.timeSlotPicks != null) {
       data['timeSlotPicks'] = this.timeSlotPicks!.toJson();

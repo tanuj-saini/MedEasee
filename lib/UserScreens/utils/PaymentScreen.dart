@@ -13,10 +13,12 @@ class PaymentScreen extends StatefulWidget {
   final bool isComplete;
   final List<TimeSlots> timeSlotPicks;
   final String date;
+  final bool isVedio;
   final String doctorId;
   PaymentScreen(
       {required this.timeSlotPicks,
       required this.date,
+      required this.isVedio,
       required this.doctorId,
       required this.isComplete,
       super.key});
@@ -150,6 +152,7 @@ class _PaymentScreen extends State<PaymentScreen> {
         print('Transaction Failed');
 
         bookAppointment.add(BookAppointmentUserEvent(
+            isVedio: widget.isVedio,
             timeSlotPicks: widget.timeSlotPicks,
             date: widget.date,
             context: context,

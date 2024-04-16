@@ -76,7 +76,7 @@ doctorRouter.get("/D", authDoctor, async (req, res) => {
 
 doctorRouter.post("/AppointmentModify", authDoctor, async (req, res) => {
   try {
-    const { date, timeSlots, price, title } = req.body;
+    const { date, timeSlots, price, title, isVedio } = req.body;
 
     if (!price) {
       return res.status(400).send({ message: "Price is required" });
@@ -91,6 +91,7 @@ doctorRouter.post("/AppointmentModify", authDoctor, async (req, res) => {
     const newAppointMentDetail = new appointMentDetail({
       price,
       title,
+      isVedio,
       timeSlotPicks: [
         {
           timeSlot: newTimeSlot,
@@ -209,11 +210,12 @@ doctorRouter.get("/getDoctorData", authDoctor, async (req, res) => {
 
 doctorRouter.post("/selectedTimeSlot", authDoctor, async (req, res) => {
   try {
-    const { date, timeSlots, price, title } = req.body;
+    const { date, timeSlots, price, title, isVedio } = req.body;
     const doctorId = req.query.doctorId;
     if (!doctorId) {
       return res.status(400).json({ error: "Doctor ID is required" });
     }
+    // /AppointmentModify
 
     const doctor = await doctorModule.findById(doctorId);
     if (!doctor) {
@@ -234,6 +236,7 @@ doctorRouter.post("/selectedTimeSlot", authDoctor, async (req, res) => {
     doctor.selectedTimeSlot = {
       price,
       title,
+      isVedio,
       timeSlotPicks: newTimeSlot,
     };
 

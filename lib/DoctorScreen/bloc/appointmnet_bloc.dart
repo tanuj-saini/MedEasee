@@ -28,6 +28,7 @@ class AppointmnetBloc extends Bloc<AppointmnetEvent, AppointmnetState> {
           return emit(AppointmentFailure(error: "You are not a doctor"));
         }
         AppointmentModule appointmentModule = AppointmentModule(
+            isVedio: event.isVedio,
             title: event.title,
             price: event.price,
             timeSlots: event.timeSlots,
@@ -39,27 +40,14 @@ class AppointmnetBloc extends Bloc<AppointmnetEvent, AppointmnetState> {
               'x-auth-token-D': token,
             },
             body: appointmentModule.toJson());
+        print(res.body);
         _httpErrorHandle(res, emit, event.context);
-        Doctor doctorModule = Doctor(
-            name: "",
-            bio: "",
-            phoneNumber: "",
-            specialist: "",
-            currentWorkingHospital: "",
-            profilePic: "",
-            registerNumbers: "",
-            experience: "",
-            emailAddress: "",
-            age: "",
-            applicationLeft: [],
-            timeSlot: [],
-            id: "");
 
         final jsonData = jsonDecode(res.body);
 
-        doctorModule = Doctor.fromJson(jsonData);
+        Doctor doctorModule = Doctor.fromJson(jsonData);
         print('yes it works');
-        print(doctorModule);
+        //print(doctorModule);
         return emit(AppointmentSuccess(doctorModule: doctorModule));
       } catch (e) {
         return emit(AppointmentFailure(error: e.toString()));
@@ -69,20 +57,6 @@ class AppointmnetBloc extends Bloc<AppointmnetEvent, AppointmnetState> {
     on<AppointMentRefresh>((event, emit) async {
       emit(AppointmentLoding());
       try {
-        Doctor doctorModule = Doctor(
-            name: "",
-            bio: "",
-            phoneNumber: "",
-            specialist: "",
-            currentWorkingHospital: "",
-            profilePic: "",
-            registerNumbers: "",
-            experience: "",
-            emailAddress: "",
-            age: "",
-            applicationLeft: [],
-            timeSlot: [],
-            id: "");
         SharedPreferences prefs = await SharedPreferences.getInstance();
         String? token = prefs.getString('x-auth-token-D');
         if (token == null) {
@@ -102,7 +76,7 @@ class AppointmnetBloc extends Bloc<AppointmnetEvent, AppointmnetState> {
 
         final jsonData = jsonDecode(res.body);
 
-        doctorModule = Doctor.fromJson(jsonData);
+        Doctor doctorModule = Doctor.fromJson(jsonData);
 
         print(doctorModule);
         return emit(AppointmentSuccess(doctorModule: doctorModule));
@@ -123,25 +97,12 @@ class AppointmnetBloc extends Bloc<AppointmnetEvent, AppointmnetState> {
         SelectedTimeSlotU selectedTimeSlot = SelectedTimeSlotU(
             price: event.price,
             title: event.title,
+            isVedio: event.isVedio,
             date: DateTime.now().toString(),
             timeSlots: event.timeSlots);
 
         print('length');
         print(event.timeSlots.length);
-        Doctor doctorModule = Doctor(
-            name: "",
-            bio: "",
-            phoneNumber: "",
-            specialist: "",
-            currentWorkingHospital: "",
-            profilePic: "",
-            registerNumbers: "",
-            experience: "",
-            emailAddress: "",
-            age: "",
-            applicationLeft: [],
-            timeSlot: [],
-            id: "");
 
         http.Response res = await http.post(
             Uri.parse('$ip/selectedTimeSlot?doctorId=$doctorId'),
@@ -154,7 +115,7 @@ class AppointmnetBloc extends Bloc<AppointmnetEvent, AppointmnetState> {
         print(res.body);
         final jsonData = jsonDecode(res.body);
 
-        doctorModule = Doctor.fromJson(jsonData);
+        Doctor doctorModule = Doctor.fromJson(jsonData);
         print('yes it works');
 
         return emit(AppointmentSuccess(doctorModule: doctorModule));
@@ -187,7 +148,8 @@ class AppointmnetBloc extends Bloc<AppointmnetEvent, AppointmnetState> {
             id: "");
         SelectedTimeSlotU selectedTimeSlotU = SelectedTimeSlotU(
             price: event.price,
-            title: event.price,
+            title: event.title,
+            isVedio: event.isVedio,
             date: event.date,
             timeSlots: event.timeSlots);
         http.Response res =

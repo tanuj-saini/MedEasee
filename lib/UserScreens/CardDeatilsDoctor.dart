@@ -187,45 +187,67 @@ class _BookAppointmentState extends State<BookAppointment> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        ElevatedButton(
-                          onPressed: () {},
-                          style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.all<Color>(Colors.blue),
-                            shape: MaterialStateProperty.all<
-                                RoundedRectangleBorder>(
-                              RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20.0),
+                        widget.doctorModuleE.selectedTimeSlot!.isVedio == true
+                            ? ElevatedButton(
+                                onPressed: () {
+                                  if (_selectedTimeSlots.length == 1) {
+                                    Navigator.of(context)
+                                        .push(MaterialPageRoute(
+                                            builder: (ctx) => CardDoctorDetails(
+                                                  isVedio: true,
+                                                  timeSlotPicks:
+                                                      _selectedTimeSlots,
+                                                  doctorModule:
+                                                      widget.doctorModuleE,
+                                                )));
+                                  } else {
+                                    showSnackBar(
+                                        "Select only One time slot", context);
+                                  }
+                                },
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          Colors.blue),
+                                  shape: MaterialStateProperty.all<
+                                      RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20.0),
+                                    ),
+                                  ),
+                                ),
+                                child: Text('Video Appointment'),
+                              )
+                            : ElevatedButton(
+                                onPressed: () {
+                                  if (_selectedTimeSlots.length == 1) {
+                                    Navigator.of(context)
+                                        .push(MaterialPageRoute(
+                                            builder: (ctx) => CardDoctorDetails(
+                                                  isVedio: false,
+                                                  timeSlotPicks:
+                                                      _selectedTimeSlots,
+                                                  doctorModule:
+                                                      widget.doctorModuleE,
+                                                )));
+                                  } else {
+                                    showSnackBar(
+                                        "Select only One time slot", context);
+                                  }
+                                },
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          Colors.blue),
+                                  shape: MaterialStateProperty.all<
+                                      RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20.0),
+                                    ),
+                                  ),
+                                ),
+                                child: Text('Clinic Appointment'),
                               ),
-                            ),
-                          ),
-                          child: Text('Video Appointment'),
-                        ),
-                        ElevatedButton(
-                          onPressed: () {
-                            if (_selectedTimeSlots.length == 1) {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (ctx) => CardDoctorDetails(
-                                        timeSlotPicks: _selectedTimeSlots,
-                                        doctorModule: widget.doctorModuleE,
-                                      )));
-                            } else {
-                              showSnackBar(
-                                  "Select only One time slot", context);
-                            }
-                          },
-                          style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.all<Color>(Colors.blue),
-                            shape: MaterialStateProperty.all<
-                                RoundedRectangleBorder>(
-                              RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20.0),
-                              ),
-                            ),
-                          ),
-                          child: Text('Clinic Appointment'),
-                        ),
                       ],
                     ),
                   ),

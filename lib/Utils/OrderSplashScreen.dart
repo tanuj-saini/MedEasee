@@ -104,7 +104,7 @@ class _OrderSplashState extends State<OrderSplash>
                 ),
                 textAlign: TextAlign.center,
               ),
-              SizedBox(height: 380),
+              SizedBox(height: 300),
               Align(
                 alignment: Alignment.bottomRight,
                 child: ElevatedButton.icon(

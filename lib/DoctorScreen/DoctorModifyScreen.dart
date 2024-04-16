@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:med_ease/DoctorScreen/bloc/appointmnet_bloc.dart';
 import 'package:med_ease/Modules/testModule.dart';
@@ -16,11 +17,14 @@ class DoctorModifyScreen extends StatefulWidget {
   State<StatefulWidget> createState() => _DoctorModifyScreenState();
 }
 
+enum AppointmentType { Normal, Video }
+
 class _DoctorModifyScreenState extends State<DoctorModifyScreen> {
   List<TimeSlotD> _items = [];
   List<TimeSlotD> _selectedTimeSlots = [];
   final TextEditingController _priceController = TextEditingController();
   final TextEditingController _titleContoller = TextEditingController();
+  AppointmentType _selectedType = AppointmentType.Normal;
 
   @override
   void initState() {
@@ -63,6 +67,8 @@ class _DoctorModifyScreenState extends State<DoctorModifyScreen> {
               onPressed: () {
                 sendModifyAppointMent.add(AppointMentSelectedTimeSlot(
                     context: context,
+                    isVedio:
+                        _selectedType == AppointmentType.Normal ? false : true,
                     doctorId: doctorModel!.id,
                     price: _priceController.text,
                     title: _titleContoller.text,
@@ -153,6 +159,11 @@ class _DoctorModifyScreenState extends State<DoctorModifyScreen> {
                                         ),
                                         Text(
                                             'Price: ${timeSlot.appointMentDetails![0].price}'),
+                                        timeSlot.appointMentDetails![0]
+                                                    .isVedio ==
+                                                false
+                                            ? Text('isVedio: False')
+                                            : Text("isVedio: True")
                                       ],
                                     ),
                                   ),
@@ -204,13 +215,19 @@ class _DoctorModifyScreenState extends State<DoctorModifyScreen> {
                                               .minute ??
                                           0;
                                       0;
-                                      ;
+
                                       TimeSlotD timeSlotsed =
                                           TimeSlotD(hour: hour, minute: minute);
                                       selectedTimeSlots.add(timeSlotsed);
                                     }
                                     sendModifyAppointMent.add(
                                       AppointMentSelectedTimeSlot(
+                                          isVedio: timeSlot
+                                                      .appointMentDetails![0]
+                                                      .isVedio ==
+                                                  false
+                                              ? false
+                                              : true,
                                           context: context,
                                           doctorId: doctorModel.id,
                                           price: timeSlot
@@ -233,38 +250,40 @@ class _DoctorModifyScreenState extends State<DoctorModifyScreen> {
                         ),
                       ),
                 const SizedBox(height: 20),
-                Center(
-                  child: MultiSelectDialogField(
-                    items: _items
-                        .map((timeSlot) => MultiSelectItem<TimeSlotD>(
-                            timeSlot, timeSlot.toString()))
-                        .toList(),
-                    title: const Text("Time"),
-                    selectedColor: Colors.blue,
-                    decoration: BoxDecoration(
-                      color: Colors.blue.withOpacity(0.1),
-                      borderRadius: BorderRadius.all(Radius.circular(40)),
-                      border: Border.all(
-                        color: Colors.blue,
-                        width: 2,
+                SingleChildScrollView(
+                  child: Center(
+                    child: MultiSelectDialogField(
+                      items: _items
+                          .map((timeSlot) => MultiSelectItem<TimeSlotD>(
+                              timeSlot, timeSlot.toString()))
+                          .toList(),
+                      title: const Text("Time"),
+                      selectedColor: Colors.blue,
+                      decoration: BoxDecoration(
+                        color: Colors.blue.withOpacity(0.1),
+                        borderRadius: BorderRadius.all(Radius.circular(40)),
+                        border: Border.all(
+                          color: Colors.blue,
+                          width: 2,
+                        ),
                       ),
-                    ),
-                    buttonIcon: const Icon(
-                      Icons.access_time,
-                      color: Colors.blue,
-                    ),
-                    buttonText: const Text(
-                      "Selected Time Slot",
-                      style: TextStyle(
+                      buttonIcon: const Icon(
+                        Icons.access_time,
                         color: Colors.blue,
-                        fontSize: 16,
                       ),
+                      buttonText: const Text(
+                        "Selected Time Slot",
+                        style: TextStyle(
+                          color: Colors.blue,
+                          fontSize: 16,
+                        ),
+                      ),
+                      onConfirm: (results) {
+                        setState(() {
+                          _selectedTimeSlots = List.from(results);
+                        });
+                      },
                     ),
-                    onConfirm: (results) {
-                      setState(() {
-                        _selectedTimeSlots = List.from(results);
-                      });
-                    },
                   ),
                 ),
                 const SizedBox(height: 20),
@@ -285,16 +304,45 @@ class _DoctorModifyScreenState extends State<DoctorModifyScreen> {
                             const Icon(Icons.text_rotation_none_rounded),
                       ),
                       const SizedBox(height: 20),
+                      Row(
+                        children: [
+                          Radio(
+                            value: AppointmentType.Normal,
+                            groupValue: _selectedType,
+                            onChanged: (AppointmentType? value) {
+                              setState(() {
+                                _selectedType = value!;
+                              });
+                            },
+                          ),
+                          Text('Normal'),
+                          SizedBox(width: 20),
+                          Radio(
+                            value: AppointmentType.Video,
+                            groupValue: _selectedType,
+                            onChanged: (AppointmentType? value) {
+                              setState(() {
+                                _selectedType = value!;
+                              });
+                            },
+                          ),
+                          Text('Video'),
+                        ],
+                      ),
                       ElevatedButton(
                         onPressed: () {
                           sendModifyAppointMent.add(
                             AppointMentDetailsEvent(
+                              isVedio: _selectedType == AppointmentType.Normal
+                                  ? false
+                                  : true,
                               title: _titleContoller.text,
                               context: context,
                               price: _priceController.text,
                               timeSlots: _selectedTimeSlots,
                             ),
                           );
+
                           setState(() {});
                         },
                         child: const Text("add"),

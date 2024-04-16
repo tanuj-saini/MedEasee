@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
+import 'dart:ffi';
 
 import 'package:flutter/foundation.dart';
 import 'package:med_ease/Utils/timeSlot.dart';
@@ -142,6 +143,7 @@ class AppointMentDetails {
   String? doctorId;
   String? userId;
   bool? isComplete;
+  bool? isVedio;
   TimeSloted? timeSlotPicks;
   String? id;
 
@@ -150,6 +152,7 @@ class AppointMentDetails {
     this.doctorId,
     this.userId,
     this.isComplete,
+    this.isVedio,
     this.timeSlotPicks,
     this.id,
   });
@@ -159,6 +162,7 @@ class AppointMentDetails {
     doctorId = json['doctorId'];
     userId = json['userId'];
     isComplete = json['isComplete'];
+    isVedio = json['isVedio'];
     timeSlotPicks = json['timeSlotPicks'] != null
         ? new TimeSloted.fromJson(json['timeSlotPicks'])
         : null;
@@ -171,6 +175,8 @@ class AppointMentDetails {
     data['doctorId'] = this.doctorId;
     data['userId'] = this.userId;
     data['isComplete'] = this.isComplete;
+    data['isVedio'] = this.isVedio;
+
     if (this.timeSlotPicks != null) {
       data['timeSlotPicks'] = this.timeSlotPicks!.toJson();
     }
@@ -221,18 +227,21 @@ class TimeSlot {
 class AppointMentDetailsD {
   int? price;
   String? title;
+  bool? isVedio;
   List<TimeSlotPicks>? timeSlotPicks;
   String? Id;
 
   AppointMentDetailsD({
     this.price,
     this.title,
+    this.isVedio,
     this.timeSlotPicks,
     this.Id,
   });
 
   AppointMentDetailsD.fromJson(Map<String, dynamic> json) {
     price = json['price'];
+    isVedio = json['isVedio'];
     title = json['title'];
     if (json['timeSlotPicks'] != null) {
       timeSlotPicks = <TimeSlotPicks>[];
@@ -246,6 +255,7 @@ class AppointMentDetailsD {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['price'] = this.price;
+    data['isVedio'] = this.isVedio;
     data['title'] = this.title;
     if (this.timeSlotPicks != null) {
       data['timeSlotPicks'] =
@@ -354,13 +364,15 @@ class TimeSlots {
 
 class SelectedTimeSlot {
   String? price;
+  bool? isVedio;
   String? title;
   TimeSlotPicksU? timeSlotPicks;
 
-  SelectedTimeSlot({this.price, this.title, this.timeSlotPicks});
+  SelectedTimeSlot({this.isVedio, this.price, this.title, this.timeSlotPicks});
 
   SelectedTimeSlot.fromJson(Map<String, dynamic> json) {
     price = json['price'];
+    isVedio = json['isVedio'];
     title = json['title'];
     timeSlotPicks = json['timeSlotPicks'] != null
         ? new TimeSlotPicksU.fromJson(json['timeSlotPicks'])
@@ -370,6 +382,7 @@ class SelectedTimeSlot {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['price'] = this.price;
+    data['isVedio'] = this.isVedio;
     data['title'] = this.title;
     if (this.timeSlotPicks != null) {
       data['timeSlotPicks'] = this.timeSlotPicks!.toJson();

@@ -30,10 +30,12 @@ class AppointmentModule {
   final String date;
   final String title;
   final List<TimeSlotD> timeSlots;
+  final bool isVedio;
 
   AppointmentModule({
     required this.price,
     required this.date,
+    required this.isVedio,
     required this.title,
     required this.timeSlots,
   });
@@ -43,13 +45,14 @@ class AppointmentModule {
     String? date,
     String? title,
     List<TimeSlotD>? timeSlots,
+    bool? isVedio,
   }) {
     return AppointmentModule(
-      price: price ?? this.price,
-      date: date ?? this.date,
-      title: title ?? this.title,
-      timeSlots: timeSlots ?? this.timeSlots,
-    );
+        price: price ?? this.price,
+        date: date ?? this.date,
+        title: title ?? this.title,
+        timeSlots: timeSlots ?? this.timeSlots,
+        isVedio: isVedio ?? this.isVedio);
   }
 
   Map<String, dynamic> toMap() {
@@ -58,6 +61,7 @@ class AppointmentModule {
       'date': date,
       'title': title,
       'timeSlots': timeSlots.map((x) => x.toMap()).toList(),
+      'isVedio': isVedio
     };
   }
 
@@ -65,6 +69,7 @@ class AppointmentModule {
     return AppointmentModule(
       price: map['price'] as String,
       date: map['date'] as String,
+      isVedio: map['isVedio'] as bool,
       title: map['title'] as String,
       timeSlots: List<TimeSlotD>.from(
         (map['timeSlots'] as List<int>).map<TimeSlotD>(
@@ -81,7 +86,7 @@ class AppointmentModule {
 
   @override
   String toString() {
-    return 'AppointmentModule(price: $price, date: $date, title: $title, timeSlots: $timeSlots)';
+    return 'AppointmentModule(price: $price,isVedio:$isVedio, date: $date, title: $title, timeSlots: $timeSlots)';
   }
 
   @override
@@ -90,6 +95,7 @@ class AppointmentModule {
 
     return other.price == price &&
         other.date == date &&
+        other.isVedio == isVedio &&
         other.title == title &&
         listEquals(other.timeSlots, timeSlots);
   }
