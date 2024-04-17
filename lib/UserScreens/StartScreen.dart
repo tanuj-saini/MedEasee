@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:med_ease/Delete/SignUpD.dart';
+import 'package:med_ease/Delete/SignUpUserD.dart';
 import 'package:med_ease/DoctorScreen/DoctorScreen.dart';
 import 'package:med_ease/DoctorScreen/DoctorSignUpScreen.dart';
 import 'package:med_ease/DoctorScreen/doctorInfo.dart';
 import 'package:med_ease/Login_SignIn/Login.dart';
 import 'package:med_ease/UserScreens/userinfo.dart';
-import 'package:med_ease/UserScreens/utils/SignUpScreen.dart';
+import 'package:med_ease/UserScreens/utils/SignUpDoctorOtp.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -37,7 +39,7 @@ class _StartScreen extends State<StartScreen> {
             ),
             Center(
               child: Padding(
-                padding: const EdgeInsets.only(left: 15, right: 15),
+                padding: const EdgeInsets.only(left: 15, right: 10),
                 child: Container(
                   decoration: BoxDecoration(
                     image: DecorationImage(
@@ -63,56 +65,81 @@ class _StartScreen extends State<StartScreen> {
                                     fontSize: 20),
                               ),
                             ),
-                            InkWell(
-                              onTap: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (ctx) => DoctorInfo()));
-                              },
-                              child: Container(
-                                height: 35,
-                                width: 110,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(25),
-                                  gradient: LinearGradient(
-                                    colors: [Colors.blue, Colors.green],
-                                    begin: Alignment.topLeft,
-                                    end: Alignment.bottomRight,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                InkWell(
+                                  onTap: () {
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (ctx) =>
+                                                Login(typeOfUser: 'doctor')));
+                                  },
+                                  child: Container(
+                                    height: 35,
+                                    width: 110,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(25),
+                                      gradient: LinearGradient(
+                                        colors: [Colors.blue, Colors.green],
+                                        begin: Alignment.topLeft,
+                                        end: Alignment.bottomRight,
+                                      ),
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        'To Sign Up',
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                    ),
                                   ),
                                 ),
-                                child: Center(
-                                  child: Text(
-                                    'To Sign Up',
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                ),
-                              ),
+                                ElevatedButton(
+                                    onPressed: () => Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (ctx) => DoctorInfo(
+                                                phoneNumber: "dnlsk"))),
+                                    child: Text("To Sign Up"))
+                              ],
                             ),
                             SizedBox(
                               height: 10,
                             ),
-                            InkWell(
-                              onTap: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (ctx) => SignUpDoctor()));
-                              },
-                              child: Container(
-                                height: 35,
-                                width: 110,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(25),
-                                  gradient: LinearGradient(
-                                    colors: [Colors.blue, Colors.green],
-                                    begin: Alignment.topLeft,
-                                    end: Alignment.bottomRight,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                InkWell(
+                                  onTap: () {
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (ctx) => SignUpDoctorOtp(
+                                                typeOfUser: 'doctor')));
+                                  },
+                                  child: Container(
+                                    height: 35,
+                                    width: 110,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(25),
+                                      gradient: LinearGradient(
+                                        colors: [Colors.blue, Colors.green],
+                                        begin: Alignment.topLeft,
+                                        end: Alignment.bottomRight,
+                                      ),
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        'To Logged ip',
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                    ),
                                   ),
                                 ),
-                                child: Center(
-                                  child: Text(
-                                    'To Logged ip',
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                ),
-                              ),
+                                ElevatedButton(
+                                    onPressed: () => Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (ctx) => SignUpDoctorD())),
+                                    child: Text("To Logged in"))
+                              ],
                             ),
                           ],
                         ),
@@ -161,56 +188,85 @@ class _StartScreen extends State<StartScreen> {
                             SizedBox(
                               height: 20,
                             ),
-                            InkWell(
-                              onTap: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (ctx) => UserInfo()));
-                              },
-                              child: Container(
-                                height: 35,
-                                width: 110,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(25),
-                                  gradient: LinearGradient(
-                                    colors: [Colors.blue, Colors.green],
-                                    begin: Alignment.topLeft,
-                                    end: Alignment.bottomRight,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                InkWell(
+                                  onTap: () {
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (ctx) =>
+                                                Login(typeOfUser: 'user')));
+                                  },
+                                  child: Container(
+                                    height: 35,
+                                    width: 110,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(25),
+                                      gradient: LinearGradient(
+                                        colors: [Colors.blue, Colors.green],
+                                        begin: Alignment.topLeft,
+                                        end: Alignment.bottomRight,
+                                      ),
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        'To Sign Up',
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                    ),
                                   ),
                                 ),
-                                child: Center(
-                                  child: Text(
-                                    'To Sign Up',
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                ),
-                              ),
+                                ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                              builder: (ctx) => UserInfo(
+                                                  phoneNumber: "3242")));
+                                    },
+                                    child: Text("To Sign Up"))
+                              ],
                             ),
                             SizedBox(
                               height: 10,
                             ),
-                            InkWell(
-                              onTap: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (ctx) => SignUpScreen()));
-                              },
-                              child: Container(
-                                height: 35,
-                                width: 110,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(25),
-                                  gradient: LinearGradient(
-                                    colors: [Colors.blue, Colors.green],
-                                    begin: Alignment.topLeft,
-                                    end: Alignment.bottomRight,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                InkWell(
+                                  onTap: () {
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (ctx) => SignUpDoctorOtp(
+                                                typeOfUser: 'user')));
+                                  },
+                                  child: Container(
+                                    height: 35,
+                                    width: 110,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(25),
+                                      gradient: LinearGradient(
+                                        colors: [Colors.blue, Colors.green],
+                                        begin: Alignment.topLeft,
+                                        end: Alignment.bottomRight,
+                                      ),
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        'To Logged in',
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                    ),
                                   ),
                                 ),
-                                child: Center(
-                                  child: Text(
-                                    'To Logged in',
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                ),
-                              ),
+                                ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                              builder: (ctx) => SignUpUserD()));
+                                    },
+                                    child: Text("To Logged in"))
+                              ],
                             ),
                           ],
                         ),
@@ -232,61 +288,3 @@ class _StartScreen extends State<StartScreen> {
         ));
   }
 }
-
-
-
-// class StartScreen extends StatefulWidget {
-//   StartScreen({super.key});
-//   @override
-//   State<StatefulWidget> createState() {
-//     return _StartScreen();
-//   }
-// }
-
-// class _StartScreen extends State<StartScreen> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       body: Center(
-//         child: Column(
-//           mainAxisAlignment: MainAxisAlignment.center,
-//           children: [
-//             Text(
-//               'Are you ',
-//               style: TextStyle(fontSize: 24.0),
-//             ),
-//             SizedBox(height: 50.0),
-//             ElevatedButton(
-//               onPressed: () {
-//                 // Navigator.of(context).push(MaterialPageRoute(
-//                 //     builder: (ctx) => (Login(typeOfUser: "user"))));
-//                 Navigator.of(context)
-//                     .push(MaterialPageRoute(builder: (ctx) => UserInfo()));
-//               },
-//               child: Text('User'),
-//             ),
-//             TextButton(
-//                 onPressed: () => Navigator.of(context)
-//                     .push(MaterialPageRoute(builder: (ctx) => SignUpScreen())),
-//                 child: Text("Login")),
-//             SizedBox(height: 20.0),
-//             ElevatedButton(
-//               onPressed: () {
-//                 //   Navigator.of(context).push(MaterialPageRoute(
-//                 //       builder: (ctx) => Login(typeOfUser: 'doctor')));
-//                 Navigator.of(context)
-//                     .push(MaterialPageRoute(builder: (ctx) => DoctorInfo()));
-//               },
-//               child: Text('Doctor'),
-//             ),
-//             SizedBox(height: 20.0),
-//             TextButton(
-//                 onPressed: () => Navigator.of(context)
-//                     .push(MaterialPageRoute(builder: (ctx) => SignUpDoctor())),
-//                 child: Text("Login")),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }

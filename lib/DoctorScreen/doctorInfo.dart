@@ -17,9 +17,11 @@ import 'package:med_ease/Utils/CustomTextfield.dart';
 import 'package:med_ease/Utils/LoderScreen.dart';
 import 'package:med_ease/Utils/button.dart';
 import 'package:med_ease/bloc/user_moduel_bloc.dart';
+import 'package:pinput/pinput.dart';
 
 class DoctorInfo extends StatefulWidget {
-  DoctorInfo({super.key});
+  final String phoneNumber;
+  DoctorInfo({required this.phoneNumber, super.key});
 
   @override
   State<DoctorInfo> createState() => _DoctorInfoState();

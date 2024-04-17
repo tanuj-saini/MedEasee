@@ -11,7 +11,8 @@ import 'package:med_ease/bloc/user_moduel_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserInfo extends StatelessWidget {
-  UserInfo({super.key});
+  final String phoneNumber;
+  UserInfo({required this.phoneNumber, super.key});
 
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();

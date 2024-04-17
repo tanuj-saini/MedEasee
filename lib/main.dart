@@ -25,6 +25,7 @@ import 'package:med_ease/UpdateModels/UpdateUserModel.dart';
 import 'package:med_ease/Utils/LoderScreen.dart';
 import 'package:med_ease/Utils/OrderSplashScreen.dart';
 import 'package:med_ease/Utils/SplashScreen.dart';
+import 'package:med_ease/bloc/login_new_otp_bloc.dart';
 import 'package:med_ease/bloc/persist_state_bloc.dart';
 import 'package:med_ease/bloc/sendotp_bloc_bloc.dart';
 import 'package:med_ease/bloc/user_moduel_bloc.dart';
@@ -94,7 +95,10 @@ class MyApp extends StatelessWidget {
           }
 
           return PersistStateBloc()..add(persistEvent(context: context));
-        })
+        }),
+        BlocProvider(
+          create: (context) => LoginNewOtpBloc(),
+        )
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

@@ -4,22 +4,23 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:med_ease/DoctorScreen/BottomNavigation.dart';
 import 'package:med_ease/DoctorScreen/DoctorScreen.dart';
-import 'package:med_ease/Login_SignIn/bloc/sign_up_bloc.dart';
+
 import 'package:med_ease/UpdateModels/UpdateDoctorModule.dart';
 import 'package:med_ease/UpdateModels/UpdateUserModel.dart';
 import 'package:med_ease/UserScreens/HomeScreen.dart';
 import 'package:med_ease/Utils/Colors.dart';
 import 'package:med_ease/Utils/LoderScreen.dart';
+import 'package:med_ease/bloc/login_new_otp_bloc.dart';
 
-class SignUpDoctorLast extends StatefulWidget {
-  SignUpDoctorLast({super.key});
+class SignUpUserD extends StatefulWidget {
+  SignUpUserD({super.key});
   @override
   State<StatefulWidget> createState() {
-    return _SignUpDoctor();
+    return _SignUpUserD();
   }
 }
 
-class _SignUpDoctor extends State<SignUpDoctorLast> {
+class _SignUpUserD extends State<SignUpUserD> {
   final TextEditingController phoneNumberContoller = TextEditingController();
   String _selectedCountryCode = "91";
   void _openCountryPicker() {
@@ -35,17 +36,17 @@ class _SignUpDoctor extends State<SignUpDoctorLast> {
 
   @override
   Widget build(BuildContext context) {
-    final signUpUser = BlocProvider.of<SignUpBloc>(context);
-    return BlocConsumer<SignUpBloc, SignUpState>(
+    final signUpUser = BlocProvider.of<LoginNewOtpBloc>(context);
+    return BlocConsumer<LoginNewOtpBloc, LoginNewOtpState>(
       listener: (context, state) {
         if (state is SignUpFailure) {
           showSnackBar(state.error, context);
         }
-        if (state is SignUpDoctorSucess) {
-          final UserDoctorBloc = context.read<DoctorBloc>();
-          UserDoctorBloc.updateDoctor(state.doctorModuleE);
+        if (state is SignUpSuccess) {
+          final UsersBloc = context.read<UserBloc>();
+          UsersBloc.updateUser(state.userModule);
           Navigator.of(context)
-              .push(MaterialPageRoute(builder: (ctx) => BottomNavigation()));
+              .push(MaterialPageRoute(builder: (ctx) => HomeScreen()));
           // Navigator.pushReplacement(context,
           //     MaterialPageRoute(builder: (context) => BottomNavigation()));
         }
@@ -144,7 +145,7 @@ class _SignUpDoctor extends State<SignUpDoctorLast> {
                         ),
                       ),
                       onPressed: () {
-                        signUpUser.add(SignDoctorEvent(
+                        signUpUser.add(SignUpEventPhone(
                             context: context,
                             phoneNumber: phoneNumberContoller.text));
                       },

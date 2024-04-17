@@ -1,24 +1,74 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:bloc/bloc.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
+import 'package:http/http.dart' as http;
 import 'package:med_ease/Modules/testModule.dart';
 import 'package:med_ease/Modules/testUserModule.dart';
 import 'package:med_ease/Utils/Colors.dart';
-
-import 'package:med_ease/Utils/DoctorModule.dart';
-
 import 'package:med_ease/Utils/errorHandiling.dart';
+import 'package:med_ease/bloc/authModel.dart';
 import 'package:meta/meta.dart';
-import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
-part 'sign_up_event.dart';
-part 'sign_up_state.dart';
+part 'login_new_otp_event.dart';
+part 'login_new_otp_state.dart';
 
-class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
-  SignUpBloc() : super(SignUpInitial()) {
+class LoginNewOtpBloc extends Bloc<LoginNewOtpEvent, LoginNewOtpState> {
+  LoginNewOtpBloc() : super(LoginNewOtpInitial()) {
+    String loginResults = '';
+    AuthModel authModel = AuthModel();
+    UserCredential? userCredential;
+    on<sendOtpToPhoneEvent>((event, emit) async {
+      emit(LoginScreenLodingState());
+      try {
+        await authModel.loginWithPhone(
+            phoneNumber: event.phoneNumber,
+            verificationCompleted: (PhoneAuthCredential credential) {
+              add(OnPhoneAuthVerificationCompleteEvent(credential: credential));
+            },
+            verificationFailed: (FirebaseAuthException e) {
+              add(OnPhoneAuthErrorEvent(error: e.toString()));
+            },
+            codeSent: (String verificationId, int? refreshToken) {
+              add(onPhoneOtpSend(
+                  verificationId: verificationId, token: refreshToken));
+            },
+            codeAutoRetrievalTimeout: (String verificationId) {});
+      } catch (e) {
+        emit(LoginScreenErrorState(error: e.toString()));
+      }
+    });
+
+    on<onPhoneOtpSend>((event, emit) async {
+      emit(PhoneAuthCodeSentSuccess(verificationId: event.verificationId));
+    });
+    on<VerifySendOtp>((event, emit) async {
+      try {
+        PhoneAuthCredential credential = PhoneAuthProvider.credential(
+            verificationId: event.verificationId, smsCode: event.otpCode);
+        add(OnPhoneAuthVerificationCompleteEvent(credential: credential));
+      } catch (e) {
+        emit(LoginScreenErrorState(error: e.toString()));
+      }
+    });
+
+    on<OnPhoneAuthErrorEvent>((event, emit) async {
+      emit(LoginScreenErrorState(error: event.error));
+    });
+    on<OnPhoneAuthVerificationCompleteEvent>((event, emit) async {
+      try {
+        await authModel.authetication
+            .signInWithCredential(event.credential)
+            .then((value) => emit(SignUpScreenOtpSuccessState()));
+        emit(LoginScreenLoadedState());
+      } catch (e) {
+        emit(LoginScreenErrorState(error: e.toString()));
+      }
+    });
+
     on<SignUpEventPhone>((event, emit) async {
       emit(SignUpLoding());
       try {

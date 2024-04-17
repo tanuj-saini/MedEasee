@@ -3,8 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:med_ease/DoctorScreen/BottomNavigation.dart';
 import 'package:med_ease/DoctorScreen/DoctorModifyScreen.dart';
 import 'package:med_ease/DoctorScreen/DoctorScreen.dart';
+import 'package:med_ease/DoctorScreen/doctorInfo.dart';
 import 'package:med_ease/Login_SignIn/bloc/otp_bloc_bloc.dart';
 import 'package:med_ease/UserScreens/HomeScreen.dart';
+import 'package:med_ease/UserScreens/userinfo.dart';
 import 'package:med_ease/Utils/Colors.dart';
 import 'package:med_ease/Utils/LoderScreen.dart';
 import 'package:pinput/pinput.dart';
@@ -32,9 +34,11 @@ class _OtpScreen extends State<OtpScreen> {
       if (state is OtpSuccess) {
         Navigator.of(context).push(MaterialPageRoute(builder: (ctx) {
           if (widget.typeOfUser == "doctor") {
-            return BottomNavigation();
+            return DoctorInfo(
+              phoneNumber: "534543",
+            );
           }
-          return HomeScreen();
+          return UserInfo(phoneNumber: "534534");
         }));
       }
     }, builder: (context, state) {

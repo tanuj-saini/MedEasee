@@ -152,23 +152,24 @@ class _BookAppointmentState extends State<BookAppointment> {
                               ))
                           .toList(),
                       title: Text("Time"),
-                      selectedColor: Colors.blue,
+                      selectedColor: const Color.fromARGB(255, 110, 116, 122),
                       decoration: BoxDecoration(
-                        color: Colors.blue.withOpacity(0.1),
+                        color: const Color.fromARGB(255, 113, 120, 126)
+                            .withOpacity(0.1),
                         borderRadius: BorderRadius.all(Radius.circular(40)),
                         border: Border.all(
-                          color: Colors.blue,
+                          color: const Color.fromARGB(255, 138, 190, 232),
                           width: 2,
                         ),
                       ),
                       buttonIcon: Icon(
                         Icons.access_time,
-                        color: Colors.blue,
+                        color: const Color.fromARGB(255, 105, 112, 117),
                       ),
                       buttonText: Text(
                         "Selected Time Slot",
                         style: TextStyle(
-                          color: Colors.blue[800],
+                          color: Color.fromARGB(255, 116, 122, 129),
                           fontSize: 16,
                         ),
                       ),
@@ -208,7 +209,7 @@ class _BookAppointmentState extends State<BookAppointment> {
                                 style: ButtonStyle(
                                   backgroundColor:
                                       MaterialStateProperty.all<Color>(
-                                          Colors.blue),
+                                          Color.fromARGB(255, 99, 103, 106)),
                                   shape: MaterialStateProperty.all<
                                       RoundedRectangleBorder>(
                                     RoundedRectangleBorder(
@@ -238,7 +239,7 @@ class _BookAppointmentState extends State<BookAppointment> {
                                 style: ButtonStyle(
                                   backgroundColor:
                                       MaterialStateProperty.all<Color>(
-                                          Colors.blue),
+                                          Color.fromARGB(255, 68, 72, 75)),
                                   shape: MaterialStateProperty.all<
                                       RoundedRectangleBorder>(
                                     RoundedRectangleBorder(
