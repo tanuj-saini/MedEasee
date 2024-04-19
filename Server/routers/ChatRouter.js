@@ -64,4 +64,40 @@ chatRouter.post("/api/message", async (req, res) => {
     res.status(500).json({ error: e.message });
   }
 });
+
+chatRouter.post("/get/ListChat", async (req, res) => {
+  try {
+    const { isDoctor, currentId, reciverId } = req.body;
+
+    // Validation
+    if (typeof isDoctor !== "boolean" || !currentId || !reciverId) {
+      return res.status(400).json({ msg: "Invalid request parameters" });
+    }
+
+    let Ruser, Cuser, Cchats;
+
+    // Fetching receiver user
+    if (isDoctor) {
+      Ruser = await userModule.findById(reciverId);
+      if (!Ruser) {
+        return res.status(400).json({ msg: "User not found" });
+      }
+      Cuser = await doctorModule.findById(currentId);
+    } else {
+      Ruser = await doctorModule.findById(reciverId);
+      if (!Ruser) {
+        return res.status(400).json({ msg: "Doctor not found" });
+      }
+      Cuser = await userModule.findById(currentId);
+    }
+
+    // Filtering chats
+    Cchats = Cuser.chat.filter((chat) => chat.reciverId === String(Ruser._id));
+
+    res.json(Cchats);
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
 module.exports = chatRouter;

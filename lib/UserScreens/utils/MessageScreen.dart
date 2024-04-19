@@ -3,6 +3,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:med_ease/UserScreens/bloc/list_chat_bloc.dart';
+import 'package:med_ease/UserScreens/utils/CharDetailsModel.dart';
+import 'package:med_ease/Utils/LoderScreen.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 import 'package:med_ease/Modules/testModule.dart';
@@ -34,10 +37,20 @@ class _MessageScreenState extends State<MessageScreen> {
   final ScrollController _scrollController = ScrollController();
   bool _loading = false;
   late List<MessageModule> listMessage = [];
-
+  late List<ChatDetails> chatList = [];
   @override
   void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final allChatData = BlocProvider.of<ListChatBloc>(context, listen: false);
+      allChatData.add(listChatEvents(
+          currentId: widget.isDoctor ? widget.doctorID : widget.userId,
+          isDoctor: widget.isDoctor,
+          reciverId: widget.isDoctor ? widget.doctorID : widget.userId,
+          context: context));
+    });
+    super.initState();
     connect();
+
     super.initState();
   }
 
@@ -90,115 +103,137 @@ class _MessageScreenState extends State<MessageScreen> {
 
   @override
   Widget build(BuildContext context) {
-    //final userModel = context.watch<UserBloc>().state;
+    return BlocConsumer<ListChatBloc, ListChatState>(
+        listener: (context, state) {
+      if (state is listChatFailure) {
+        //showSnackBar(state.error, context);
+        print(state.error);
+      }
+      if (state is listChatSuccess) {
+        chatList.addAll(state.chatInfoList.chatDetails ?? []);
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Chat"),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: listMessage.isNotEmpty
-                  ? ListView.builder(
-                      controller: _scrollController,
-                      itemBuilder: (context, idx) {
-                        return MessageListItem(
-                            text: listMessage[idx].message,
-                            isFromUser: listMessage[idx].isDoctor);
-                      },
-                      itemCount: listMessage.length,
-                    )
-                  : ListView(
-                      children: const [
-                        Text('No messages yet.'),
-                      ],
-                    ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                vertical: 25,
-                horizontal: 15,
-              ),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: TextFormField(
-                      controller: _textController,
-                      autofocus: true,
-                      decoration: InputDecoration(
-                        contentPadding: const EdgeInsets.all(15),
-                        hintText: 'Enter a message...',
-                        border: OutlineInputBorder(
-                          borderRadius: const BorderRadius.all(
-                            Radius.circular(14),
-                          ),
-                          borderSide: BorderSide(
-                            color: Theme.of(context).colorScheme.secondary,
-                          ),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: const BorderRadius.all(
-                            Radius.circular(14),
-                          ),
-                          borderSide: BorderSide(
-                            color: Theme.of(context).colorScheme.secondary,
-                          ),
-                        ),
-                      ),
-                      onFieldSubmitted: (String value) {
-                        widget.isDoctor == false
-                            ? sendMessage(
-                                messages: value,
-                                currentId: widget.userId,
-                                reciverId: widget.doctorID,
-                                isDoctor: widget.isDoctor)
-                            : sendMessage(
-                                messages: value,
-                                currentId: widget.doctorID,
-                                reciverId: widget.userId,
-                                isDoctor: widget.isDoctor);
-                        _textController.clear();
-                      },
-                    ),
-                  ),
-                  const SizedBox.square(
-                    dimension: 15,
-                  ),
-                  if (!_loading)
-                    IconButton(
-                      onPressed: () {
-                        widget.isDoctor == false
-                            ? sendMessage(
-                                messages: _textController.text,
-                                currentId: widget.userId,
-                                reciverId: widget.doctorID,
-                                isDoctor: widget.isDoctor)
-                            : sendMessage(
-                                messages: _textController.text,
-                                currentId: widget.doctorID,
-                                reciverId: widget.userId,
-                                isDoctor: widget.isDoctor);
-                        _textController.clear();
-                      },
-                      icon: Icon(
-                        Icons.send,
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
-                    )
-                  else
-                    const CircularProgressIndicator(),
-                ],
-              ),
-            ),
-          ],
+        listMessage = chatList
+            .map((chat) => MessageModule(
+                  message: chat.message ?? '',
+                  currentId: '',
+                  reciverId: '',
+                  isDoctor: chat.itsMe ?? false,
+                  time: chat.time ?? 'no',
+                ))
+            .toList();
+      }
+    }, builder: (context, state) {
+      if (state is listChatLoding) {
+        return Loder();
+      }
+      return Scaffold(
+        appBar: AppBar(
+          title: Text("Chat"),
         ),
-      ),
-    );
+        body: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: listMessage.isNotEmpty
+                    ? ListView.builder(
+                        controller: _scrollController,
+                        itemBuilder: (context, idx) {
+                          return MessageListItem(
+                              text: listMessage[idx].message,
+                              isFromUser: listMessage[idx].isDoctor);
+                        },
+                        itemCount: listMessage.length,
+                      )
+                    : ListView(
+                        children: const [
+                          Text('No messages yet.'),
+                        ],
+                      ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 25,
+                  horizontal: 15,
+                ),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: TextFormField(
+                        controller: _textController,
+                        autofocus: true,
+                        decoration: InputDecoration(
+                          contentPadding: const EdgeInsets.all(15),
+                          hintText: 'Enter a message...',
+                          border: OutlineInputBorder(
+                            borderRadius: const BorderRadius.all(
+                              Radius.circular(14),
+                            ),
+                            borderSide: BorderSide(
+                              color: Theme.of(context).colorScheme.secondary,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: const BorderRadius.all(
+                              Radius.circular(14),
+                            ),
+                            borderSide: BorderSide(
+                              color: Theme.of(context).colorScheme.secondary,
+                            ),
+                          ),
+                        ),
+                        onFieldSubmitted: (String value) {
+                          widget.isDoctor == false
+                              ? sendMessage(
+                                  messages: value,
+                                  currentId: widget.userId,
+                                  reciverId: widget.doctorID,
+                                  isDoctor: widget.isDoctor)
+                              : sendMessage(
+                                  messages: value,
+                                  currentId: widget.doctorID,
+                                  reciverId: widget.userId,
+                                  isDoctor: widget.isDoctor);
+                          _textController.clear();
+                        },
+                      ),
+                    ),
+                    const SizedBox.square(
+                      dimension: 15,
+                    ),
+                    if (!_loading)
+                      IconButton(
+                        onPressed: () {
+                          widget.isDoctor == false
+                              ? sendMessage(
+                                  messages: _textController.text,
+                                  currentId: widget.userId,
+                                  reciverId: widget.doctorID,
+                                  isDoctor: widget.isDoctor)
+                              : sendMessage(
+                                  messages: _textController.text,
+                                  currentId: widget.doctorID,
+                                  reciverId: widget.userId,
+                                  isDoctor: widget.isDoctor);
+                          _textController.clear();
+                        },
+                        icon: Icon(
+                          Icons.send,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                      )
+                    else
+                      const CircularProgressIndicator(),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    });
   }
 }
 
