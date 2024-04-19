@@ -24,8 +24,8 @@ class ListChatBloc extends Bloc<ListChatEvent, ListChatState> {
             },
             body: jsonEncode({
               "isDoctor": event.isDoctor,
-              "currentId": "66226db6ff77f816a7ecff93",
-              "reciverId": "66226debff77f816a7ecffd3",
+              "currentId": event.currentId,
+              "reciverId": event.reciverId,
             }));
         print("hello chat");
         print(res.body);

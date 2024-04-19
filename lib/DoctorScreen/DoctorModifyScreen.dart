@@ -41,10 +41,10 @@ class _DoctorModifyScreenState extends State<DoctorModifyScreen> {
 
   void _generateTimeSlots() {
     for (var i = 0; i < 24; i++) {
-      _items.add(TimeSlotD(hour: i)); // 정시
-      _items.add(TimeSlotD(hour: i, minute: 15)); // 15분
-      _items.add(TimeSlotD(hour: i, minute: 30)); // 30분
-      _items.add(TimeSlotD(hour: i, minute: 45)); // 45분
+      _items.add(TimeSlotD(hour: i));
+      _items.add(TimeSlotD(hour: i, minute: 15));
+      _items.add(TimeSlotD(hour: i, minute: 30));
+      _items.add(TimeSlotD(hour: i, minute: 45));
     }
   }
 
@@ -331,6 +331,23 @@ class _DoctorModifyScreenState extends State<DoctorModifyScreen> {
                       ),
                       ElevatedButton(
                         onPressed: () {
+                          if (doctorModel != null) {
+                            if (doctorModel.selectedTimeSlot != null) {
+                              sendModifyAppointMent.add(
+                                  AppointMentSelectedTimeSlot(
+                                      context: context,
+                                      isVedio: _selectedType ==
+                                              AppointmentType.Normal
+                                          ? false
+                                          : true,
+                                      doctorId: doctorModel.id,
+                                      price: _priceController.text,
+                                      title: _titleContoller.text,
+                                      timeSlots: _selectedTimeSlots,
+                                      date: DateTime.now().toString()));
+                            }
+                          } else {}
+
                           sendModifyAppointMent.add(
                             AppointMentDetailsEvent(
                               isVedio: _selectedType == AppointmentType.Normal

@@ -21,7 +21,7 @@ chatRouter.post("/api/message", async (req, res) => {
       itsMe: true,
     });
     let RchatModule = new ChatDetail({
-      reciverId,
+      reciverId: currentId,
       message,
       time,
       itsMe: false,
@@ -53,7 +53,7 @@ chatRouter.post("/api/message", async (req, res) => {
     if (Rchat) {
       Rchat.chatDetails.push(RchatModule);
     } else {
-      Ruser.chat.push({ reciverId: reciverId, chatDetails: RchatModule });
+      Ruser.chat.push({ reciverId: currentId, chatDetails: RchatModule });
     }
 
     Cuser = await Cuser.save();
@@ -69,7 +69,6 @@ chatRouter.post("/get/ListChat", async (req, res) => {
   try {
     const { isDoctor, currentId, reciverId } = req.body;
 
-    // Validation
     if (typeof isDoctor !== "boolean" || !currentId || !reciverId) {
       return res.status(400).json({ msg: "Invalid request parameters" });
     }
@@ -91,7 +90,6 @@ chatRouter.post("/get/ListChat", async (req, res) => {
       Cuser = await userModule.findById(currentId);
     }
 
-    // Filtering chats
     Cchats = Cuser.chat.filter((chat) => chat.reciverId === String(Ruser._id));
 
     res.json(Cchats);
