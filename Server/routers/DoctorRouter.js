@@ -70,7 +70,7 @@ doctorRouter.post("/tokenIsValid/doctor", async (req, res) => {
 });
 
 doctorRouter.get("/D", authDoctor, async (req, res) => {
-  const doctor = await doctorModule.findById(req.user);
+  const doctor = await doctorModule.findById(req.userDoctor);
   res.json({ ...doctor._doc, token: req.token });
 });
 
@@ -101,7 +101,7 @@ doctorRouter.post("/AppointmentModify", authDoctor, async (req, res) => {
 
     await newAppointMentDetail.save();
 
-    const doctor = await doctorModule.findById(req.user);
+    const doctor = await doctorModule.findById(req.userDoctor);
     if (!doctor) {
       return res.status(404).send({ message: "Doctor not found" });
     }

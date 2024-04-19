@@ -13,11 +13,11 @@ import 'package:med_ease/Utils/Colors.dart';
 class MessageScreen extends StatefulWidget {
   final String userId;
   final String doctorID;
-  final String appointMentId;
+  final bool isDoctor;
 
   MessageScreen({
     required this.userId,
-    required this.appointMentId,
+    required this.isDoctor,
     required this.doctorID,
     Key? key,
   }) : super(key: key);
@@ -42,12 +42,13 @@ class _MessageScreenState extends State<MessageScreen> {
   }
 
   void connect() {
-    socket = IO.io("http://0.0.0.0:5000", <String, dynamic>{
+    socket = IO.io("http://0.0.0.0:3001", <String, dynamic>{
       "transports": ['websocket'],
       "autoConnect": false,
     });
     socket.connect();
-    socket.emit('Id', widget.userId);
+    socket.emit(
+        'Id', widget.isDoctor == true ? widget.doctorID : widget.userId);
 
     socket.onConnect((data) {
       print("Connected");
@@ -55,27 +56,41 @@ class _MessageScreenState extends State<MessageScreen> {
         print(msg);
         setState(() {
           listMessage.add(MessageModule(
-              isMe: false,
+              time: msg['time'],
+              isDoctor: msg['isDoctor'],
               message: msg['message'],
-              doctorId: msg['doctorId'],
-              userId: msg['userId']));
+              reciverId: msg['reciverId'],
+              currentId: msg['currentId']));
         });
       });
     });
   }
 
-  void sendMessage(String messages, String sourceId, String targetId) {
+  void sendMessage(
+      {required String messages,
+      required String currentId,
+      required String reciverId,
+      required bool isDoctor}) {
     setState(() {
       listMessage.add(MessageModule(
-          isMe: true, message: messages, doctorId: targetId, userId: sourceId));
+          time: DateTime.now().toString(),
+          message: messages,
+          currentId: currentId,
+          reciverId: reciverId,
+          isDoctor: isDoctor));
     });
-    socket.emit("messageEvent",
-        {"message": messages, "sourceId": sourceId, "targetId": targetId});
+    socket.emit("messageEvent", {
+      "time": DateTime.now().toString(),
+      "message": messages,
+      "currentId": currentId,
+      "reciverId": reciverId,
+      "isDoctor": isDoctor
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    final userModel = context.watch<UserBloc>().state;
+    //final userModel = context.watch<UserBloc>().state;
 
     return Scaffold(
       appBar: AppBar(
@@ -94,7 +109,7 @@ class _MessageScreenState extends State<MessageScreen> {
                       itemBuilder: (context, idx) {
                         return MessageListItem(
                             text: listMessage[idx].message,
-                            isFromUser: listMessage[idx].isMe);
+                            isFromUser: listMessage[idx].isDoctor);
                       },
                       itemCount: listMessage.length,
                     )
@@ -136,7 +151,17 @@ class _MessageScreenState extends State<MessageScreen> {
                         ),
                       ),
                       onFieldSubmitted: (String value) {
-                        sendMessage(value, widget.userId, widget.doctorID);
+                        widget.isDoctor == false
+                            ? sendMessage(
+                                messages: value,
+                                currentId: widget.userId,
+                                reciverId: widget.doctorID,
+                                isDoctor: widget.isDoctor)
+                            : sendMessage(
+                                messages: value,
+                                currentId: widget.doctorID,
+                                reciverId: widget.userId,
+                                isDoctor: widget.isDoctor);
                         _textController.clear();
                       },
                     ),
@@ -147,8 +172,17 @@ class _MessageScreenState extends State<MessageScreen> {
                   if (!_loading)
                     IconButton(
                       onPressed: () {
-                        sendMessage(_textController.text, widget.userId,
-                            widget.doctorID);
+                        widget.isDoctor == false
+                            ? sendMessage(
+                                messages: _textController.text,
+                                currentId: widget.userId,
+                                reciverId: widget.doctorID,
+                                isDoctor: widget.isDoctor)
+                            : sendMessage(
+                                messages: _textController.text,
+                                currentId: widget.doctorID,
+                                reciverId: widget.userId,
+                                isDoctor: widget.isDoctor);
                         _textController.clear();
                       },
                       icon: Icon(

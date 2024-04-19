@@ -5,6 +5,7 @@ const {
 } = require("./appointMentDetails");
 const { userAppointment, UserAppointment } = require("./UserAppointed");
 const { scheduleSchema } = require("./ScheduleTime");
+const { chatDetailsSchema } = require("../Modules/chatDetails");
 const DoctorModule = mongoose.Schema({
   name: {
     require: true,
@@ -74,6 +75,15 @@ const DoctorModule = mongoose.Schema({
   timeSlot: [
     {
       appointMentDetails: [appointMentDetailsSchema],
+    },
+  ],
+  chat: [
+    {
+      reciverId: {
+        required: true,
+        type: String,
+      },
+      chatDetails: [chatDetailsSchema],
     },
   ],
 });

@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -12,6 +13,8 @@ import 'package:med_ease/Login_SignIn/OtpScreen.dart';
 import 'package:med_ease/Login_SignIn/bloc/otp_bloc_bloc.dart';
 import 'package:med_ease/DoctorScreen/DoctorModifyScreen.dart';
 import 'package:med_ease/Login_SignIn/bloc/sign_up_bloc.dart';
+import 'package:med_ease/Notification/LocalNotificationService.dart';
+import 'package:med_ease/Notification/notification.dart';
 import 'package:med_ease/UserScreens/HomeScreen.dart';
 import 'package:med_ease/UserScreens/StartScreen.dart';
 import 'package:med_ease/DoctorScreen/doctorInfo.dart';
@@ -32,14 +35,22 @@ import 'package:med_ease/bloc/user_moduel_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'firebase_options.dart';
 
+Future<void> backgroundHandler(RemoteMessage message) async {
+  print(message.data.toString());
+  print(message.notification!.title);
+}
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
   await dotenv.load(fileName: ".env");
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String? typeOfUser = prefs.getString('typeOfUser');
+  FirebaseMessaging.onBackgroundMessage(backgroundHandler);
+
   runApp(ProviderScope(
     child: BlocProvider(
       create: (context) => UserBloc(),
@@ -59,91 +70,89 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    LocalNotificationService.initialize(context);
     return MultiBlocProvider(
-      providers: [
-        BlocProvider<OtpBlocBloc>(
-          create: (context) => OtpBlocBloc(),
-        ),
-        BlocProvider<SendotpBlocBloc>(
-          create: (context) => SendotpBlocBloc(),
-        ),
-        BlocProvider(
-          create: (context) => UserModuelBloc(),
-        ),
-        BlocProvider(
-          create: (context) => AppointmnetBloc(),
-        ),
-        BlocProvider(
-          create: (context) => SignUpBloc(),
-        ),
-        BlocProvider(
-          create: (context) => AllDoctorsBloc(),
-        ),
-        BlocProvider(
-          create: (context) => BookApppointmentBloc(),
-        ),
-        BlocProvider(
-          create: (context) => RefreshDoctorBloc(),
-        ),
-        // BlocProvider(
-        //   create: (context) => DeleteAppointmentBloc(),
-        // ),
-        BlocProvider(create: (context) {
-          if (typeOfUser == "doctor") {
-            return PersistStateBloc()
-              ..add(persistDoctorEvent(context: context));
-          }
-
-          return PersistStateBloc()..add(persistEvent(context: context));
-        }),
-        BlocProvider(
-          create: (context) => LoginNewOtpBloc(),
-        )
-      ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Whatsapp UI',
-        theme: ThemeData.dark().copyWith(
-          scaffoldBackgroundColor: backgroundColor,
-          appBarTheme: const AppBarTheme(
-            color: appBarColor,
+        providers: [
+          BlocProvider<OtpBlocBloc>(
+            create: (context) => OtpBlocBloc(),
           ),
-        ),
-        // home: OrderSplash(
-        //   AppointMentId: "533242345rfrew423432",
-        //   dateTime: "12:43",
-        // )
-        home: BlocBuilder<PersistStateBloc, PersistStateState>(
-            builder: (context, state) {
-          if (typeOfUser == "doctor") {
-            if (state is PersistLoading) {
-              return Loder();
+          BlocProvider<SendotpBlocBloc>(
+            create: (context) => SendotpBlocBloc(),
+          ),
+          BlocProvider(
+            create: (context) => UserModuelBloc(),
+          ),
+          BlocProvider(
+            create: (context) => AppointmnetBloc(),
+          ),
+          BlocProvider(
+            create: (context) => SignUpBloc(),
+          ),
+          BlocProvider(
+            create: (context) => AllDoctorsBloc(),
+          ),
+          BlocProvider(
+            create: (context) => BookApppointmentBloc(),
+          ),
+          BlocProvider(
+            create: (context) => RefreshDoctorBloc(),
+          ),
+          // BlocProvider(
+          //   create: (context) => DeleteAppointmentBloc(),
+          // ),
+          BlocProvider(create: (context) {
+            if (typeOfUser == "doctor") {
+              return PersistStateBloc()
+                ..add(persistDoctorEvent(context: context));
             }
-            if (state is PersitDoctorSuccess) {
-              final doctorBloc = context.read<DoctorBloc>();
-              doctorBloc.updateDoctor(state.doctorModule);
-              print("DoctorBlocUpdate");
-              return BottomNavigation();
-            } else {
-              return SplashScreen();
-            }
-          }
-          if (typeOfUser == "user") {
-            if (state is PersistLoading) {
-              return Loder();
-            }
-            if (state is PersitSuccess) {
-              final userBloc = context.read<UserBloc>();
-              userBloc.updateUser(state.userModule);
 
-              return HomeScreen();
-            } else {
-              return SplashScreen();
+            return PersistStateBloc()..add(persistEvent(context: context));
+          }),
+          BlocProvider(
+            create: (context) => LoginNewOtpBloc(),
+          )
+        ],
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Whatsapp UI',
+          theme: ThemeData.dark().copyWith(
+            scaffoldBackgroundColor: backgroundColor,
+            appBarTheme: const AppBarTheme(
+              color: appBarColor,
+            ),
+          ),
+          //   home: NotificationAlert()
+
+          home: BlocBuilder<PersistStateBloc, PersistStateState>(
+              builder: (context, state) {
+            if (typeOfUser == "doctor") {
+              if (state is PersistLoading) {
+                return Loder();
+              }
+              if (state is PersitDoctorSuccess) {
+                final doctorBloc = context.read<DoctorBloc>();
+                doctorBloc.updateDoctor(state.doctorModule);
+                print("DoctorBlocUpdate");
+                return BottomNavigation();
+              } else {
+                return SplashScreen();
+              }
             }
-          }
-          return SplashScreen();
-        }),
-      ),
-    );
+            if (typeOfUser == "user") {
+              if (state is PersistLoading) {
+                return Loder();
+              }
+              if (state is PersitSuccess) {
+                final userBloc = context.read<UserBloc>();
+                userBloc.updateUser(state.userModule);
+
+                return HomeScreen();
+              } else {
+                return SplashScreen();
+              }
+            }
+            return SplashScreen();
+          }),
+        ));
   }
 }

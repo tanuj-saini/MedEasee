@@ -47,46 +47,52 @@ class messageList extends StatelessWidget {
 
 class MessageModule {
   final String message;
-  final String doctorId;
-  final String userId;
-  final bool isMe;
+  final String currentId;
+  final String reciverId;
+  final bool isDoctor;
+  final String time;
 
   MessageModule({
     required this.message,
-    required this.doctorId,
-    required this.userId,
-    required this.isMe,
+    required this.currentId,
+    required this.reciverId,
+    required this.isDoctor,
+    required this.time,
   });
 
   MessageModule copyWith({
     String? message,
-    String? doctorId,
-    String? userId,
-    bool? isMe,
+    String? currentId,
+    String? reciverId,
+    bool? isDoctor,
+    String? time,
   }) {
     return MessageModule(
       message: message ?? this.message,
-      doctorId: doctorId ?? this.doctorId,
-      userId: userId ?? this.userId,
-      isMe: isMe ?? this.isMe,
+      currentId: currentId ?? this.currentId,
+      reciverId: reciverId ?? this.reciverId,
+      isDoctor: isDoctor ?? this.isDoctor,
+      time: time ?? this.time,
     );
   }
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'message': message,
-      'doctorId': doctorId,
-      'userId': userId,
-      'isMe': isMe,
+      'currentId': currentId,
+      'reciverId': reciverId,
+      'isDoctor': isDoctor,
+      'time': time,
     };
   }
 
   factory MessageModule.fromMap(Map<String, dynamic> map) {
     return MessageModule(
       message: map['message'] as String,
-      doctorId: map['doctorId'] as String,
-      userId: map['userId'] as String,
-      isMe: map['isMe'] as bool,
+      currentId: map['currentId'] as String,
+      reciverId: map['reciverId'] as String,
+      isDoctor: map['isDoctor'] as bool,
+      time: map['time'] as String,
     );
   }
 
@@ -97,7 +103,7 @@ class MessageModule {
 
   @override
   String toString() {
-    return 'MessageModule(message: $message, doctorId: $doctorId, userId: $userId, isMe: $isMe)';
+    return 'MessageModule(message: $message, currentId: $currentId, reciverId: $reciverId, isDoctor: $isDoctor, time: $time)';
   }
 
   @override
@@ -105,16 +111,18 @@ class MessageModule {
     if (identical(this, other)) return true;
 
     return other.message == message &&
-        other.doctorId == doctorId &&
-        other.userId == userId &&
-        other.isMe == isMe;
+        other.currentId == currentId &&
+        other.reciverId == reciverId &&
+        other.isDoctor == isDoctor &&
+        other.time == time;
   }
 
   @override
   int get hashCode {
     return message.hashCode ^
-        doctorId.hashCode ^
-        userId.hashCode ^
-        isMe.hashCode;
+        currentId.hashCode ^
+        reciverId.hashCode ^
+        isDoctor.hashCode ^
+        time.hashCode;
   }
 }

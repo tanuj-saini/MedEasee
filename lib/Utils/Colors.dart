@@ -1,4 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_svg/svg.dart';
 
 const backgroundColor = Color.fromRGBO(19, 28, 33, 1);
 const textColor = Color.fromRGBO(241, 241, 242, 1);
@@ -15,5 +18,67 @@ const greyColor = Colors.grey;
 const blackColor = Colors.black;
 
 showSnackBar(String message, BuildContext context) {
-  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          Container(
+              padding: EdgeInsets.all(16),
+              height: 90,
+              decoration: BoxDecoration(
+                  color: Color.fromARGB(255, 94, 163, 198),
+                  borderRadius: BorderRadius.all(Radius.circular(20))),
+              child: Row(
+                children: [
+                  SizedBox(
+                    width: 48,
+                  ),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Oh snap!",
+                          style: TextStyle(color: Colors.white, fontSize: 18),
+                        ),
+                        const Spacer(),
+                        Text(
+                          message,
+                          style: TextStyle(color: Colors.white, fontSize: 18),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              )),
+          Positioned(
+              bottom: 0,
+              child: ClipRRect(
+                  borderRadius:
+                      BorderRadius.only(bottomLeft: Radius.circular(20)),
+                  child: SvgPicture.asset(
+                    "assets/s.svg",
+                    height: 80,
+                    width: 80,
+                    color: Color.fromARGB(255, 17, 63, 120),
+                  ))),
+          Positioned(
+              left: 0,
+              top: -20,
+              child: IconButton(
+                icon: Icon(Icons.cancel),
+                onPressed: () {
+                  ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                },
+              )),
+        ],
+      ),
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      behavior: SnackBarBehavior.floating,
+    ),
+  );
 }

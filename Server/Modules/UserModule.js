@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const { UserAppointment } = require("../DoctorModule/UserAppointed");
+const { chatDetailsSchema } = require("./chatDetails");
 const UserModule = mongoose.Schema({
   name: {
     require: true,
@@ -44,6 +45,15 @@ const UserModule = mongoose.Schema({
         require: true,
         type: String,
       },
+    },
+  ],
+  chat: [
+    {
+      reciverId: {
+        required: true,
+        type: String,
+      },
+      chatDetails: [chatDetailsSchema],
     },
   ],
 });

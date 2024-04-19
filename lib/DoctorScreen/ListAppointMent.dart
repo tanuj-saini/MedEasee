@@ -102,12 +102,16 @@ class _ListAppointmentScreenState extends State<ListAppointmentScreen> {
                       child: ListTile(
                         onTap: () => Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (ctx) => MessageScreen(
-                              userId: appointment.userId ?? '',
-                              appointMentId: appointment.id ?? '',
-                              doctorID: doctorModel.id,
-                            ),
-                          ),
+                              builder: (ctx) =>
+                                  //  MessageScreen(
+                                  //   userId: appointment.userId ?? '',
+                                  //   appointMentId: appointment.id ?? '',
+                                  //   doctorID: doctorModel.id,
+                                  // ),
+                                  MessageScreen(
+                                      userId: appointment.userId ?? '',
+                                      isDoctor: true,
+                                      doctorID: doctorModel.id)),
                         ),
                         title: Text('Appointment ID: ${appointment.id}'),
                         subtitle: Column(

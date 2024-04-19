@@ -48,12 +48,17 @@ class _BookedAppointmentListState extends State<BookedAppointmentList> {
                   child: ListTile(
                     onTap: () {
                       Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => MessageScreen(
-                          userId: user.id,
-                          appointMentId: appointment.id ?? '',
-                          doctorID: appointment.doctorId ?? "",
-                        ),
-                      ));
+                          builder: (context) =>
+                              // MessageScreen(
+                              //   userId: user.id,
+                              //   appointMentId: appointment.id ?? '',
+                              //   doctorID: appointment.doctorId ?? "",
+                              // ),
+                              MessageScreen(
+                                userId: user.id,
+                                isDoctor: false,
+                                doctorID: appointment.doctorId ?? "",
+                              )));
                     },
                     title: Text('Appointment ID: ${appointment.id}'),
                     subtitle: Column(
