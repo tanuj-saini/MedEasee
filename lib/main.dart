@@ -4,30 +4,27 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:med_ease/DoctorScreen/BottomNavigation.dart';
-import 'package:med_ease/DoctorScreen/DoctorScreen.dart';
+
 import 'package:med_ease/DoctorScreen/bloc/appointmnet_bloc.dart';
-import 'package:med_ease/DoctorScreen/bloc/delete_appointment_bloc.dart';
+
 import 'package:med_ease/DoctorScreen/bloc/refresh_doctor_bloc.dart';
-import 'package:med_ease/Login_SignIn/Login.dart';
-import 'package:med_ease/Login_SignIn/OtpScreen.dart';
+
 import 'package:med_ease/Login_SignIn/bloc/otp_bloc_bloc.dart';
-import 'package:med_ease/DoctorScreen/DoctorModifyScreen.dart';
 import 'package:med_ease/Login_SignIn/bloc/sign_up_bloc.dart';
 import 'package:med_ease/Notification/LocalNotificationService.dart';
-import 'package:med_ease/Notification/notification.dart';
+
 import 'package:med_ease/UserScreens/HomeScreen.dart';
-import 'package:med_ease/UserScreens/StartScreen.dart';
-import 'package:med_ease/DoctorScreen/doctorInfo.dart';
+
 import 'package:med_ease/UserScreens/bloc/all_doctors_bloc.dart';
 import 'package:med_ease/UserScreens/bloc/book_apppointment_bloc.dart';
 import 'package:med_ease/UserScreens/bloc/list_chat_bloc.dart';
-import 'package:med_ease/UserScreens/userinfo.dart';
+
 import 'package:med_ease/UpdateModels/UpdateDoctorModule.dart';
 import 'package:med_ease/Utils/Colors.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:med_ease/UpdateModels/UpdateUserModel.dart';
 import 'package:med_ease/Utils/LoderScreen.dart';
-import 'package:med_ease/Utils/OrderSplashScreen.dart';
+
 import 'package:med_ease/Utils/SplashScreen.dart';
 import 'package:med_ease/bloc/login_new_otp_bloc.dart';
 import 'package:med_ease/bloc/persist_state_bloc.dart';

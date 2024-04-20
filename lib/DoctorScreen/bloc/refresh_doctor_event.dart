@@ -19,3 +19,16 @@ class deleteAppointEvent extends RefreshDoctorEvent {
     required this.userId,
   });
 }
+
+class updateIsCompleteEvent extends RefreshDoctorEvent {
+  final String appointMentId;
+  final String doctorId;
+  final String userId;
+  final BuildContext context;
+
+  updateIsCompleteEvent(
+      {required this.appointMentId,
+      required this.context,
+      required this.doctorId,
+      required this.userId});
+}

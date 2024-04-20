@@ -17,20 +17,6 @@ class RefreshDoctorBloc extends Bloc<RefreshDoctorEvent, RefreshDoctorState> {
     on<RefreshDoctorListEvent>((event, emit) async {
       emit(RefreshDoctorLoding());
       try {
-        Doctor doctorModule = Doctor(
-            name: "",
-            bio: "",
-            phoneNumber: "",
-            specialist: "",
-            currentWorkingHospital: "",
-            profilePic: "",
-            registerNumbers: "",
-            experience: "",
-            emailAddress: "",
-            age: "",
-            applicationLeft: [],
-            timeSlot: [],
-            id: "");
         SharedPreferences prefs = await SharedPreferences.getInstance();
         String? token = prefs.getString('x-auth-token-D');
         if (token == null) {
@@ -49,7 +35,7 @@ class RefreshDoctorBloc extends Bloc<RefreshDoctorEvent, RefreshDoctorState> {
         _httpErrorHandle(res, emit, event.context);
         final jsonData = jsonDecode(res.body);
         print('yes it works');
-        doctorModule = Doctor.fromJson(jsonData);
+        Doctor doctorModule = Doctor.fromJson(jsonData);
 
         print(doctorModule);
         return emit(RefreshDoctorSuccess(doctor: doctorModule));
@@ -85,6 +71,31 @@ class RefreshDoctorBloc extends Bloc<RefreshDoctorEvent, RefreshDoctorState> {
         emit(DeleteAppointSuccess(
             user: userModule, successText: "AppointMents Delted"));
         return emit(RefreshDoctorSuccess(doctor: doctorModule));
+      } catch (e) {
+        return emit(RefreshDoctorFailure(error: e.toString()));
+      }
+    });
+    on<updateIsCompleteEvent>((event, emit) async {
+      emit(RefreshDoctorLoding());
+      try {
+        http.Response res =
+            await http.post(Uri.parse("$ip/updateIsComplete/appointMent"),
+                headers: <String, String>{
+                  'Content-Type': 'application/json; charset=UTF-8',
+                },
+                body: jsonEncode({
+                  "doctorId": event.doctorId,
+                  "userId": event.userId,
+                  "appointMentId": event.appointMentId,
+                }));
+        _httpErrorHandle(res, emit, event.context);
+        final jsonData = jsonDecode(res.body);
+        Doctor doctorModule = Doctor.fromJson(jsonData);
+
+        return emit(updateIsCompleteSuccess(
+            userId: event.userId,
+            successText: "Congragulation AppointMent Completed",
+            doctor: doctorModule));
       } catch (e) {
         return emit(RefreshDoctorFailure(error: e.toString()));
       }

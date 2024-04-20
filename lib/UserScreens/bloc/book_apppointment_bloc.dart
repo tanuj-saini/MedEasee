@@ -25,16 +25,7 @@ class BookApppointmentBloc
         if (token == null) {
           return emit(BookApppointmentFailure(error: "No Auth token"));
         }
-        UserModuleE userModule = UserModuleE(
-            name: "",
-            emailAddress: "",
-            age: "",
-            id: "",
-            phoneNumber: "",
-            homeAddress: "",
-            appointment: [],
-            medicalShopHistory: [],
-            emergencyCall: []);
+
         String doctorId = event.doctorId;
         http.Response res =
             await http.post(Uri.parse('$ip/bookAppointment?doctorId=$doctorId'),
@@ -46,14 +37,14 @@ class BookApppointmentBloc
                   'date': event.date,
                   'isComplete': event.isComplete,
                   'timeSlots': event.timeSlotPicks,
-                  'isVedio': event.isVedio
+                  'isVedio': event.isVedio,
                 }));
         _httpErrorHandle(res, emit, event.context);
         print(res.body);
 
         Map<String, dynamic> decodedJson = jsonDecode(res.body);
         print(decodedJson['user']);
-        userModule = UserModuleE.fromJson(decodedJson['user']);
+        UserModuleE userModule = UserModuleE.fromJson(decodedJson['user']);
 
         print("yes");
 

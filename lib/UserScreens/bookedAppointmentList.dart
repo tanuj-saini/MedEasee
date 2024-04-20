@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:med_ease/DoctorScreen/bloc/refresh_doctor_bloc.dart';
+import 'package:med_ease/Modules/DoctorModify.dart';
 import 'package:med_ease/Modules/testUserModule.dart'; // Import your user module
 import 'package:med_ease/UpdateModels/UpdateUserModel.dart';
 import 'package:med_ease/UserScreens/utils/MessageScreen.dart';
 import 'package:med_ease/Utils/Colors.dart';
-import 'package:med_ease/Utils/LoderScreen.dart'; // Import any necessary models
+import 'package:med_ease/Utils/LoderScreen.dart';
+import 'package:rating_dialog/rating_dialog.dart'; // Import any necessary models
 
 class BookedAppointmentList extends StatefulWidget {
   BookedAppointmentList({Key? key}) : super(key: key); // Corrected super call
@@ -14,6 +17,21 @@ class BookedAppointmentList extends StatefulWidget {
 }
 
 class _BookedAppointmentListState extends State<BookedAppointmentList> {
+  void show() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return RatingDialog(
+          title: Text("How Your Experience"),
+          submitButtonText: "Submit",
+          onSubmitted: (review) {
+            print(review.rating);
+          },
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final user = context.watch<UserBloc>().state as UserModuleE;
@@ -78,28 +96,47 @@ class _BookedAppointmentListState extends State<BookedAppointmentList> {
                                 Text(
                                     'TimeSlotSelected:${detail.timeSlotPicks!.timeSlots![0].hour}:${detail.timeSlotPicks!.timeSlots![0].minute}'),
                                 Divider(),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      "Cancel Fee may Charge:",
-                                      style: TextStyle(color: Colors.red),
-                                    ),
-                                    ElevatedButton.icon(
-                                        onPressed: () {
-                                          refreshDoctorModule.add(
-                                              deleteAppointEvent(
-                                                  context: context,
-                                                  doctorId:
-                                                      appointment.doctorId ??
-                                                          "",
-                                                  userId: detail.userId ?? ""));
-                                        },
-                                        icon: Icon(Icons.cancel),
-                                        label: Text("Cancel")),
-                                  ],
-                                ),
+                                detail.isComplete == false
+                                    ? Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            "Cancel Fee may Charge:",
+                                            style: TextStyle(color: Colors.red),
+                                          ),
+                                          ElevatedButton.icon(
+                                              onPressed: () {
+                                                refreshDoctorModule.add(
+                                                    deleteAppointEvent(
+                                                        context: context,
+                                                        doctorId: appointment
+                                                                .doctorId ??
+                                                            "",
+                                                        userId: detail.userId ??
+                                                            ""));
+                                              },
+                                              icon: Icon(Icons.cancel),
+                                              label: Text("Cancel")),
+                                        ],
+                                      )
+                                    : Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          ElevatedButton.icon(
+                                              onPressed: () {
+                                                show();
+                                              },
+                                              icon: Icon(Icons
+                                                  .remove_circle_outline_outlined),
+                                              label: Text("Review")),
+                                          ElevatedButton.icon(
+                                              onPressed: () {},
+                                              icon: Icon(Icons.done),
+                                              label: Text("Done")),
+                                        ],
+                                      )
                               ],
                             );
                           }).toList(),

@@ -143,23 +143,32 @@ class AppointMentDetails {
   String? doctorId;
   String? userId;
   bool? isComplete;
+  String? rating;
+  String? cancel;
+  String? comments;
   bool? isVedio;
   TimeSloted? timeSlotPicks;
   String? id;
 
   AppointMentDetails({
     this.date,
+    this.comments,
     this.doctorId,
     this.userId,
     this.isComplete,
     this.isVedio,
+    this.rating,
+    this.cancel,
     this.timeSlotPicks,
     this.id,
   });
 
   AppointMentDetails.fromJson(Map<String, dynamic> json) {
     date = json['date'];
+    comments = json['comments'];
     doctorId = json['doctorId'];
+    rating = json['rating'];
+    cancel = json['cancel'];
     userId = json['userId'];
     isComplete = json['isComplete'];
     isVedio = json['isVedio'];
@@ -172,7 +181,10 @@ class AppointMentDetails {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['date'] = this.date;
+    data['comments'] = this.comments;
     data['doctorId'] = this.doctorId;
+    data['rating'] = this.rating;
+    data['cancel'] = this.cancel;
     data['userId'] = this.userId;
     data['isComplete'] = this.isComplete;
     data['isVedio'] = this.isVedio;
