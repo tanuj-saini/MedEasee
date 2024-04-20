@@ -59,6 +59,7 @@ dependencies:
   firebase_messaging: ^14.8.2
   flutter_local_notifications: ^17.0.1
   rating_dialog: ^2.0.4
+  flutter_rating_bar: ^4.0.1
 
 dev_dependencies:
   flutter_test:

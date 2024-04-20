@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:med_ease/DoctorScreen/BottomNavigation.dart';
 import 'package:med_ease/DoctorScreen/DoctorScreen.dart';
 import 'package:med_ease/DoctorScreen/bloc/refresh_doctor_bloc.dart';
@@ -213,8 +214,18 @@ class _ListAppointmentScreenState extends State<ListAppointmentScreen> {
                                             )
                                           : Column(
                                               children: [
-                                                Text(
-                                                    "Rating: ${detail.rating ?? "0"}"),
+                                                RatingBar.builder(
+                                                  itemCount: 5,
+                                                  initialRating: double.parse(
+                                                      detail.rating ?? "0.0"),
+                                                  itemBuilder: (context, _) {
+                                                    return Icon(
+                                                      Icons.star,
+                                                      color: Colors.yellow,
+                                                    );
+                                                  },
+                                                  onRatingUpdate: (value) {},
+                                                ),
                                                 Text(
                                                     "Comments: ${detail.comments ?? "0"}"),
                                               ],
