@@ -32,3 +32,20 @@ class updateIsCompleteEvent extends RefreshDoctorEvent {
       required this.doctorId,
       required this.userId});
 }
+
+class updateRatingCompleted extends RefreshDoctorEvent {
+  final String doctorId;
+  final String userId;
+  final String appointMentId;
+  final String comments;
+  final String rating;
+  final BuildContext context;
+
+  updateRatingCompleted(
+      {required this.context,
+      required this.doctorId,
+      required this.userId,
+      required this.appointMentId,
+      required this.comments,
+      required this.rating});
+}

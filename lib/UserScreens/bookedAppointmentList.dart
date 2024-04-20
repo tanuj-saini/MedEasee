@@ -17,7 +17,10 @@ class BookedAppointmentList extends StatefulWidget {
 }
 
 class _BookedAppointmentListState extends State<BookedAppointmentList> {
-  void show() {
+  void show(
+      {required String doctorId,
+      required String userId,
+      required String appointMentId}) {
     showDialog(
       context: context,
       builder: (context) {
@@ -25,7 +28,15 @@ class _BookedAppointmentListState extends State<BookedAppointmentList> {
           title: Text("How Your Experience"),
           submitButtonText: "Submit",
           onSubmitted: (review) {
-            print(review.rating);
+            final refreshDoctorModule =
+                BlocProvider.of<RefreshDoctorBloc>(context);
+            refreshDoctorModule.add(updateRatingCompleted(
+                context: context,
+                doctorId: doctorId,
+                userId: userId,
+                appointMentId: appointMentId,
+                comments: review.comment,
+                rating: review.rating.toString()));
           },
         );
       },
@@ -48,6 +59,10 @@ class _BookedAppointmentListState extends State<BookedAppointmentList> {
           userBloc.updateUser(state.user);
 
           showSnackBar(state.successText, context);
+        }
+        if (state is updateCommetsRatingSucess) {
+          final userBloc = context.read<UserBloc>();
+          userBloc.updateUser(state.user);
         }
       },
       builder: (context, state) {
@@ -126,7 +141,13 @@ class _BookedAppointmentListState extends State<BookedAppointmentList> {
                                         children: [
                                           ElevatedButton.icon(
                                               onPressed: () {
-                                                show();
+                                                show(
+                                                    doctorId:
+                                                        appointment.doctorId ??
+                                                            "",
+                                                    userId: detail.userId ?? "",
+                                                    appointMentId:
+                                                        detail.id ?? "");
                                               },
                                               icon: Icon(Icons
                                                   .remove_circle_outline_outlined),

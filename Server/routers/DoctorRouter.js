@@ -299,12 +299,10 @@ doctorRouter.delete("/delete/AppointMents", async (req, res) => {
     return res.status(500).json({ message: "Internal Server Error" });
   }
 });
-
 doctorRouter.post("/updateIsComplete/appointMent", async (req, res) => {
   try {
     const { doctorId, userId, appointMentId } = req.body;
 
-    // Find the DoctorModule
     const doctor = await doctorModule.findOne({ _id: doctorId });
     const user = await userModule.findOne({ _id: userId });
 
@@ -312,8 +310,7 @@ doctorRouter.post("/updateIsComplete/appointMent", async (req, res) => {
       return res.status(404).json({ message: "Doctor not found" });
     }
 
-    // Find the correct UserAppointment in applicationLeft
-    const appointmentIndex = doctor.applicationLeft.findIndex(
+    const appointmentIndexDoctor = doctor.applicationLeft.findIndex(
       (appointment) =>
         appointment.userId === userId &&
         appointment.appointMentDetails.some(
@@ -321,33 +318,13 @@ doctorRouter.post("/updateIsComplete/appointMent", async (req, res) => {
         )
     );
 
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-    const appointmentIndexU = user.appointment.findIndex(
-      (appointment) =>
-        appointment.doctorId === doctorId &&
-        appointment.apppointLeft.some(
-          (details) => details._id.toString() === appointMentId
-        )
-    );
-
-    if (appointmentIndexU === -1) {
-      return res.status(404).json({ message: "Appointment not found" });
-    }
-    user.appointment[appointmentIndex].apppointLeft.forEach((details) => {
-      if (details._id.toString() === appointMentId) {
-        details.isComplete = true;
-      }
-    });
-
-    await user.save();
-
-    if (appointmentIndex === -1) {
-      return res.status(404).json({ message: "Appointment not found" });
+    if (appointmentIndexDoctor === -1) {
+      return res
+        .status(404)
+        .json({ message: "Doctor's appointment not found" });
     }
 
-    doctor.applicationLeft[appointmentIndex].appointMentDetails.forEach(
+    doctor.applicationLeft[appointmentIndexDoctor].appointMentDetails.forEach(
       (details) => {
         if (details._id.toString() === appointMentId) {
           details.isComplete = true;
@@ -357,7 +334,92 @@ doctorRouter.post("/updateIsComplete/appointMent", async (req, res) => {
 
     await doctor.save();
 
+    const appointmentIndexUser = user.appointment.findIndex(
+      (appointment) =>
+        appointment.doctorId === doctorId &&
+        appointment.apppointLeft.some(
+          (details) => details._id.toString() === appointMentId
+        )
+    );
+
+    if (appointmentIndexUser === -1) {
+      return res.status(404).json({ message: "User's appointment not found" });
+    }
+
+    user.appointment[appointmentIndexUser].apppointLeft.forEach((details) => {
+      if (details._id.toString() === appointMentId) {
+        details.isComplete = true;
+      }
+    });
+
+    await user.save();
+
     return res.json(doctor);
+  } catch (e) {
+    console.error(e);
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
+doctorRouter.post("/updateRatingAndComments/appointMent", async (req, res) => {
+  try {
+    const { doctorId, userId, appointMentId, comments, rating } = req.body;
+
+    // Find the DoctorModule
+    const doctor = await doctorModule.findOne({ _id: doctorId });
+    const user = await userModule.findOne({ _id: userId });
+
+    if (!doctor) {
+      return res.status(404).json({ message: "Doctor not found" });
+    }
+
+    const appointmentIndexDoctor = doctor.applicationLeft.findIndex(
+      (appointment) =>
+        appointment.userId === userId &&
+        appointment.appointMentDetails.some(
+          (details) => details._id.toString() === appointMentId
+        )
+    );
+
+    if (appointmentIndexDoctor === -1) {
+      return res
+        .status(404)
+        .json({ message: "Doctor's appointment not found" });
+    }
+
+    doctor.applicationLeft[appointmentIndexDoctor].appointMentDetails.forEach(
+      (details) => {
+        if (details._id.toString() === appointMentId) {
+          details.rating = rating;
+          details.comments = comments;
+        }
+      }
+    );
+
+    await doctor.save();
+
+    const appointmentIndexUser = user.appointment.findIndex(
+      (appointment) =>
+        appointment.doctorId === doctorId &&
+        appointment.apppointLeft.some(
+          (details) => details._id.toString() === appointMentId
+        )
+    );
+
+    if (appointmentIndexUser === -1) {
+      return res.status(404).json({ message: "User's appointment not found" });
+    }
+
+    user.appointment[appointmentIndexUser].apppointLeft.forEach((details) => {
+      if (details._id.toString() === appointMentId) {
+        details.rating = rating;
+        details.comments = comments;
+      }
+    });
+
+    await user.save();
+
+    return res.json(user);
   } catch (e) {
     console.error(e);
     return res.status(500).json({ message: "Internal Server Error" });

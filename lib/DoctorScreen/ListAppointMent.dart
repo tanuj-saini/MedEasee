@@ -165,47 +165,61 @@ class _ListAppointmentScreenState extends State<ListAppointmentScreen> {
                               children:
                                   appointment.appointMentDetails!.map((detail) {
                                 return Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text('Date: ${detail.date}'),
-                                    Text(
-                                      'TimeSlotSelected: ${detail.timeSlotPicks!.timeSlots![0].hour}:${detail.timeSlotPicks!.timeSlots![0].minute}',
-                                    ),
-                                    Text('User ID: ${detail.userId}'),
-                                    Text('Is Complete: ${detail.isComplete}'),
-                                    Divider(),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        ElevatedButton.icon(
-                                          onPressed: () {
-                                            refreshDoctorModule.add(
-                                                updateIsCompleteEvent(
-                                                    appointMentId:
-                                                        detail.id ?? '',
-                                                    context: context,
-                                                    doctorId: doctorModel.id,
-                                                    userId:
-                                                        detail.userId ?? ''));
-                                          },
-                                          icon: Icon(Icons.done),
-                                          label: Text("Done"),
-                                        ),
-                                        ElevatedButton.icon(
-                                          onPressed: () {
-                                            delete(
-                                              doctorId: detail.doctorId ?? '',
-                                              userID: detail.userId ?? '',
-                                            );
-                                          },
-                                          icon: Icon(Icons.cancel),
-                                          label: Text("Cancel"),
-                                        ),
-                                      ],
-                                    )
-                                  ],
-                                );
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text('Date: ${detail.date}'),
+                                      Text(
+                                        'TimeSlotSelected: ${detail.timeSlotPicks!.timeSlots![0].hour}:${detail.timeSlotPicks!.timeSlots![0].minute}',
+                                      ),
+                                      Text('User ID: ${detail.userId}'),
+                                      Text('Is Complete: ${detail.isComplete}'),
+                                      Divider(),
+                                      detail.isComplete == false
+                                          ? Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                ElevatedButton.icon(
+                                                  onPressed: () {
+                                                    refreshDoctorModule.add(
+                                                        updateIsCompleteEvent(
+                                                            appointMentId:
+                                                                detail.id ?? '',
+                                                            context: context,
+                                                            doctorId:
+                                                                doctorModel.id,
+                                                            userId:
+                                                                detail.userId ??
+                                                                    ''));
+                                                  },
+                                                  icon: Icon(Icons.done),
+                                                  label: Text("Done"),
+                                                ),
+                                                ElevatedButton.icon(
+                                                  onPressed: () {
+                                                    delete(
+                                                      doctorId:
+                                                          detail.doctorId ?? '',
+                                                      userID:
+                                                          detail.userId ?? '',
+                                                    );
+                                                  },
+                                                  icon: Icon(Icons.cancel),
+                                                  label: Text("Cancel"),
+                                                ),
+                                              ],
+                                            )
+                                          : Column(
+                                              children: [
+                                                Text(
+                                                    "Rating: ${detail.rating ?? "0"}"),
+                                                Text(
+                                                    "Comments: ${detail.comments ?? "0"}"),
+                                              ],
+                                            )
+                                    ]);
                               }).toList(),
                             ),
                           ],

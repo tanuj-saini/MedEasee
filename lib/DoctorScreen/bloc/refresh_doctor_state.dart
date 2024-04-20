@@ -40,6 +40,12 @@ class DeleteAppointSuccess extends RefreshDoctorState {
   DeleteAppointSuccess({required this.user, required this.successText});
 }
 
+class updateCommetsRatingSucess extends RefreshDoctorState {
+  final String successText;
+  final UserModuleE user;
+  updateCommetsRatingSucess({required this.user, required this.successText});
+}
+
 void _httpErrorHandle(http.Response response, Emitter<RefreshDoctorState> emit,
     BuildContext context) {
   switch (response.statusCode) {

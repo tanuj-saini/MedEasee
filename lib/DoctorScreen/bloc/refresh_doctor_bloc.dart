@@ -100,5 +100,33 @@ class RefreshDoctorBloc extends Bloc<RefreshDoctorEvent, RefreshDoctorState> {
         return emit(RefreshDoctorFailure(error: e.toString()));
       }
     });
+
+    on<updateRatingCompleted>((event, emit) async {
+      emit(RefreshDoctorLoding());
+      try {
+        http.Response res = await http.post(
+          Uri.parse("$ip/updateRatingAndComments/appointMent"),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+          },
+          body: jsonEncode({
+            "doctorId": event.doctorId,
+            "userId": event.userId,
+            "appointMentId": event.appointMentId,
+            "comments": event.comments,
+            "rating": event.rating
+          }),
+        );
+        _httpErrorHandle(res, emit, event.context);
+        Map<String, dynamic> decodedJson = jsonDecode(res.body);
+
+        UserModuleE userModule = UserModuleE.fromJson(decodedJson);
+
+        return emit(updateCommetsRatingSucess(
+            user: userModule, successText: "Thanks For Review"));
+      } catch (e) {
+        return emit(RefreshDoctorFailure(error: e.toString()));
+      }
+    });
   }
 }
