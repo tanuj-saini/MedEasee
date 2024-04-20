@@ -33,6 +33,7 @@ class UserModuelBloc extends Bloc<UserModuelEvent, UserModuelState> {
             homeAddress: event.homeAddress,
             appointment: [],
             medicalShopHistory: [],
+            appointMentHistory: [],
             emergencyCall: []);
         http.Response res = await http.post(Uri.parse("$ip/user/signUp"),
             headers: <String, String>{
@@ -74,7 +75,8 @@ class UserModuelBloc extends Bloc<UserModuelEvent, UserModuelState> {
             age: event.age,
             applicationLeft: [],
             timeSlot: [],
-            id: "");
+            id: "",
+            appointMentHistory: []);
 
         http.Response res = await http.post(Uri.parse("$ip/doctor/signUp"),
             headers: <String, String>{

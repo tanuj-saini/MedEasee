@@ -145,7 +145,8 @@ class AppointmnetBloc extends Bloc<AppointmnetEvent, AppointmnetState> {
             age: "",
             applicationLeft: [],
             timeSlot: [],
-            id: "");
+            id: "",
+            appointMentHistory: []);
         SelectedTimeSlotU selectedTimeSlotU = SelectedTimeSlotU(
             price: event.price,
             title: event.title,

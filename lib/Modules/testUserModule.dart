@@ -12,18 +12,19 @@ class UserModuleE {
   List<Appointment> appointment;
   List<dynamic> medicalShopHistory;
   List<dynamic> emergencyCall;
+  List<AppointmentLeft> appointMentHistory;
 
-  UserModuleE({
-    required this.id,
-    required this.name,
-    required this.emailAddress,
-    required this.age,
-    required this.phoneNumber,
-    required this.homeAddress,
-    required this.appointment,
-    required this.medicalShopHistory,
-    required this.emergencyCall,
-  });
+  UserModuleE(
+      {required this.id,
+      required this.name,
+      required this.emailAddress,
+      required this.age,
+      required this.phoneNumber,
+      required this.homeAddress,
+      required this.appointment,
+      required this.medicalShopHistory,
+      required this.emergencyCall,
+      required this.appointMentHistory});
 
   factory UserModuleE.fromJson(Map<String, dynamic> json) {
     return UserModuleE(
@@ -36,6 +37,12 @@ class UserModuleE {
       appointment: json['appointment'] != null && json['appointment'] is List
           ? (json['appointment'] as List)
               .map((a) => Appointment.fromJson(a))
+              .toList()
+          : [],
+      appointMentHistory: json['appointMentHistory'] != null &&
+              json['appointMentHistory'] is List
+          ? (json['appointMentHistory'] as List)
+              .map((a) => AppointmentLeft.fromJson(a))
               .toList()
           : [],
       medicalShopHistory: json['medicalShopHistory'] ?? [],
@@ -55,6 +62,9 @@ class UserModuleE {
           appointment.map((appointment) => appointment.toJson()).toList(),
       'medicalShopHistory': medicalShopHistory,
       'emergencyCall': emergencyCall,
+      'appointMentHistory': appointMentHistory
+          .map((appointment) => appointment.toJson())
+          .toList(),
     };
   }
 

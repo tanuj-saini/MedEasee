@@ -31,7 +31,8 @@ class PersistStateBloc extends Bloc<PersistStateEvent, PersistStateState> {
             homeAddress: "",
             appointment: [],
             medicalShopHistory: [],
-            emergencyCall: []);
+            emergencyCall: [],
+            appointMentHistory: []);
         String? token = prefs.getString('x-auth-token-w');
         if (token == null) {
           prefs.setString('x-auth-token-w', '');
@@ -89,7 +90,8 @@ class PersistStateBloc extends Bloc<PersistStateEvent, PersistStateState> {
             age: "",
             applicationLeft: [],
             timeSlot: [],
-            id: "");
+            id: "",
+            appointMentHistory: []);
         String? token = prefs.getString('x-auth-token-D');
         if (token == null) {
           prefs.setString('x-auth-token-D', '');

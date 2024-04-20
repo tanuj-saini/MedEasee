@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:med_ease/DoctorScreen/BottomNavigation.dart';
 import 'package:med_ease/DoctorScreen/DoctorScreen.dart';
+import 'package:med_ease/DoctorScreen/bloc/delete_appointment_bloc.dart';
 import 'package:med_ease/DoctorScreen/bloc/refresh_doctor_bloc.dart';
 import 'package:med_ease/UpdateModels/UpdateDoctorModule.dart';
 import 'package:med_ease/UserScreens/utils/MessageScreen.dart';
@@ -19,7 +20,10 @@ class ListAppointmentScreen extends StatefulWidget {
 }
 
 class _ListAppointmentScreenState extends State<ListAppointmentScreen> {
-  void delete({required String doctorId, required String userID}) {
+  void delete(
+      {required String doctorId,
+      required String userID,
+      required String appointMentId}) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -38,7 +42,10 @@ class _ListAppointmentScreenState extends State<ListAppointmentScreen> {
             ),
             ElevatedButton(
               onPressed: () {
-                deleteAppointment(doctorId: doctorId, userID: userID);
+                deleteAppointment(
+                    appointMentId: appointMentId,
+                    doctorId: doctorId,
+                    userID: userID);
               },
               child: Text("OK"),
             ),
@@ -48,41 +55,47 @@ class _ListAppointmentScreenState extends State<ListAppointmentScreen> {
     );
   }
 
-  void deleteAppointment({required String doctorId, required String userID}) {
+  void deleteAppointment(
+      {required String doctorId,
+      required String userID,
+      required String appointMentId}) {
     final refreshDoctorModule = BlocProvider.of<RefreshDoctorBloc>(context);
     refreshDoctorModule.add(deleteAppointEvent(
-        context: context, doctorId: doctorId, userId: userID));
+        appointMentId: appointMentId,
+        context: context,
+        doctorId: doctorId,
+        userId: userID));
     Navigator.of(context).pop();
   }
 
-  void onCompleted(
-      {required String text,
-      required String doctorId,
-      required String userID}) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text("Confirmation"),
-          content: Text(text),
-          actions: <Widget>[
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).pop(); // Dismiss the dialog
-              },
-              child: Text("Cancel"),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                // deleteAppointment(doctorId: doctorId, userID: userID);
-              },
-              child: Text("Submit to History"),
-            ),
-          ],
-        );
-      },
-    );
-  }
+  // void onCompleted(
+  //     {required String text,
+  //     required String doctorId,
+  //     required String userID}) {
+  //   showDialog(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return AlertDialog(
+  //         title: Text("Confirmation"),
+  //         content: Text(text),
+  //         actions: <Widget>[
+  //           ElevatedButton(
+  //             onPressed: () {
+  //               Navigator.of(context).pop(); // Dismiss the dialog
+  //             },
+  //             child: Text("Cancel"),
+  //           ),
+  //           ElevatedButton(
+  //             onPressed: () {
+  //              deleteAppointment(doctorId: doctorId, userID: userID);
+  //             },
+  //             child: Text("Submit to History"),
+  //           ),
+  //         ],
+  //       );
+  //     },
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -101,10 +114,10 @@ class _ListAppointmentScreenState extends State<ListAppointmentScreen> {
         if (state is updateIsCompleteSuccess) {
           final doctorBloc = context.read<DoctorBloc>();
           doctorBloc.updateDoctor(state.doctor);
-          onCompleted(
-              text: state.successText,
-              doctorId: state.doctor.id,
-              userID: state.userId);
+          // onCompleted(
+          //     text: state.successText,
+          //     doctorId: state.doctor.id,
+          //     userID: state.userId);
 
           // showSnackBar(state.successText, context);
         }
@@ -201,14 +214,22 @@ class _ListAppointmentScreenState extends State<ListAppointmentScreen> {
                                                 ElevatedButton.icon(
                                                   onPressed: () {
                                                     delete(
+                                                      appointMentId:
+                                                          detail.id ?? "",
                                                       doctorId:
                                                           detail.doctorId ?? '',
                                                       userID:
                                                           detail.userId ?? '',
                                                     );
                                                   },
-                                                  icon: Icon(Icons.cancel),
-                                                  label: Text("Cancel"),
+                                                  icon: Icon(
+                                                      detail.isComplete == false
+                                                          ? Icons.cancel
+                                                          : Icons.done),
+                                                  label:
+                                                      detail.isComplete == false
+                                                          ? Text("Cancel")
+                                                          : Text("Done"),
                                                 ),
                                               ],
                                             )
@@ -228,6 +249,22 @@ class _ListAppointmentScreenState extends State<ListAppointmentScreen> {
                                                 ),
                                                 Text(
                                                     "Comments: ${detail.comments ?? "0"}"),
+                                                ElevatedButton(
+                                                    onPressed: () {
+                                                      refreshDoctorModule.add(
+                                                          deleteAppointEvent(
+                                                              appointMentId:
+                                                                  detail.id ??
+                                                                      "",
+                                                              context: context,
+                                                              doctorId: detail
+                                                                      .doctorId ??
+                                                                  '',
+                                                              userId: detail
+                                                                      .userId ??
+                                                                  ''));
+                                                    },
+                                                    child: Text("Save History"))
                                               ],
                                             )
                                     ]);

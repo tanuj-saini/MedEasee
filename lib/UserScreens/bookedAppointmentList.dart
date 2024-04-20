@@ -25,7 +25,7 @@ class _BookedAppointmentListState extends State<BookedAppointmentList> {
       context: context,
       builder: (context) {
         return RatingDialog(
-          title: Text("How Your Experience"),
+          title: Text("How was your Experience!!"),
           submitButtonText: "Submit",
           onSubmitted: (review) {
             final refreshDoctorModule =
@@ -124,6 +124,8 @@ class _BookedAppointmentListState extends State<BookedAppointmentList> {
                                               onPressed: () {
                                                 refreshDoctorModule.add(
                                                     deleteAppointEvent(
+                                                        appointMentId:
+                                                            detail.id ?? "",
                                                         context: context,
                                                         doctorId: appointment
                                                                 .doctorId ??
@@ -153,7 +155,18 @@ class _BookedAppointmentListState extends State<BookedAppointmentList> {
                                                   .remove_circle_outline_outlined),
                                               label: Text("Review")),
                                           ElevatedButton.icon(
-                                              onPressed: () {},
+                                              onPressed: () {
+                                                refreshDoctorModule
+                                                    .add(deleteAppointEvent(
+                                                  appointMentId:
+                                                      detail.id ?? "",
+                                                  context: context,
+                                                  doctorId:
+                                                      appointment.doctorId ??
+                                                          "",
+                                                  userId: detail.userId ?? "",
+                                                ));
+                                              },
                                               icon: Icon(Icons.done),
                                               label: Text("Done")),
                                         ],

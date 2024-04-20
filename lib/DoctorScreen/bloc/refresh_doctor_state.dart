@@ -13,11 +13,10 @@ class RefreshDoctorSuccess extends RefreshDoctorState {
 
 class updateIsCompleteSuccess extends RefreshDoctorState {
   final Doctor doctor;
-  final String userId;
+
   final String successText;
 
-  updateIsCompleteSuccess(
-      {required this.userId, required this.successText, required this.doctor});
+  updateIsCompleteSuccess({required this.successText, required this.doctor});
 }
 
 class RefreshDoctorFailure extends RefreshDoctorState {

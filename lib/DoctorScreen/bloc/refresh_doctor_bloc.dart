@@ -52,14 +52,17 @@ class RefreshDoctorBloc extends Bloc<RefreshDoctorEvent, RefreshDoctorState> {
           return emit(RefreshDoctorFailure(error: "You are not a doctor"));
         }
 
-        http.Response res = await http.delete(
-            Uri.parse("$ip/delete/AppointMents"),
-            headers: <String, String>{
-              'Content-Type': 'application/json; charset=UTF-8',
-              'x-auth-token-D': token,
-            },
-            body: jsonEncode(
-                {"doctorId": event.doctorId, "userId": event.userId}));
+        http.Response res =
+            await http.delete(Uri.parse("$ip/delete/AppointMents"),
+                headers: <String, String>{
+                  'Content-Type': 'application/json; charset=UTF-8',
+                  'x-auth-token-D': token,
+                },
+                body: jsonEncode({
+                  "doctorId": event.doctorId,
+                  "userId": event.userId,
+                  "appointMentId": event.appointMentId
+                }));
         _httpErrorHandle(res, emit, event.context);
         Map<String, dynamic> decodedJson = jsonDecode(res.body);
 
@@ -93,7 +96,6 @@ class RefreshDoctorBloc extends Bloc<RefreshDoctorEvent, RefreshDoctorState> {
         Doctor doctorModule = Doctor.fromJson(jsonData);
 
         return emit(updateIsCompleteSuccess(
-            userId: event.userId,
             successText: "Congragulation AppointMent Completed",
             doctor: doctorModule));
       } catch (e) {

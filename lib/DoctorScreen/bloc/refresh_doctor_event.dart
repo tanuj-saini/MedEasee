@@ -12,8 +12,10 @@ class RefreshDoctorListEvent extends RefreshDoctorEvent {
 class deleteAppointEvent extends RefreshDoctorEvent {
   final String doctorId;
   final String userId;
+  final String appointMentId;
   final BuildContext context;
   deleteAppointEvent({
+    required this.appointMentId,
     required this.context,
     required this.doctorId,
     required this.userId,

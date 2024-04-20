@@ -21,6 +21,7 @@ class Doctor {
   List<ApplicationLeft> applicationLeft;
   List<TimeSlot> timeSlot;
   final String? token;
+  List<AppointMentDetails> appointMentHistory;
 
   Doctor(
       {required this.id,
@@ -28,6 +29,7 @@ class Doctor {
       required this.bio,
       required this.phoneNumber,
       required this.specialist,
+      required this.appointMentHistory,
       required this.currentWorkingHospital,
       required this.profilePic,
       required this.registerNumbers,
@@ -70,6 +72,12 @@ class Doctor {
                   .map((a) => ApplicationLeft.fromJson(a))
                   .toList()
               : [],
+      appointMentHistory: json['appointMentHistory'] != null &&
+              json['appointMentHistory'] is List
+          ? (json['appointMentHistory'] as List)
+              .map((a) => AppointMentDetails.fromJson(a))
+              .toList()
+          : [],
       timeSlot: timeSlots,
       token: json['token'],
     );
@@ -91,6 +99,9 @@ class Doctor {
       'applicationLeft':
           applicationLeft.map((appointment) => appointment.toJson()).toList(),
       'timeSlot': timeSlot.map((slot) => slot.toMap()).toList(),
+      'appointMentHistory': appointMentHistory
+          .map((appointment) => appointment.toJson())
+          .toList(),
       'token': token,
     };
 

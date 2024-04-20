@@ -250,7 +250,7 @@ doctorRouter.post("/selectedTimeSlot", authDoctor, async (req, res) => {
 });
 
 doctorRouter.delete("/delete/AppointMents", async (req, res) => {
-  const { doctorId, userId } = req.body;
+  const { doctorId, userId, appointMentId } = req.body;
 
   try {
     const doctor = await doctorModule.findById(doctorId);
@@ -260,7 +260,11 @@ doctorRouter.delete("/delete/AppointMents", async (req, res) => {
     }
 
     const appointmentIndex = doctor.applicationLeft.findIndex(
-      (appointment) => appointment.userId === userId
+      (appointment) =>
+        appointment.userId === userId &&
+        appointment.appointMentDetails.some(
+          (detail) => detail._id.toString() === appointMentId
+        )
     );
 
     if (appointmentIndex === -1) {
@@ -268,6 +272,10 @@ doctorRouter.delete("/delete/AppointMents", async (req, res) => {
         .status(404)
         .json({ message: "User appointment not found for this doctor" });
     }
+
+    doctor.appointMentHistory.push(
+      ...doctor.applicationLeft[appointmentIndex].appointMentDetails
+    );
 
     doctor.applicationLeft.splice(appointmentIndex, 1);
 
@@ -280,7 +288,11 @@ doctorRouter.delete("/delete/AppointMents", async (req, res) => {
     }
 
     const userAppointmentIndex = user.appointment.findIndex(
-      (appointment) => appointment.doctorId === doctorId
+      (appointment) =>
+        appointment.doctorId === doctorId &&
+        appointment.apppointLeft.some(
+          (detail) => detail._id.toString() === appointMentId
+        )
     );
 
     if (userAppointmentIndex === -1) {
@@ -289,16 +301,25 @@ doctorRouter.delete("/delete/AppointMents", async (req, res) => {
         .json({ message: "Appointment not found for this user" });
     }
 
+    user.appointMentHistory.push(
+      ...user.appointment[userAppointmentIndex].apppointLeft
+    );
+
     user.appointment.splice(userAppointmentIndex, 1);
 
     await user.save();
 
-    return res.json({ user: user, doctor: doctor });
+    return res.json({
+      message: "Appointment deleted successfully",
+      user: user,
+      doctor: doctor,
+    });
   } catch (error) {
     console.error("Error deleting user appointment:", error);
     return res.status(500).json({ message: "Internal Server Error" });
   }
 });
+
 doctorRouter.post("/updateIsComplete/appointMent", async (req, res) => {
   try {
     const { doctorId, userId, appointMentId } = req.body;

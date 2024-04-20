@@ -7,6 +7,7 @@ import 'package:med_ease/Gemini/ChatScreen.dart';
 
 import 'package:med_ease/Modules/testModule.dart';
 import 'package:med_ease/UpdateModels/UpdateUserModel.dart';
+import 'package:med_ease/UserScreens/AppointMentHist.dart';
 import 'package:med_ease/UserScreens/CardDeatilsDoctor.dart';
 import 'package:med_ease/UserScreens/CardDoctorDetailScreen.dart';
 import 'package:med_ease/UserScreens/StartScreen.dart';
@@ -130,6 +131,21 @@ class _HomeScreen extends State<HomeScreen> {
                             builder: (ctx) => BookedAppointmentList())),
                     icon: Icon(Icons.list),
                     label: Text("Booked Appointment")),
+                SizedBox(
+                  height: 10,
+                ),
+                ElevatedButton.icon(
+                    onPressed: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (ctx) => AppointHisUser(
+                                userId: userModel.id,
+                              )));
+                    },
+                    icon: Icon(Icons.history),
+                    label: Text("History AppointMents")),
+                SizedBox(
+                  height: 10,
+                ),
                 ElevatedButton.icon(
                     onPressed: () => logout(),
                     icon: Icon(Icons.logout),

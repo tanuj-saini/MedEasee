@@ -56,6 +56,7 @@ const UserModule = mongoose.Schema({
       chatDetails: [chatDetailsSchema],
     },
   ],
+  appointMentHistory: [UserAppointment],
 });
 const userModule = mongoose.model("userModule", UserModule);
 module.exports = { userModule, UserModule };

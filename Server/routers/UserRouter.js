@@ -150,5 +150,23 @@ UserRouter.post("/bookAppointment", auth, async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
+UserRouter.post("/get/AppointMent/History", async (req, res) => {
+  try {
+    const { userId } = req.body;
+
+    const user = await userModule
+      .findById(userId)
+      .populate("appointMentHistory");
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    const appointmentHistory = user.appointMentHistory;
+    res.status(200).json(appointmentHistory);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 
 module.exports = UserRouter;
