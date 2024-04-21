@@ -104,7 +104,7 @@ doctorRouter.post("/AppointmentModify", authDoctor, async (req, res) => {
 
     const doctor = await doctorModule.findById(req.userDoctor);
     if (!doctor) {
-      return res.status(404).send({ message: "Doctor not found" });
+      return res.status(400).send({ message: "Doctor not found" });
     }
 
     doctor.timeSlot.push({ appointMentDetails: [newAppointMentDetail] });
@@ -140,7 +140,7 @@ doctorRouter.post("/AppointmentModify", authDoctor, async (req, res) => {
 
 //     const doctor = await doctorModule.findById(req.user);
 //     if (!doctor) {
-//       return res.status(404).send({ message: "Doctor not found" });
+//       return res.status(400).send({ message: "Doctor not found" });
 //     }
 
 //     const appointmentDetail = await appointMentDetail.findById(
@@ -150,7 +150,7 @@ doctorRouter.post("/AppointmentModify", authDoctor, async (req, res) => {
 
 //     if (!appointmentDetail || !timeSlot) {
 //       return res
-//         .status(404)
+//         .status(400)
 //         .send({ message: "Appointment detail or time slot not found" });
 //     }
 
@@ -200,7 +200,7 @@ doctorRouter.get("/getDoctorData", authDoctor, async (req, res) => {
 
     const doctor = await doctorModule.findById(doctorId);
     if (!doctor) {
-      return res.status(404).json({ error: "Doctor not found" });
+      return res.status(400).json({ error: "Doctor not found" });
     }
 
     res.json(doctor);
@@ -220,7 +220,7 @@ doctorRouter.post("/selectedTimeSlot", authDoctor, async (req, res) => {
 
     const doctor = await doctorModule.findById(doctorId);
     if (!doctor) {
-      return res.status(404).json({ error: "Doctor not found" });
+      return res.status(400).json({ error: "Doctor not found" });
     }
 
     if (!price) {
@@ -256,7 +256,7 @@ doctorRouter.delete("/delete/AppointMents", async (req, res) => {
     const doctor = await doctorModule.findById(doctorId);
 
     if (!doctor) {
-      return res.status(404).json({ message: "Doctor not found" });
+      return res.status(400).json({ message: "Doctor not found" });
     }
 
     const appointmentIndex = doctor.applicationLeft.findIndex(
@@ -269,7 +269,7 @@ doctorRouter.delete("/delete/AppointMents", async (req, res) => {
 
     if (appointmentIndex === -1) {
       return res
-        .status(404)
+        .status(400)
         .json({ message: "User appointment not found for this doctor" });
     }
 
@@ -284,7 +284,7 @@ doctorRouter.delete("/delete/AppointMents", async (req, res) => {
     const user = await userModule.findById(userId);
 
     if (!user) {
-      return res.status(404).json({ message: "User not found" });
+      return res.status(400).json({ message: "User not found" });
     }
 
     const userAppointmentIndex = user.appointment.findIndex(
@@ -297,7 +297,7 @@ doctorRouter.delete("/delete/AppointMents", async (req, res) => {
 
     if (userAppointmentIndex === -1) {
       return res
-        .status(404)
+        .status(400)
         .json({ message: "Appointment not found for this user" });
     }
 
@@ -328,7 +328,7 @@ doctorRouter.post("/updateIsComplete/appointMent", async (req, res) => {
     const user = await userModule.findOne({ _id: userId });
 
     if (!doctor) {
-      return res.status(404).json({ message: "Doctor not found" });
+      return res.status(400).json({ message: "Doctor not found" });
     }
 
     const appointmentIndexDoctor = doctor.applicationLeft.findIndex(
@@ -341,7 +341,7 @@ doctorRouter.post("/updateIsComplete/appointMent", async (req, res) => {
 
     if (appointmentIndexDoctor === -1) {
       return res
-        .status(404)
+        .status(400)
         .json({ message: "Doctor's appointment not found" });
     }
 
@@ -364,7 +364,7 @@ doctorRouter.post("/updateIsComplete/appointMent", async (req, res) => {
     );
 
     if (appointmentIndexUser === -1) {
-      return res.status(404).json({ message: "User's appointment not found" });
+      return res.status(400).json({ message: "User's appointment not found" });
     }
 
     user.appointment[appointmentIndexUser].apppointLeft.forEach((details) => {
@@ -391,7 +391,7 @@ doctorRouter.post("/updateRatingAndComments/appointMent", async (req, res) => {
     const user = await userModule.findOne({ _id: userId });
 
     if (!doctor) {
-      return res.status(404).json({ message: "Doctor not found" });
+      return res.status(400).json({ message: "Doctor not found" });
     }
 
     const appointmentIndexDoctor = doctor.applicationLeft.findIndex(
@@ -404,7 +404,7 @@ doctorRouter.post("/updateRatingAndComments/appointMent", async (req, res) => {
 
     if (appointmentIndexDoctor === -1) {
       return res
-        .status(404)
+        .status(400)
         .json({ message: "Doctor's appointment not found" });
     }
 
@@ -428,7 +428,7 @@ doctorRouter.post("/updateRatingAndComments/appointMent", async (req, res) => {
     );
 
     if (appointmentIndexUser === -1) {
-      return res.status(404).json({ message: "User's appointment not found" });
+      return res.status(400).json({ message: "User's appointment not found" });
     }
 
     user.appointment[appointmentIndexUser].apppointLeft.forEach((details) => {

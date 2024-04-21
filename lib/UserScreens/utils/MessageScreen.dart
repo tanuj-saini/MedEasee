@@ -38,6 +38,7 @@ class _MessageScreenState extends State<MessageScreen> {
   bool _loading = false;
   late List<MessageModule> listMessage = [];
   late List<ChatDetails> chatList = [];
+
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -45,7 +46,7 @@ class _MessageScreenState extends State<MessageScreen> {
       allChatData.add(listChatEvents(
           currentId: widget.isDoctor ? widget.doctorID : widget.userId,
           isDoctor: widget.isDoctor,
-          reciverId: widget.isDoctor ? widget.doctorID : widget.userId,
+          reciverId: widget.isDoctor == false ? widget.doctorID : widget.userId,
           context: context));
     });
     super.initState();
@@ -79,6 +80,14 @@ class _MessageScreenState extends State<MessageScreen> {
     });
   }
 
+  void scrollToBottom() {
+    _scrollController.animateTo(
+      _scrollController.position.maxScrollExtent,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeOut,
+    );
+  }
+
   void sendMessage(
       {required String messages,
       required String currentId,
@@ -90,7 +99,7 @@ class _MessageScreenState extends State<MessageScreen> {
           message: messages,
           currentId: currentId,
           reciverId: reciverId,
-          isDoctor: isDoctor));
+          isDoctor: isDoctor == true ? true : true));
     });
     socket.emit("messageEvent", {
       "time": DateTime.now().toString(),
@@ -99,6 +108,7 @@ class _MessageScreenState extends State<MessageScreen> {
       "reciverId": reciverId,
       "isDoctor": isDoctor
     });
+    scrollToBottom();
   }
 
   @override
@@ -117,7 +127,7 @@ class _MessageScreenState extends State<MessageScreen> {
                   message: chat.message ?? '',
                   currentId: '',
                   reciverId: '',
-                  isDoctor: chat.itsMe ?? false,
+                  isDoctor: chat.itsMe ?? true,
                   time: chat.time ?? 'no',
                 ))
             .toList();
@@ -129,6 +139,8 @@ class _MessageScreenState extends State<MessageScreen> {
       return Scaffold(
         appBar: AppBar(
           title: Text("Chat"),
+          leading: Text("User"),
+          actions: [Text("Doctor")],
         ),
         body: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -143,7 +155,9 @@ class _MessageScreenState extends State<MessageScreen> {
                         itemBuilder: (context, idx) {
                           return MessageListItem(
                               text: listMessage[idx].message,
-                              isFromUser: listMessage[idx].isDoctor);
+                              isFromUser: widget.isDoctor == true
+                                  ? listMessage[idx].isDoctor
+                                  : !listMessage[idx].isDoctor);
                         },
                         itemCount: listMessage.length,
                       )

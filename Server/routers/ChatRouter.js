@@ -48,7 +48,7 @@ chatRouter.post("/api/message", async (req, res) => {
       Cuser.chat.push({ reciverId, chatDetails: chatModule });
     }
 
-    let Rchat = Ruser.chat.find((chat) => chat.reciverId === req.user);
+    let Rchat = Ruser.chat.find((chat) => chat.reciverId === currentId);
 
     if (Rchat) {
       Rchat.chatDetails.push(RchatModule);
@@ -68,7 +68,7 @@ chatRouter.post("/api/message", async (req, res) => {
 chatRouter.post("/get/ListChat", async (req, res) => {
   try {
     const { isDoctor, currentId, reciverId } = req.body;
-
+    console.log(req.body);
     if (typeof isDoctor !== "boolean" || !currentId || !reciverId) {
       return res.status(400).json({ msg: "Invalid request parameters" });
     }
@@ -77,11 +77,11 @@ chatRouter.post("/get/ListChat", async (req, res) => {
 
     // Fetching receiver user
     if (isDoctor) {
-      Ruser = await userModule.findById(reciverId);
+      Ruser = await userModule.findById(reciverId); //
       if (!Ruser) {
         return res.status(400).json({ msg: "User not found" });
       }
-      Cuser = await doctorModule.findById(currentId);
+      Cuser = await doctorModule.findById(currentId); //
     } else {
       Ruser = await doctorModule.findById(reciverId);
       if (!Ruser) {

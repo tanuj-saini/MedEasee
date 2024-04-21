@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:med_ease/Modules/testModule.dart';
-import 'package:med_ease/Modules/testUserModule.dart'; // Import your modules
+import 'package:med_ease/Modules/testUserModule.dart';
+import 'package:med_ease/UserScreens/utils/MessageScreen.dart'; // Import your modules
 
 class AppointmentHistoryCardUser extends StatelessWidget {
   final AppointmentLeft appointment;
@@ -47,6 +48,19 @@ class AppointmentHistoryCardUser extends StatelessWidget {
             Text('Is Video Appointment: ${appointment.isVedio ?? false}'),
             SizedBox(height: 8.0),
             Text('Is Complete: ${appointment.isComplete ?? false}'),
+            SizedBox(height: 8.0),
+            if (appointment.rating != null &&
+                double.parse(appointment.rating!) < 3)
+              TextButton.icon(
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (ctx) => MessageScreen(
+                            userId: appointment.userId ?? '',
+                            isDoctor: false,
+                            doctorID: appointment.doctorId ?? '')));
+                  },
+                  icon: Icon(Icons.message),
+                  label: Text("Conatct with Doctor")),
             SizedBox(height: 8.0),
             if (appointment.timeSlotPicks != null)
               Text('Time Slot: ${appointment.timeSlotPicks!.toJson()}'),
