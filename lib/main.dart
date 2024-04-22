@@ -92,12 +92,9 @@ class MyApp extends StatelessWidget {
           BlocProvider(
             create: (context) => RefreshDoctorBloc(),
           ),
-           BlocProvider(
-            create: (context) =>HistAppointBloc(),
+          BlocProvider(
+            create: (context) => HistAppointBloc(),
           ),
-          // BlocProvider(
-          //   create: (context) => DeleteAppointmentBloc(),
-          // ),
           BlocProvider(create: (context) {
             if (typeOfUser == "doctor") {
               return PersistStateBloc()

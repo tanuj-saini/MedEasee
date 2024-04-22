@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:med_ease/Modules/testModule.dart';
-import 'package:med_ease/Modules/testUserModule.dart'; // Import your modules
+import 'package:med_ease/Modules/testUserModule.dart';
+import 'package:med_ease/UpdateModels/UpdateDoctorModule.dart';
+import 'package:med_ease/UserScreens/utils/MessageScreen.dart'; // Import your modules
 
 class AppointmentHistoryCardDoctor extends StatelessWidget {
   final AppointMentDetails appointment;
@@ -11,6 +14,7 @@ class AppointmentHistoryCardDoctor extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final doctorModel = context.watch<DoctorBloc>().state;
     return Card(
       margin: EdgeInsets.all(8.0),
       child: Padding(
@@ -27,6 +31,13 @@ class AppointmentHistoryCardDoctor extends StatelessWidget {
             SizedBox(height: 8.0),
             Text('Comments: ${appointment.comments ?? "No comments"}'),
             SizedBox(height: 8.0),
+            SizedBox(height: 8.0),
+            Text('Is Video Appointment: ${appointment.isVedio ?? false}'),
+            SizedBox(height: 8.0),
+            Text('Is Complete: ${appointment.isComplete ?? false}'),
+            SizedBox(height: 8.0),
+            if (appointment.timeSlotPicks != null)
+              Text('Time Slot: ${appointment.timeSlotPicks!.toJson()}'),
             if (appointment.rating != null)
               RatingBar.builder(
                 initialRating: double.parse(appointment.rating!),
@@ -44,12 +55,18 @@ class AppointmentHistoryCardDoctor extends StatelessWidget {
                 },
               ),
             SizedBox(height: 8.0),
-            Text('Is Video Appointment: ${appointment.isVedio ?? false}'),
-            SizedBox(height: 8.0),
-            Text('Is Complete: ${appointment.isComplete ?? false}'),
-            SizedBox(height: 8.0),
-            if (appointment.timeSlotPicks != null)
-              Text('Time Slot: ${appointment.timeSlotPicks!.toJson()}'),
+            double.parse(appointment.rating!) <= 2
+                ? TextButton.icon(
+                    onPressed: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (ctx) => MessageScreen(
+                              userId: appointment.userId ?? "",
+                              isDoctor: true,
+                              doctorID: appointment.doctorId ?? "")));
+                    },
+                    icon: Icon(Icons.message),
+                    label: Text("Message"))
+                : Container()
           ],
         ),
       ),
