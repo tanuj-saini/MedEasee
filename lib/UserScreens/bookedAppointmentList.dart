@@ -79,21 +79,7 @@ class _BookedAppointmentListState extends State<BookedAppointmentList> {
                 final appointment = user.appointment[index];
                 return Card(
                   child: ListTile(
-                    onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) =>
-                              // MessageScreen(
-                              //   userId: user.id,
-                              //   appointMentId: appointment.id ?? '',
-                              //   doctorID: appointment.doctorId ?? "",
-                              // ),
-                              MessageScreen(
-                                userId: user.id,
-                                isDoctor: false,
-                                doctorID: appointment.doctorId ?? "",
-                              )));
-                    },
-                    title: Text('Appointment ID: ${appointment.id}'),
+                    onTap: () {},
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -104,6 +90,7 @@ class _BookedAppointmentListState extends State<BookedAppointmentList> {
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+                                Text("AppointMent Id:${detail.id}"),
                                 Text('Date: ${detail.date}'),
                                 Text('User ID: ${detail.userId}'),
                                 Text('Is Complete: ${detail.isComplete}'),

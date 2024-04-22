@@ -26,6 +26,8 @@ class AppointmentHistoryCardUser extends StatelessWidget {
             SizedBox(height: 8.0),
             Text('Doctor ID: ${appointment.doctorId ?? "Unknown"}'),
             SizedBox(height: 8.0),
+            Text('AppointMent ID: ${appointment.id ?? "Unknown"}'),
+            SizedBox(height: 8.0),
             Text('Comments: ${appointment.comments ?? "No comments"}'),
             SizedBox(height: 8.0),
             if (appointment.rating != null)
@@ -55,6 +57,7 @@ class AppointmentHistoryCardUser extends StatelessWidget {
                   onPressed: () {
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (ctx) => MessageScreen(
+                            appointMentId: appointment.id ?? "",
                             userId: appointment.userId ?? '',
                             isDoctor: false,
                             doctorID: appointment.doctorId ?? '')));

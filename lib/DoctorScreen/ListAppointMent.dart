@@ -156,20 +156,7 @@ class _ListAppointmentScreenState extends State<ListAppointmentScreen> {
                     }
                     return Card(
                       child: ListTile(
-                        onTap: () => Navigator.of(context).push(
-                          MaterialPageRoute(
-                              builder: (ctx) =>
-                                  //  MessageScreen(
-                                  //   userId: appointment.userId ?? '',
-                                  //   appointMentId: appointment.id ?? '',
-                                  //   doctorID: doctorModel.id,
-                                  // ),
-                                  MessageScreen(
-                                      userId: appointment.userId ?? '',
-                                      isDoctor: true,
-                                      doctorID: doctorModel.id)),
-                        ),
-                        title: Text('Appointment ID: ${appointment.id}'),
+                        onTap: () {},
                         subtitle: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -183,6 +170,7 @@ class _ListAppointmentScreenState extends State<ListAppointmentScreen> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text('Date: ${detail.date}'),
+                                      Text('AppointMent ID: ${detail.id}'),
                                       Text(
                                         'TimeSlotSelected: ${detail.timeSlotPicks!.timeSlots![0].hour}:${detail.timeSlotPicks!.timeSlots![0].minute}',
                                       ),

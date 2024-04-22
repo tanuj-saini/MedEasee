@@ -17,8 +17,10 @@ class MessageScreen extends StatefulWidget {
   final String userId;
   final String doctorID;
   final bool isDoctor;
+  final String appointMentId;
 
   MessageScreen({
+    required this.appointMentId,
     required this.userId,
     required this.isDoctor,
     required this.doctorID,
