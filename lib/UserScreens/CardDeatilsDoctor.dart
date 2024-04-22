@@ -34,22 +34,62 @@ class _BookAppointmentState extends State<BookAppointment> {
   }
 
   void _loadSelectedTimeSlots() {
-    int length =
-        widget.doctorModuleE.selectedTimeSlot!.timeSlotPicks!.timeSlots!.length;
     List<TimeSlots> selectedTimeSlots = [];
-    for (int i = 0; i < length; i++) {
-      int hour = widget.doctorModuleE.selectedTimeSlot!.timeSlotPicks!
-              .timeSlots![i].hour ??
-          0;
-      int minute = widget.doctorModuleE.selectedTimeSlot!.timeSlotPicks!
-              .timeSlots![i].minute ??
-          0;
-      TimeSlots timeSlotsed = TimeSlots(hour: hour, minute: minute);
-      selectedTimeSlots.add(timeSlotsed);
+    if (widget.doctorModuleE.selectedTimeSlot != null &&
+        widget.doctorModuleE.selectedTimeSlot!.timeSlotPicks != null &&
+        widget.doctorModuleE.selectedTimeSlot!.timeSlotPicks!.timeSlots !=
+            null) {
+      selectedTimeSlots.addAll(
+          widget.doctorModuleE.selectedTimeSlot!.timeSlotPicks!.timeSlots!);
     }
+    print(selectedTimeSlots);
+
+    List<TimeSlots> timeSlotsList = [];
+    for (var applicationLeft in widget.doctorModuleE.applicationLeft) {
+      if (applicationLeft.appointMentDetails != null) {
+        for (var appointMentDetails in applicationLeft.appointMentDetails!) {
+          if (appointMentDetails.timeSlotPicks != null &&
+              appointMentDetails.timeSlotPicks!.timeSlots != null) {
+            timeSlotsList.addAll(appointMentDetails.timeSlotPicks!.timeSlots!);
+          }
+        }
+      }
+    }
+    print(timeSlotsList);
+
+    // Merge the two lists and convert to Set to remove duplicates
+    Set<TimeSlots> mergedSet = {...selectedTimeSlots, ...timeSlotsList}.toSet();
+    print(mergedSet);
+
+    // Create a method to filter duplicates based on hour and minute
+    List<TimeSlots> removeDuplicates(List<TimeSlots> list) {
+      List<TimeSlots> uniqueList = [];
+      Set<String> seenCombos = Set<String>();
+
+      for (var slot in list) {
+        String combo = '${slot.hour}:${slot.minute}';
+
+        // If this combo is already in the set, remove it from the uniqueList
+        if (seenCombos.contains(combo)) {
+          uniqueList.removeWhere(
+              (element) => '${element.hour}:${element.minute}' == combo);
+        } else {
+          uniqueList.add(slot);
+        }
+
+        seenCombos.add(combo); // Add all combos to the set to mark as seen
+      }
+
+      return uniqueList;
+    }
+
+    // Remove all occurrences of duplicates based on hour and minute
+    List<TimeSlots> _itemses = removeDuplicates(mergedSet.toList());
+    print("items");
+    print(_itemses);
+
     setState(() {
-      // _selectedTimeSlots = selectedTimeSlots;
-      _items = selectedTimeSlots.toList(); // Assign values to _items here
+      _items = _itemses; // Assign values to _items here
     });
   }
 
