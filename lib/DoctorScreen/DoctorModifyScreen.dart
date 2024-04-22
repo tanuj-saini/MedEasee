@@ -331,21 +331,19 @@ class _DoctorModifyScreenState extends State<DoctorModifyScreen> {
                       ),
                       ElevatedButton(
                         onPressed: () {
-                          if (doctorModel != null) {
-                            if (doctorModel.selectedTimeSlot != null) {
-                              sendModifyAppointMent.add(
-                                  AppointMentSelectedTimeSlot(
-                                      context: context,
-                                      isVedio: _selectedType ==
-                                              AppointmentType.Normal
-                                          ? false
-                                          : true,
-                                      doctorId: doctorModel.id,
-                                      price: _priceController.text,
-                                      title: _titleContoller.text,
-                                      timeSlots: _selectedTimeSlots,
-                                      date: DateTime.now().toString()));
-                            }
+                          if (doctorModel!.selectedTimeSlot != null) {
+                            sendModifyAppointMent.add(
+                                AppointMentSelectedTimeSlot(
+                                    context: context,
+                                    isVedio:
+                                        _selectedType == AppointmentType.Normal
+                                            ? false
+                                            : true,
+                                    doctorId: doctorModel.id,
+                                    price: _priceController.text,
+                                    title: _titleContoller.text,
+                                    timeSlots: _selectedTimeSlots,
+                                    date: DateTime.now().toString()));
                           } else {}
 
                           sendModifyAppointMent.add(
