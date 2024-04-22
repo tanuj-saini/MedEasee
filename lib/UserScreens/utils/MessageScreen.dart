@@ -72,6 +72,7 @@ class _MessageScreenState extends State<MessageScreen> {
         print(msg);
         setState(() {
           listMessage.add(MessageModule(
+              appointMentId: msg["appointMentId"],
               time: msg['time'],
               isDoctor: msg['isDoctor'],
               message: msg['message'],
@@ -97,6 +98,7 @@ class _MessageScreenState extends State<MessageScreen> {
       required bool isDoctor}) {
     setState(() {
       listMessage.add(MessageModule(
+          appointMentId: widget.appointMentId,
           time: DateTime.now().toString(),
           message: messages,
           currentId: currentId,
@@ -104,6 +106,7 @@ class _MessageScreenState extends State<MessageScreen> {
           isDoctor: isDoctor == true ? true : true));
     });
     socket.emit("messageEvent", {
+      "appointMentId": widget.appointMentId,
       "time": DateTime.now().toString(),
       "message": messages,
       "currentId": currentId,
@@ -126,6 +129,7 @@ class _MessageScreenState extends State<MessageScreen> {
 
         listMessage = chatList
             .map((chat) => MessageModule(
+                  appointMentId: "",
                   message: chat.message ?? '',
                   currentId: '',
                   reciverId: '',

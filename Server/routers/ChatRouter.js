@@ -12,7 +12,8 @@ chatRouter.post("/api/message", async (req, res) => {
   try {
     const isDoctor = req.body.params.doctorId;
     console.log(isDoctor);
-    const { currentId, reciverId, message, time } = req.body;
+    const { currentId, reciverId, message, time, appointMentId } = req.body;
+    console.log(appointMentId);
 
     let chatModule = new ChatDetail({
       reciverId,

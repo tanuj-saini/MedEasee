@@ -51,6 +51,7 @@ class MessageModule {
   final String reciverId;
   final bool isDoctor;
   final String time;
+  final String appointMentId;
 
   MessageModule({
     required this.message,
@@ -58,6 +59,7 @@ class MessageModule {
     required this.reciverId,
     required this.isDoctor,
     required this.time,
+    required this.appointMentId,
   });
 
   MessageModule copyWith({
@@ -66,6 +68,7 @@ class MessageModule {
     String? reciverId,
     bool? isDoctor,
     String? time,
+    String? appointMentId,
   }) {
     return MessageModule(
       message: message ?? this.message,
@@ -73,6 +76,7 @@ class MessageModule {
       reciverId: reciverId ?? this.reciverId,
       isDoctor: isDoctor ?? this.isDoctor,
       time: time ?? this.time,
+      appointMentId: appointMentId ?? this.appointMentId,
     );
   }
 
@@ -83,6 +87,7 @@ class MessageModule {
       'reciverId': reciverId,
       'isDoctor': isDoctor,
       'time': time,
+      'appointMentId': appointMentId,
     };
   }
 
@@ -93,6 +98,7 @@ class MessageModule {
       reciverId: map['reciverId'] as String,
       isDoctor: map['isDoctor'] as bool,
       time: map['time'] as String,
+      appointMentId: map['appointMentId'] as String,
     );
   }
 
@@ -103,7 +109,7 @@ class MessageModule {
 
   @override
   String toString() {
-    return 'MessageModule(message: $message, currentId: $currentId, reciverId: $reciverId, isDoctor: $isDoctor, time: $time)';
+    return 'MessageModule(message: $message, currentId: $currentId, reciverId: $reciverId, isDoctor: $isDoctor, time: $time, appointMentId: $appointMentId)';
   }
 
   @override
@@ -114,7 +120,8 @@ class MessageModule {
         other.currentId == currentId &&
         other.reciverId == reciverId &&
         other.isDoctor == isDoctor &&
-        other.time == time;
+        other.time == time &&
+        other.appointMentId == appointMentId;
   }
 
   @override
@@ -123,6 +130,7 @@ class MessageModule {
         currentId.hashCode ^
         reciverId.hashCode ^
         isDoctor.hashCode ^
-        time.hashCode;
+        time.hashCode ^
+        appointMentId.hashCode;
   }
 }
