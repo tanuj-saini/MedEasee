@@ -281,6 +281,19 @@ doctorRouter.delete("/delete/AppointMents", async (req, res) => {
 
     await doctor.save();
 
+    return res.json({
+      message: "Appointment deleted successfully",
+      doctor: doctor,
+    });
+  } catch (error) {
+    console.error("Error deleting user appointment:", error);
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
+doctorRouter.delete("/delete/AppointMents/user", async (req, res) => {
+  try {
+    const { doctorId, userId, appointMentId } = req.body;
     const user = await userModule.findById(userId);
 
     if (!user) {
@@ -308,11 +321,9 @@ doctorRouter.delete("/delete/AppointMents", async (req, res) => {
     user.appointment.splice(userAppointmentIndex, 1);
 
     await user.save();
-
     return res.json({
       message: "Appointment deleted successfully",
       user: user,
-      doctor: doctor,
     });
   } catch (error) {
     console.error("Error deleting user appointment:", error);

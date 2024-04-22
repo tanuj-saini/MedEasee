@@ -233,40 +233,47 @@ class _ListAppointmentScreenState extends State<ListAppointmentScreen> {
                                                 ),
                                               ],
                                             )
-                                          : Column(
-                                              children: [
-                                                RatingBar.builder(
-                                                  itemCount: 5,
-                                                  initialRating: double.parse(
-                                                      detail.rating ?? "0.0"),
-                                                  itemBuilder: (context, _) {
-                                                    return Icon(
-                                                      Icons.star,
-                                                      color: Colors.yellow,
-                                                    );
-                                                  },
-                                                  onRatingUpdate: (value) {},
-                                                ),
-                                                Text(
-                                                    "Comments: ${detail.comments ?? "0"}"),
-                                                ElevatedButton(
-                                                    onPressed: () {
-                                                      refreshDoctorModule.add(
-                                                          deleteAppointEvent(
-                                                              appointMentId:
-                                                                  detail.id ??
-                                                                      "",
-                                                              context: context,
-                                                              doctorId: detail
-                                                                      .doctorId ??
-                                                                  '',
-                                                              userId: detail
-                                                                      .userId ??
-                                                                  ''));
-                                                    },
-                                                    child: Text("Save History"))
-                                              ],
-                                            )
+                                          : Column(children: [
+                                              RatingBar.builder(
+                                                itemCount: 5,
+                                                initialRating: double.parse(
+                                                    detail.rating ?? "0.0"),
+                                                itemBuilder: (context, _) {
+                                                  return Icon(
+                                                    Icons.star,
+                                                    color: Colors.yellow,
+                                                  );
+                                                },
+                                                onRatingUpdate: (value) {},
+                                              ),
+                                              Text(
+                                                  "Comments: ${detail.comments ?? "0"}"),
+                                              detail.comments != "" ||
+                                                      detail.rating != ""
+                                                  ? ElevatedButton(
+                                                      onPressed: () {
+                                                        refreshDoctorModule.add(
+                                                            deleteAppointEvent(
+                                                                appointMentId:
+                                                                    detail.id ??
+                                                                        "",
+                                                                context:
+                                                                    context,
+                                                                doctorId: detail
+                                                                        .doctorId ??
+                                                                    '',
+                                                                userId: detail
+                                                                        .userId ??
+                                                                    ''));
+                                                      },
+                                                      child:
+                                                          Text("Save History"))
+                                                  : Text(
+                                                      "Review is Not Completed",
+                                                      style: TextStyle(
+                                                          color: Colors.red),
+                                                    )
+                                            ])
                                     ]);
                               }).toList(),
                             ),

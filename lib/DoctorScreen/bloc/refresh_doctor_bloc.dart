@@ -64,16 +64,42 @@ class RefreshDoctorBloc extends Bloc<RefreshDoctorEvent, RefreshDoctorState> {
                   "appointMentId": event.appointMentId
                 }));
         _httpErrorHandle(res, emit, event.context);
-        Map<String, dynamic> decodedJson = jsonDecode(res.body);
 
-        UserModuleE userModule = UserModuleE.fromJson(decodedJson['user']);
         final jsonData = jsonDecode(res.body);
 
         Doctor doctorModule = Doctor.fromJson(jsonData['doctor']);
-
-        emit(DeleteAppointSuccess(
-            user: userModule, successText: "AppointMents Delted"));
         return emit(RefreshDoctorSuccess(doctor: doctorModule));
+      } catch (e) {
+        return emit(RefreshDoctorFailure(error: e.toString()));
+      }
+    });
+    on<deleteAppointEventUser>((event, emit) async {
+      emit(RefreshDoctorLoding());
+      try {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        String? token = prefs.getString('x-auth-token-D');
+        if (token == null) {
+          return emit(RefreshDoctorFailure(error: "You are not a doctor"));
+        }
+
+        http.Response res =
+            await http.delete(Uri.parse("$ip/delete/AppointMents/user"),
+                headers: <String, String>{
+                  'Content-Type': 'application/json; charset=UTF-8',
+                  'x-auth-token-D': token,
+                },
+                body: jsonEncode({
+                  "doctorId": event.doctorId,
+                  "userId": event.userId,
+                  "appointMentId": event.appointMentId
+                }));
+        _httpErrorHandle(res, emit, event.context);
+        Map<String, dynamic> decodedJson = jsonDecode(res.body);
+
+        UserModuleE userModule = UserModuleE.fromJson(decodedJson['user']);
+
+        return emit(DeleteAppointSuccess(
+            user: userModule, successText: "AppointMents Delted"));
       } catch (e) {
         return emit(RefreshDoctorFailure(error: e.toString()));
       }
