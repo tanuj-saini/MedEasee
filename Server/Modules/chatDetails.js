@@ -17,6 +17,10 @@ const chatDetailsSchema = mongoose.Schema({
     default: false,
     type: Boolean,
   },
+  isSeen: {
+    default: false,
+    type: Boolean,
+  },
 });
 const ChatDetail = mongoose.model("chatDetails", chatDetailsSchema);
 module.exports = { ChatDetail, chatDetailsSchema };

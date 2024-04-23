@@ -18,8 +18,10 @@ class MessageScreen extends StatefulWidget {
   final String doctorID;
   final bool isDoctor;
   final String appointMentId;
+  final bool isSeen;
 
   MessageScreen({
+    required this.isSeen,
     required this.appointMentId,
     required this.userId,
     required this.isDoctor,
@@ -51,6 +53,11 @@ class _MessageScreenState extends State<MessageScreen> {
           isDoctor: widget.isDoctor,
           reciverId: widget.isDoctor == false ? widget.doctorID : widget.userId,
           context: context));
+
+      allChatData.add(setZeroChat(
+          context: context,
+          appointMentId: widget.appointMentId,
+          isDoctor: widget.isDoctor));
     });
     super.initState();
     connect();
@@ -74,6 +81,8 @@ class _MessageScreenState extends State<MessageScreen> {
         setState(() {
           listMessage.add(MessageModule(
               appointMentId: msg["appointMentId"],
+              messageCountSee: msg["messageCountSee"],
+              isSeen: msg["isSeen"],
               time: msg['time'],
               isDoctor: msg['isDoctor'],
               message: msg['message'],
@@ -99,6 +108,8 @@ class _MessageScreenState extends State<MessageScreen> {
       required bool isDoctor}) {
     setState(() {
       listMessage.add(MessageModule(
+          messageCountSee: "",
+          isSeen: widget.isSeen,
           appointMentId: widget.appointMentId,
           time: DateTime.now().toString(),
           message: messages,
@@ -108,6 +119,8 @@ class _MessageScreenState extends State<MessageScreen> {
     });
     socket.emit("messageEvent", {
       "appointMentId": widget.appointMentId,
+      "messageCountSee": "0",
+      "isSeen": widget.isSeen,
       "time": DateTime.now().toString(),
       "message": messages,
       "currentId": currentId,
@@ -130,6 +143,8 @@ class _MessageScreenState extends State<MessageScreen> {
 
         listMessage = chatList
             .map((chat) => MessageModule(
+                  messageCountSee: "",
+                  isSeen: false,
                   appointMentId: "",
                   message: chat.message ?? '',
                   currentId: '',

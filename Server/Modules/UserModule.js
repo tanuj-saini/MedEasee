@@ -53,6 +53,10 @@ const UserModule = mongoose.Schema({
         required: true,
         type: String,
       },
+      messageCountSee: {
+        required: true,
+        type: String,
+      },
       chatDetails: [chatDetailsSchema],
     },
   ],

@@ -12,18 +12,28 @@ chatRouter.post("/api/message", async (req, res) => {
   try {
     const isDoctor = req.body.params.doctorId;
     console.log(isDoctor);
-    const { currentId, reciverId, message, time, appointMentId } = req.body;
+    const {
+      currentId,
+      reciverId,
+      message,
+      time,
+      appointMentId,
+      isSeen,
+      messageCountSee,
+    } = req.body;
     console.log(appointMentId);
 
     let chatModule = new ChatDetail({
       reciverId,
       message,
+      isSeen,
       time,
       itsMe: true,
     });
     let RchatModule = new ChatDetail({
       reciverId: currentId,
       message,
+      isSeen,
       time,
       itsMe: false,
     });
@@ -46,15 +56,21 @@ chatRouter.post("/api/message", async (req, res) => {
     if (Cchat) {
       Cchat.chatDetails.push(chatModule);
     } else {
-      Cuser.chat.push({ appointMentId, chatDetails: chatModule });
+      Cuser.chat.push({
+        messageCountSee,
+        appointMentId,
+        chatDetails: chatModule,
+      });
     }
 
     let Rchat = Ruser.chat.find((chat) => chat.appointMentId === appointMentId);
 
     if (Rchat) {
       Rchat.chatDetails.push(RchatModule);
+      Rchat.messageCountSee = (parseInt(Rchat.messageCountSee) || 0) + 1; // Increase messageCountSee by 1
     } else {
       Ruser.chat.push({
+        messageCountSee,
         appointMentId: appointMentId,
         chatDetails: RchatModule,
       });
@@ -101,4 +117,99 @@ chatRouter.post("/get/ListChat", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
+chatRouter.post("/setZero/messages/Doctor", async (req, res) => {
+  try {
+    const { appointMentId } = req.body;
+
+    const updatedDoctor = await doctorModule.findOneAndUpdate(
+      {
+        "chat.appointMentId": appointMentId,
+      },
+      {
+        $set: { "chat.$.messageCountSee": "0" },
+      },
+      { new: true }
+    );
+
+    if (!updatedDoctor) {
+      return res.status(400).json({ msg: "Doctor not found" });
+    }
+
+    res.json({ msg: "Message count updated successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ msg: "Server Error" });
+  }
+});
+chatRouter.post("/setZero/messages/User", async (req, res) => {
+  try {
+    const { appointMentId } = req.body;
+
+    const updatedUser = await userModule.findOneAndUpdate(
+      {
+        "chat.appointMentId": appointMentId,
+      },
+      {
+        $set: { "chat.$.messageCountSee": "0" },
+      },
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      return res.status(400).json({ msg: "User not found" });
+    }
+
+    res.json({ msg: "Message count updated successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ msg: "Server Error" });
+  }
+});
+chatRouter.get("/get/MessageCount/doctor", async (req, res) => {
+  try {
+    const { appointMentId } = req.body;
+
+    const doctor = await doctorModule.findOne(
+      {
+        "chat.appointMentId": appointMentId,
+      },
+      { "chat.$": 1 }
+    );
+
+    if (!doctor) {
+      return res.status(400).json({ message: "Doctor not found" });
+    }
+
+    const messageCountSee = doctor.chat[0].messageCountSee;
+
+    res.json({ messageCountSee: messageCountSee, doctor: doctor });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server Error" });
+  }
+});
+chatRouter.get("/get/MessageCount/user", async (req, res) => {
+  try {
+    const { appointMentId } = req.body;
+
+    const user = await userModule.findOne(
+      {
+        "chat.appointMentId": appointMentId,
+      },
+      { "chat.$": 1 }
+    );
+
+    if (!user) {
+      return res.status(400).json({ message: "user not found" });
+    }
+
+    const messageCountSee = user.chat[0].messageCountSee;
+
+    res.json({ messageCountSee: messageCountSee, user: user });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server Error" });
+  }
+});
+
 module.exports = chatRouter;

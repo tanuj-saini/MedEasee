@@ -84,12 +84,22 @@ io.on("connection", (socket) => {
       console.log("Sending message to target client...");
       try {
         const isDoctor = msg.isDoctor; // Assuming isDoctor is present in msg
-        const { currentId, reciverId, message, time, appointMentId } = msg;
+        const {
+          currentId,
+          reciverId,
+          message,
+          time,
+          appointMentId,
+          isSeen,
+          messageCountSee,
+        } = msg;
 
         // Prepare data for API call
         const requestData = {
           params: { doctorId: isDoctor }, // Assuming you need to pass isDoctor as a query parameter
           currentId,
+          messageCountSee,
+          isSeen,
           appointMentId,
           reciverId,
           message,

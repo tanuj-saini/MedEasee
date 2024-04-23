@@ -17,6 +17,28 @@ class listChatFailure extends ListChatState {
 
 class listChatLoding extends ListChatState {}
 
+class setZeroSuccess extends ListChatState {
+  final String suceessMesg;
+
+  setZeroSuccess({required this.suceessMesg});
+}
+
+class setMessageCountUpdateUserSuccess extends ListChatState {
+  final UserModuleE user;
+  final String messageCountSee;
+
+  setMessageCountUpdateUserSuccess(
+      {required this.user, required this.messageCountSee});
+}
+
+class setMessageCountUpdateDoctorSuccess extends ListChatState {
+  final Doctor doctor;
+  final String messageCountSee;
+
+  setMessageCountUpdateDoctorSuccess(
+      {required this.doctor, required this.messageCountSee});
+}
+
 class PersistHttpError extends ListChatState {
   final String errorMessage;
 

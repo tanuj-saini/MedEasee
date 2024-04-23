@@ -51,7 +51,9 @@ class MessageModule {
   final String reciverId;
   final bool isDoctor;
   final String time;
+  final bool isSeen;
   final String appointMentId;
+  final String messageCountSee;
 
   MessageModule({
     required this.message,
@@ -59,7 +61,9 @@ class MessageModule {
     required this.reciverId,
     required this.isDoctor,
     required this.time,
+    required this.isSeen,
     required this.appointMentId,
+    required this.messageCountSee,
   });
 
   MessageModule copyWith({
@@ -68,7 +72,9 @@ class MessageModule {
     String? reciverId,
     bool? isDoctor,
     String? time,
+    bool? isSeen,
     String? appointMentId,
+    String? messageCountSee,
   }) {
     return MessageModule(
       message: message ?? this.message,
@@ -76,7 +82,9 @@ class MessageModule {
       reciverId: reciverId ?? this.reciverId,
       isDoctor: isDoctor ?? this.isDoctor,
       time: time ?? this.time,
+      isSeen: isSeen ?? this.isSeen,
       appointMentId: appointMentId ?? this.appointMentId,
+      messageCountSee: messageCountSee ?? this.messageCountSee,
     );
   }
 
@@ -87,7 +95,9 @@ class MessageModule {
       'reciverId': reciverId,
       'isDoctor': isDoctor,
       'time': time,
+      'isSeen': isSeen,
       'appointMentId': appointMentId,
+      'messageCountSee': messageCountSee,
     };
   }
 
@@ -98,7 +108,9 @@ class MessageModule {
       reciverId: map['reciverId'] as String,
       isDoctor: map['isDoctor'] as bool,
       time: map['time'] as String,
+      isSeen: map['isSeen'] as bool,
       appointMentId: map['appointMentId'] as String,
+      messageCountSee: map['messageCountSee'] as String,
     );
   }
 
@@ -109,7 +121,7 @@ class MessageModule {
 
   @override
   String toString() {
-    return 'MessageModule(message: $message, currentId: $currentId, reciverId: $reciverId, isDoctor: $isDoctor, time: $time, appointMentId: $appointMentId)';
+    return 'MessageModule(message: $message, currentId: $currentId, reciverId: $reciverId, isDoctor: $isDoctor, time: $time, isSeen: $isSeen, appointMentId: $appointMentId, messageCountSee: $messageCountSee)';
   }
 
   @override
@@ -121,7 +133,9 @@ class MessageModule {
         other.reciverId == reciverId &&
         other.isDoctor == isDoctor &&
         other.time == time &&
-        other.appointMentId == appointMentId;
+        other.isSeen == isSeen &&
+        other.appointMentId == appointMentId &&
+        other.messageCountSee == messageCountSee;
   }
 
   @override
@@ -131,6 +145,8 @@ class MessageModule {
         reciverId.hashCode ^
         isDoctor.hashCode ^
         time.hashCode ^
-        appointMentId.hashCode;
+        isSeen.hashCode ^
+        appointMentId.hashCode ^
+        messageCountSee.hashCode;
   }
 }

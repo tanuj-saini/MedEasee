@@ -6,8 +6,10 @@ import 'package:med_ease/UserScreens/utils/MessageScreen.dart'; // Import your m
 
 class AppointmentHistoryCardUser extends StatelessWidget {
   final AppointmentLeft appointment;
+  final String newMessages;
 
-  const AppointmentHistoryCardUser({Key? key, required this.appointment})
+  const AppointmentHistoryCardUser(
+      {required this.newMessages, Key? key, required this.appointment})
       : super(key: key);
 
   @override
@@ -57,13 +59,14 @@ class AppointmentHistoryCardUser extends StatelessWidget {
                   onPressed: () {
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (ctx) => MessageScreen(
+                            isSeen: false,
                             appointMentId: appointment.id ?? "",
                             userId: appointment.userId ?? '',
                             isDoctor: false,
                             doctorID: appointment.doctorId ?? '')));
                   },
                   icon: Icon(Icons.message),
-                  label: Text("Conatct with Doctor")),
+                  label: Text("Conatct with Doctor ${newMessages}")),
             SizedBox(height: 8.0),
             if (appointment.timeSlotPicks != null)
               Text('Time Slot: ${appointment.timeSlotPicks!.toJson()}'),
