@@ -46,6 +46,7 @@ class _MessageScreenState extends State<MessageScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final allChatData = BlocProvider.of<ListChatBloc>(context, listen: false);
       allChatData.add(listChatEvents(
+          appointMentId: widget.appointMentId,
           currentId: widget.isDoctor ? widget.doctorID : widget.userId,
           isDoctor: widget.isDoctor,
           reciverId: widget.isDoctor == false ? widget.doctorID : widget.userId,

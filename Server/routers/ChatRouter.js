@@ -41,20 +41,23 @@ chatRouter.post("/api/message", async (req, res) => {
     console.log(Cuser);
     console.log(Ruser);
 
-    let Cchat = Cuser.chat.find((chat) => chat.reciverId === reciverId);
+    let Cchat = Cuser.chat.find((chat) => chat.appointMentId === appointMentId);
 
     if (Cchat) {
       Cchat.chatDetails.push(chatModule);
     } else {
-      Cuser.chat.push({ reciverId, chatDetails: chatModule });
+      Cuser.chat.push({ appointMentId, chatDetails: chatModule });
     }
 
-    let Rchat = Ruser.chat.find((chat) => chat.reciverId === currentId);
+    let Rchat = Ruser.chat.find((chat) => chat.appointMentId === appointMentId);
 
     if (Rchat) {
       Rchat.chatDetails.push(RchatModule);
     } else {
-      Ruser.chat.push({ reciverId: currentId, chatDetails: RchatModule });
+      Ruser.chat.push({
+        appointMentId: appointMentId,
+        chatDetails: RchatModule,
+      });
     }
 
     Cuser = await Cuser.save();
@@ -68,7 +71,7 @@ chatRouter.post("/api/message", async (req, res) => {
 
 chatRouter.post("/get/ListChat", async (req, res) => {
   try {
-    const { isDoctor, currentId, reciverId } = req.body;
+    const { isDoctor, currentId, reciverId, appointMentId } = req.body;
     console.log(req.body);
     if (typeof isDoctor !== "boolean" || !currentId || !reciverId) {
       return res.status(400).json({ msg: "Invalid request parameters" });
@@ -76,7 +79,6 @@ chatRouter.post("/get/ListChat", async (req, res) => {
 
     let Ruser, Cuser, Cchats;
 
-    // Fetching receiver user
     if (isDoctor) {
       Ruser = await userModule.findById(reciverId); //
       if (!Ruser) {
@@ -91,7 +93,7 @@ chatRouter.post("/get/ListChat", async (req, res) => {
       Cuser = await userModule.findById(currentId);
     }
 
-    Cchats = Cuser.chat.filter((chat) => chat.reciverId === String(Ruser._id));
+    Cchats = Cuser.chat.filter((chat) => chat.appointMentId === appointMentId);
 
     res.json(Cchats);
   } catch (error) {

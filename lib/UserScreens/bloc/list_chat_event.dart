@@ -8,9 +8,11 @@ class listChatEvents extends ListChatEvent {
   final bool isDoctor;
   final String currentId;
   final String reciverId;
+  final String appointMentId;
 
   listChatEvents(
       {required this.currentId,
+      required this.appointMentId,
       required this.isDoctor,
       required this.reciverId,
       required this.context});

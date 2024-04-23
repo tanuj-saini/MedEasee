@@ -49,7 +49,7 @@ const UserModule = mongoose.Schema({
   ],
   chat: [
     {
-      reciverId: {
+      appointMentId: {
         required: true,
         type: String,
       },

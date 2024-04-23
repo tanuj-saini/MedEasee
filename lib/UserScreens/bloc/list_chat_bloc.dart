@@ -26,6 +26,7 @@ class ListChatBloc extends Bloc<ListChatEvent, ListChatState> {
               "isDoctor": event.isDoctor,
               "currentId": event.currentId,
               "reciverId": event.reciverId,
+              "appointMentId": event.appointMentId
             }));
         print("hello chat");
         print(res.body);

@@ -79,7 +79,7 @@ const DoctorModule = mongoose.Schema({
   ],
   chat: [
     {
-      reciverId: {
+      appointMentId: {
         required: true,
         type: String,
       },
