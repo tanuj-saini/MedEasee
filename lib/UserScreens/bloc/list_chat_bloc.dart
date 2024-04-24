@@ -76,15 +76,17 @@ class ListChatBloc extends Bloc<ListChatEvent, ListChatState> {
                   'Content-Type': 'application/json; charset=UTF-8',
                 },
                 body: jsonEncode({"appointMentId": event.appointMentId}));
+        print(res.body);
         _httpErrorHandle(res, emit, event.context);
-        Map<String, dynamic> decodedJson = jsonDecode(res.body);
-        // print(userRes.body);
-        print(jsonDecode(res.body)["messageCountSee"]);
-        UserModuleE userModule =
-            UserModuleE.fromJson(decodedJson["messageCountSee"]);
-        return emit(setMessageCountUpdateUserSuccess(
-            user: userModule,
-            messageCountSee: jsonDecode(res.body)["messageCountSee"]));
+
+        String message = jsonDecode(res.body)["messageCountSee"];
+
+        print("hello");
+        print(res.body);
+
+        // String messageCountSee = decodedJson["messageCountSee"];
+
+        return emit(setMessageCountUpdateUserSuccess(messageCountSee: message));
       } catch (e) {
         return emit(listChatFailure(error: e.toString()));
       }
@@ -99,12 +101,11 @@ class ListChatBloc extends Bloc<ListChatEvent, ListChatState> {
                 },
                 body: jsonEncode({"appointMentId": event.appointMentId}));
         _httpErrorHandle(res, emit, event.context);
-        final jsonData = jsonDecode(res.body);
-
-        Doctor doctorModule = Doctor.fromJson(jsonData);
-        return emit(setMessageCountUpdateDoctorSuccess(
-            doctor: doctorModule,
-            messageCountSee: jsonDecode(res.body)["messageCountSee"]));
+        print("hello");
+        print(res.body);
+        String message = jsonDecode(res.body)["messageCountSee"];
+        return emit(
+            setMessageCountUpdateDoctorSuccess(messageCountSee: message));
       } catch (e) {
         return emit(listChatFailure(error: e.toString()));
       }

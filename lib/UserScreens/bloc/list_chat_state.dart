@@ -24,19 +24,15 @@ class setZeroSuccess extends ListChatState {
 }
 
 class setMessageCountUpdateUserSuccess extends ListChatState {
-  final UserModuleE user;
   final String messageCountSee;
 
-  setMessageCountUpdateUserSuccess(
-      {required this.user, required this.messageCountSee});
+  setMessageCountUpdateUserSuccess({required this.messageCountSee});
 }
 
 class setMessageCountUpdateDoctorSuccess extends ListChatState {
-  final Doctor doctor;
   final String messageCountSee;
 
-  setMessageCountUpdateDoctorSuccess(
-      {required this.doctor, required this.messageCountSee});
+  setMessageCountUpdateDoctorSuccess({required this.messageCountSee});
 }
 
 class PersistHttpError extends ListChatState {

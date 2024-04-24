@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:med_ease/DoctorScreen/AppointDoctorCard.dart';
+import 'package:med_ease/DoctorScreen/AppointLessDoctor.dart';
 import 'package:med_ease/DoctorScreen/bloc/hist_appoint_bloc.dart';
 import 'package:med_ease/Modules/testModule.dart';
 import 'package:med_ease/Modules/testUserModule.dart';
@@ -24,51 +25,29 @@ class AppointMentHistory extends StatefulWidget {
 class _AppointMentHistory extends State<AppointMentHistory> {
   @override
   Widget build(BuildContext context) {
-    final allDoctorData = BlocProvider.of<ListChatBloc>(context, listen: false);
-    String newMessages = '+9';
     final doctorModel = context.watch<DoctorBloc>().state;
     List<AppointMentDetails>? appointmentHistory =
         doctorModel?.appointMentHistory;
 
-    return BlocConsumer<ListChatBloc, ListChatState>(
-      listener: (context, state) {
-        if (state is listChatFailure) {
-          showSnackBar(state.error, context);
-        }
-        if (state is setMessageCountUpdateDoctorSuccess) {
-          final doctorBloc = context.read<DoctorBloc>();
-          doctorBloc.updateDoctor(state.doctor);
-          setState(() {
-            newMessages = state.messageCountSee;
-          });
-        }
-      },
-      builder: (context, state) {
-        if (state is listChatLoding) {
-          return Loder();
-        }
-        return Scaffold(
-          appBar: AppBar(
-            title: Text('Appointment History'),
-          ),
-          body: appointmentHistory != null && appointmentHistory.isNotEmpty
-              ? ListView.builder(
-                  itemCount: appointmentHistory.length,
-                  itemBuilder: (context, index) {
-                    return AppointmentHistoryCardDoctor(
-                      seenMessage: newMessages,
-                      appointment: appointmentHistory[index],
-                    );
-                  },
-                )
-              : Center(
-                  child: Text(
-                    'No Appointments',
-                    style: TextStyle(fontSize: 20.0),
-                  ),
-                ),
-        );
-      },
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Appointment History'),
+      ),
+      body: appointmentHistory != null && appointmentHistory.isNotEmpty
+          ? ListView.builder(
+              itemCount: appointmentHistory.length,
+              itemBuilder: (context, index) {
+                return AppointmentHistorylessDoctor(
+                  appointment: appointmentHistory[index],
+                );
+              },
+            )
+          : Center(
+              child: Text(
+                'No Appointments',
+                style: TextStyle(fontSize: 20.0),
+              ),
+            ),
     );
   }
 }

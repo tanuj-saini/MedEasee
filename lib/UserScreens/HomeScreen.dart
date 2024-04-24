@@ -12,6 +12,7 @@ import 'package:med_ease/UserScreens/CardDeatilsDoctor.dart';
 import 'package:med_ease/UserScreens/CardDoctorDetailScreen.dart';
 import 'package:med_ease/UserScreens/StartScreen.dart';
 import 'package:med_ease/UserScreens/bloc/all_doctors_bloc.dart';
+import 'package:med_ease/UserScreens/bloc/list_chat_bloc.dart';
 import 'package:med_ease/UserScreens/bookedAppointmentList.dart';
 import 'package:med_ease/UserScreens/utils/CardScreenDoctor.dart';
 import 'package:med_ease/Utils/Colors.dart';
@@ -201,7 +202,7 @@ class _HomeScreen extends State<HomeScreen> {
                             specialization: doctor.specialist);
                       }).toList(),
                     ),
-                  )
+                  ),
                 ],
               ),
             ),

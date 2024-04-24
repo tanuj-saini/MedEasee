@@ -165,7 +165,7 @@ chatRouter.post("/setZero/messages/User", async (req, res) => {
     res.status(500).json({ msg: "Server Error" });
   }
 });
-chatRouter.get("/get/MessageCount/doctor", async (req, res) => {
+chatRouter.post("/get/MessageCount/doctor", async (req, res) => {
   try {
     const { appointMentId } = req.body;
 
@@ -177,7 +177,7 @@ chatRouter.get("/get/MessageCount/doctor", async (req, res) => {
     );
 
     if (!doctor) {
-      return res.status(400).json({ message: "Doctor not found" });
+      return res.status(400).json({ msg: "Doctor not found" });
     }
 
     const messageCountSee = doctor.chat[0].messageCountSee;
@@ -185,10 +185,10 @@ chatRouter.get("/get/MessageCount/doctor", async (req, res) => {
     res.json({ messageCountSee: messageCountSee, doctor: doctor });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Server Error" });
+    res.status(500).json({ msg: "Server Error" });
   }
 });
-chatRouter.get("/get/MessageCount/user", async (req, res) => {
+chatRouter.post("/get/MessageCount/user", async (req, res) => {
   try {
     const { appointMentId } = req.body;
 
@@ -200,7 +200,7 @@ chatRouter.get("/get/MessageCount/user", async (req, res) => {
     );
 
     if (!user) {
-      return res.status(400).json({ message: "user not found" });
+      return res.status(400).json({ msg: "user not found" });
     }
 
     const messageCountSee = user.chat[0].messageCountSee;
@@ -208,7 +208,7 @@ chatRouter.get("/get/MessageCount/user", async (req, res) => {
     res.json({ messageCountSee: messageCountSee, user: user });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Server Error" });
+    res.status(500).json({ msg: "Server Error" });
   }
 });
 
