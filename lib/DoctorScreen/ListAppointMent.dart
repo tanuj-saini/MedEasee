@@ -42,10 +42,14 @@ class _ListAppointmentScreenState extends State<ListAppointmentScreen> {
             ),
             ElevatedButton(
               onPressed: () {
-                deleteAppointment(
+                final refreshDoctorModule =
+                    BlocProvider.of<RefreshDoctorBloc>(context);
+                BlocProvider.of<RefreshDoctorBloc>(context);
+                refreshDoctorModule.add(deleteAppointEvent(
                     appointMentId: appointMentId,
+                    context: context,
                     doctorId: doctorId,
-                    userID: userID);
+                    userId: userID));
               },
               child: Text("OK"),
             ),
@@ -55,18 +59,18 @@ class _ListAppointmentScreenState extends State<ListAppointmentScreen> {
     );
   }
 
-  void deleteAppointment(
-      {required String doctorId,
-      required String userID,
-      required String appointMentId}) {
-    final refreshDoctorModule = BlocProvider.of<RefreshDoctorBloc>(context);
-    refreshDoctorModule.add(deleteAppointEvent(
-        appointMentId: appointMentId,
-        context: context,
-        doctorId: doctorId,
-        userId: userID));
-    Navigator.of(context).pop();
-  }
+  // void deleteAppointment(
+  //     {required String doctorId,
+  //     required String userID,
+  //     required String appointMentId}) {
+  //   final refreshDoctorModule = BlocProvider.of<RefreshDoctorBloc>(context);
+  //   refreshDoctorModule.add(deleteAppointEvent(
+  //       appointMentId: appointMentId,
+  //       context: context,
+  //       doctorId: doctorId,
+  //       userId: userID));
+  //
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -82,13 +86,11 @@ class _ListAppointmentScreenState extends State<ListAppointmentScreen> {
           final doctorBloc = context.read<DoctorBloc>();
           doctorBloc.updateDoctor(state.doctor);
         }
-        if (state is updateIsCompleteSuccess) {
-          final doctorBloc = context.read<DoctorBloc>();
-          doctorBloc.updateDoctor(state.doctor);
-          setState(() {});
-        }
       },
       builder: (context, state) {
+        if (state is RefreshDoctorLoding) {
+          return Loder();
+        }
         return Scaffold(
           appBar: AppBar(
             title: Text("List of Appointments"),
@@ -167,6 +169,11 @@ class _ListAppointmentScreenState extends State<ListAppointmentScreen> {
                                                 ),
                                                 ElevatedButton.icon(
                                                   onPressed: () {
+                                                    //                                   refreshDoctorModule.add(deleteAppointEvent(
+                                                    // appointMentId: detail.id ?? "",
+                                                    // context: context,
+                                                    // doctorId:  detail.doctorId ?? '',
+                                                    // userId:  detail.userId ?? '',));
                                                     delete(
                                                       appointMentId:
                                                           detail.id ?? "",

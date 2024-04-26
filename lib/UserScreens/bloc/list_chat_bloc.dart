@@ -32,7 +32,7 @@ class ListChatBloc extends Bloc<ListChatEvent, ListChatState> {
             }));
         print("hello chat");
         print(res.body);
-        _httpErrorHandle(res, emit, event.context);
+        // _httpErrorHandle(res, emit, event.context);
         List<ChatDetailed> chatInfoList = [];
         List<Map<String, dynamic>> jsonDataList =
             List<Map<String, dynamic>>.from(json.decode(res.body));

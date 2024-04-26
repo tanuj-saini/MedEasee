@@ -16,56 +16,59 @@ const chatBarMessage = Color.fromRGBO(30, 36, 40, 1);
 const mobileChatBoxColor = Color.fromRGBO(31, 44, 52, 1);
 const greyColor = Colors.grey;
 const blackColor = Colors.black;
-
-showSnackBar(String message, BuildContext context) {
+void showSnackBar(String message, BuildContext context) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
-      content: Stack(
-        clipBehavior: Clip.none,
-        children: [
-          Container(
-              padding: EdgeInsets.all(16),
-              height: 90,
-              decoration: BoxDecoration(
-                  color: Color.fromARGB(255, 94, 163, 198),
-                  borderRadius: BorderRadius.all(Radius.circular(20))),
-              child: Row(
-                children: [
-                  SizedBox(
-                    width: 48,
-                  ),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Oh snap!",
-                          style: TextStyle(color: Colors.white, fontSize: 18),
-                        ),
-                        const Spacer(),
-                        Text(
+      content: Container(
+        height: 90,
+        padding: EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Color.fromARGB(255, 94, 163, 198),
+          borderRadius: BorderRadius.all(Radius.circular(20)),
+        ),
+        child: Stack(
+          clipBehavior: Clip.none,
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Oh snap!",
+                        style: TextStyle(color: Colors.white, fontSize: 18),
+                      ),
+                      SizedBox(height: 8), // Add space between text and message
+                      Flexible(
+                        // Use Flexible to prevent overflow
+                        child: Text(
                           message,
                           style: TextStyle(color: Colors.white, fontSize: 18),
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                ],
-              )),
-          Positioned(
+                ),
+                SizedBox(width: 48), // Moved outside of Expanded to fix layout
+              ],
+            ),
+            Positioned(
               bottom: 0,
               child: ClipRRect(
-                  borderRadius:
-                      BorderRadius.only(bottomLeft: Radius.circular(20)),
-                  child: SvgPicture.asset(
-                    "assets/s.svg",
-                    height: 80,
-                    width: 80,
-                    color: Color.fromARGB(255, 17, 63, 120),
-                  ))),
-          Positioned(
+                borderRadius:
+                    BorderRadius.only(bottomLeft: Radius.circular(20)),
+                child: SvgPicture.asset(
+                  "assets/s.svg",
+                  height: 80,
+                  width: 80,
+                  color: Color.fromARGB(255, 17, 63, 120),
+                ),
+              ),
+            ),
+            Positioned(
               left: 0,
               top: -20,
               child: IconButton(
@@ -73,8 +76,10 @@ showSnackBar(String message, BuildContext context) {
                 onPressed: () {
                   ScaffoldMessenger.of(context).hideCurrentSnackBar();
                 },
-              )),
-        ],
+              ),
+            ),
+          ],
+        ),
       ),
       backgroundColor: Colors.transparent,
       elevation: 0,

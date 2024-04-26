@@ -139,21 +139,35 @@ class _BookedAppointmentListState extends State<BookedAppointmentList> {
                                                   MainAxisAlignment
                                                       .spaceBetween,
                                               children: [
-                                                ElevatedButton.icon(
-                                                    onPressed: () {
-                                                      show(
-                                                          doctorId: appointment
-                                                                  .doctorId ??
-                                                              "",
-                                                          userId:
-                                                              detail.userId ??
+                                                detail.comments ==
+                                                            "No Comments" &&
+                                                        detail.rating == "0"
+                                                    ? ElevatedButton.icon(
+                                                        onPressed: () {
+                                                          show(
+                                                              doctorId: appointment
+                                                                      .doctorId ??
                                                                   "",
-                                                          appointMentId:
-                                                              detail.id ?? "");
-                                                    },
-                                                    icon: Icon(Icons
-                                                        .remove_circle_outline_outlined),
-                                                    label: Text("Review")),
+                                                              userId: detail
+                                                                      .userId ??
+                                                                  "",
+                                                              appointMentId:
+                                                                  detail.id ??
+                                                                      "");
+                                                        },
+                                                        icon: Icon(Icons
+                                                            .remove_circle_outline_outlined),
+                                                        label: Text("Review"))
+                                                    : Text(
+                                                        "Review Already Done",
+                                                        style: TextStyle(
+                                                            color:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    126,
+                                                                    170,
+                                                                    193)),
+                                                      ),
                                                 ElevatedButton.icon(
                                                     onPressed: () {
                                                       refreshDoctorModule.add(

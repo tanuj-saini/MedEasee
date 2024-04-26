@@ -333,7 +333,8 @@ class _DoctorModifyScreenState extends State<DoctorModifyScreen> {
                       ),
                       ElevatedButton(
                         onPressed: () {
-                          if (doctorModel!.selectedTimeSlot != null) {
+                          if (doctorModel != null &&
+                              doctorModel.selectedTimeSlot == null) {
                             sendModifyAppointMent.add(
                                 AppointMentSelectedTimeSlot(
                                     context: context,

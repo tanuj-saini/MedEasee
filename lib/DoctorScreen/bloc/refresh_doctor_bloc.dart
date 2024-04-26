@@ -67,7 +67,7 @@ class RefreshDoctorBloc extends Bloc<RefreshDoctorEvent, RefreshDoctorState> {
 
         final jsonData = jsonDecode(res.body);
 
-        Doctor doctorModule = Doctor.fromJson(jsonData['doctor']);
+        Doctor doctorModule = Doctor.fromJson(jsonData);
         return emit(RefreshDoctorSuccess(doctor: doctorModule));
       } catch (e) {
         return emit(RefreshDoctorFailure(error: e.toString()));
@@ -120,12 +120,11 @@ class RefreshDoctorBloc extends Bloc<RefreshDoctorEvent, RefreshDoctorState> {
         print("Hellio");
         print(res.body);
         _httpErrorHandle(res, emit, event.context);
+        print("yes");
         final jsonData = jsonDecode(res.body);
         Doctor doctorModule = Doctor.fromJson(jsonData);
 
-        return emit(updateIsCompleteSuccess(
-            successText: "Congragulation AppointMent Completed",
-            doctor: doctorModule));
+        return emit(RefreshDoctorSuccess(doctor: doctorModule));
       } catch (e) {
         return emit(RefreshDoctorFailure(error: e.toString()));
       }
