@@ -117,6 +117,8 @@ class RefreshDoctorBloc extends Bloc<RefreshDoctorEvent, RefreshDoctorState> {
                   "userId": event.userId,
                   "appointMentId": event.appointMentId,
                 }));
+        print("Hellio");
+        print(res.body);
         _httpErrorHandle(res, emit, event.context);
         final jsonData = jsonDecode(res.body);
         Doctor doctorModule = Doctor.fromJson(jsonData);

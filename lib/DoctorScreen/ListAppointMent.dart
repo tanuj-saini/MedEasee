@@ -68,35 +68,6 @@ class _ListAppointmentScreenState extends State<ListAppointmentScreen> {
     Navigator.of(context).pop();
   }
 
-  // void onCompleted(
-  //     {required String text,
-  //     required String doctorId,
-  //     required String userID}) {
-  //   showDialog(
-  //     context: context,
-  //     builder: (BuildContext context) {
-  //       return AlertDialog(
-  //         title: Text("Confirmation"),
-  //         content: Text(text),
-  //         actions: <Widget>[
-  //           ElevatedButton(
-  //             onPressed: () {
-  //               Navigator.of(context).pop(); // Dismiss the dialog
-  //             },
-  //             child: Text("Cancel"),
-  //           ),
-  //           ElevatedButton(
-  //             onPressed: () {
-  //              deleteAppointment(doctorId: doctorId, userID: userID);
-  //             },
-  //             child: Text("Submit to History"),
-  //           ),
-  //         ],
-  //       );
-  //     },
-  //   );
-  // }
-
   @override
   Widget build(BuildContext context) {
     final doctorModel = context.watch<DoctorBloc>().state;
@@ -114,12 +85,7 @@ class _ListAppointmentScreenState extends State<ListAppointmentScreen> {
         if (state is updateIsCompleteSuccess) {
           final doctorBloc = context.read<DoctorBloc>();
           doctorBloc.updateDoctor(state.doctor);
-          // onCompleted(
-          //     text: state.successText,
-          //     doctorId: state.doctor.id,
-          //     userID: state.userId);
-
-          // showSnackBar(state.successText, context);
+          setState(() {});
         }
       },
       builder: (context, state) {
@@ -236,8 +202,9 @@ class _ListAppointmentScreenState extends State<ListAppointmentScreen> {
                                               ),
                                               Text(
                                                   "Comments: ${detail.comments ?? "0"}"),
-                                              detail.comments != "" ||
-                                                      detail.rating != ""
+                                              detail.comments !=
+                                                          "No Comments" &&
+                                                      detail.rating != "0.0"
                                                   ? ElevatedButton(
                                                       onPressed: () {
                                                         refreshDoctorModule.add(

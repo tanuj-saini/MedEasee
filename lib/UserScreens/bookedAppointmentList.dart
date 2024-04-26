@@ -73,101 +73,115 @@ class _BookedAppointmentListState extends State<BookedAppointmentList> {
             appBar: AppBar(
               title: Text("Booked Appointment"),
             ),
-            body: ListView.builder(
-              itemCount: user.appointment.length,
-              itemBuilder: (BuildContext context, int index) {
-                final appointment = user.appointment[index];
-                return Card(
-                  child: ListTile(
-                    onTap: () {},
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('Doctor ID: ${appointment.doctorId}'),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: appointment.apppointLeft!.map((detail) {
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text("AppointMent Id:${detail.id}"),
-                                Text('Date: ${detail.date}'),
-                                Text('User ID: ${detail.userId}'),
-                                Text('Is Complete: ${detail.isComplete}'),
-                                Text('Is Vedio: ${detail.isVedio}'),
-                                Text(
-                                    'TimeSlotSelected:${detail.timeSlotPicks!.timeSlots![0].hour}:${detail.timeSlotPicks!.timeSlots![0].minute}'),
-                                Divider(),
-                                detail.isComplete == false
-                                    ? Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            "Cancel Fee may Charge:",
-                                            style: TextStyle(color: Colors.red),
-                                          ),
-                                          ElevatedButton.icon(
-                                              onPressed: () {
-                                                refreshDoctorModule.add(
-                                                    deleteAppointEvent(
+            body: user.appointment.length == 0
+                ? Center(
+                    child: Text("No Appointments has been Book Yet"),
+                  )
+                : ListView.builder(
+                    itemCount: user.appointment.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      final appointment = user.appointment[index];
+                      return Card(
+                        child: ListTile(
+                          onTap: () {},
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('Doctor ID: ${appointment.doctorId}'),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children:
+                                    appointment.apppointLeft!.map((detail) {
+                                  return Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text("AppointMent Id:${detail.id}"),
+                                      Text('Date: ${detail.date}'),
+                                      Text('User ID: ${detail.userId}'),
+                                      Text('Is Complete: ${detail.isComplete}'),
+                                      Text('Is Vedio: ${detail.isVedio}'),
+                                      Text(
+                                          'TimeSlotSelected:${detail.timeSlotPicks!.timeSlots![0].hour}:${detail.timeSlotPicks!.timeSlots![0].minute}'),
+                                      Divider(),
+                                      detail.isComplete == false
+                                          ? Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Text(
+                                                  "Cancel Fee may Charge:",
+                                                  style: TextStyle(
+                                                      color: Colors.red),
+                                                ),
+                                                ElevatedButton.icon(
+                                                    onPressed: () {
+                                                      refreshDoctorModule.add(
+                                                          deleteAppointEvent(
+                                                              appointMentId:
+                                                                  detail.id ??
+                                                                      "",
+                                                              context: context,
+                                                              doctorId: appointment
+                                                                      .doctorId ??
+                                                                  "",
+                                                              userId: detail
+                                                                      .userId ??
+                                                                  ""));
+                                                    },
+                                                    icon: Icon(Icons.cancel),
+                                                    label: Text("Cancel")),
+                                              ],
+                                            )
+                                          : Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                ElevatedButton.icon(
+                                                    onPressed: () {
+                                                      show(
+                                                          doctorId: appointment
+                                                                  .doctorId ??
+                                                              "",
+                                                          userId:
+                                                              detail.userId ??
+                                                                  "",
+                                                          appointMentId:
+                                                              detail.id ?? "");
+                                                    },
+                                                    icon: Icon(Icons
+                                                        .remove_circle_outline_outlined),
+                                                    label: Text("Review")),
+                                                ElevatedButton.icon(
+                                                    onPressed: () {
+                                                      refreshDoctorModule.add(
+                                                          deleteAppointEventUser(
                                                         appointMentId:
                                                             detail.id ?? "",
                                                         context: context,
                                                         doctorId: appointment
                                                                 .doctorId ??
                                                             "",
-                                                        userId: detail.userId ??
-                                                            ""));
-                                              },
-                                              icon: Icon(Icons.cancel),
-                                              label: Text("Cancel")),
-                                        ],
-                                      )
-                                    : Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          ElevatedButton.icon(
-                                              onPressed: () {
-                                                show(
-                                                    doctorId:
-                                                        appointment.doctorId ??
-                                                            "",
-                                                    userId: detail.userId ?? "",
-                                                    appointMentId:
-                                                        detail.id ?? "");
-                                              },
-                                              icon: Icon(Icons
-                                                  .remove_circle_outline_outlined),
-                                              label: Text("Review")),
-                                          ElevatedButton.icon(
-                                              onPressed: () {
-                                                refreshDoctorModule
-                                                    .add(deleteAppointEventUser(
-                                                  appointMentId:
-                                                      detail.id ?? "",
-                                                  context: context,
-                                                  doctorId:
-                                                      appointment.doctorId ??
-                                                          "",
-                                                  userId: detail.userId ?? "",
-                                                ));
-                                              },
-                                              icon: Icon(Icons.done),
-                                              label: Text("Done")),
-                                        ],
-                                      )
-                              ],
-                            );
-                          }).toList(),
+                                                        userId:
+                                                            detail.userId ?? "",
+                                                      ));
+                                                    },
+                                                    icon: Icon(Icons.done),
+                                                    label: Text("Done")),
+                                              ],
+                                            )
+                                    ],
+                                  );
+                                }).toList(),
+                              ),
+                            ],
+                          ),
                         ),
-                      ],
-                    ),
-                  ),
-                );
-              },
-            ));
+                      );
+                    },
+                  ));
       },
     );
   }
