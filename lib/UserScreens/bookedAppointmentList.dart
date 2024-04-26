@@ -118,7 +118,7 @@ class _BookedAppointmentListState extends State<BookedAppointmentList> {
                                                 ElevatedButton.icon(
                                                     onPressed: () {
                                                       refreshDoctorModule.add(
-                                                          deleteAppointEvent(
+                                                          deleteAppointEventUser(
                                                               appointMentId:
                                                                   detail.id ??
                                                                       "",

@@ -135,17 +135,19 @@ class _DoctorModifyScreenState extends State<DoctorModifyScreen> {
                                   vertical: 8.0, horizontal: 16.0),
                               child: Container(
                                 decoration: BoxDecoration(
-                                    border:
-                                        doctorModel!.selectedTimeSlot!.title ==
-                                                timeSlot.appointMentDetails![0]
-                                                    .title
-                                            ? Border.all(
-                                                color: Colors
-                                                    .greenAccent, // Change this to your desired bright green color
-                                                width:
-                                                    2.0, // Adjust the border width as needed
-                                              )
-                                            : null),
+                                  border: Border.all(
+                                    color: doctorModel!
+                                                .selectedTimeSlot!.title ==
+                                            timeSlot
+                                                .appointMentDetails![0].title
+                                        ? Colors
+                                            .greenAccent // Bright green color when condition is met
+                                        : Colors
+                                            .transparent, // Transparent when condition is not met
+                                    width: 2.0, // Border width
+                                  ),
+                                  borderRadius: BorderRadius.circular(12.0),
+                                ),
                                 child: ListTile(
                                   title: Align(
                                     alignment: Alignment.topLeft,
